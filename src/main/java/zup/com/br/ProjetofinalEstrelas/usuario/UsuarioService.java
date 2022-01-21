@@ -3,6 +3,7 @@ package zup.com.br.ProjetofinalEstrelas.usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 
 import java.util.Optional;
 
@@ -23,6 +24,10 @@ public class UsuarioService {
 
     public void atualizarUsuario(Usuario usuario, String id) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        if (usuarioOptional.isEmpty()){
+            throw new UsuarioNaoEncontrado("Usuario não encontrado");
+        }
 
         Usuario usuarioDoBanco = usuarioOptional.get();
 
