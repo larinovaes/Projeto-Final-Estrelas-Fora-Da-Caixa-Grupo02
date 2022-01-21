@@ -5,6 +5,11 @@ import org.springframework.stereotype.Service;
 
 public class beneficioService {
 
-@Autowired
-private beneficioRepository beneficioRepository;
+    @Autowired
+    private beneficioRepository beneficioRepository;
+
+    public Beneficio salvarBeneficio(Beneficio beneficio) {
+        return beneficioRepository.save(beneficio);
+    }
+
 }
