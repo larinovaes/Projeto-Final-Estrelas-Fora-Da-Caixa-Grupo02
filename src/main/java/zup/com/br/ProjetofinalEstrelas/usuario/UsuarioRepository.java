@@ -1,2 +1,6 @@
-package zup.com.br.ProjetofinalEstrelas.usuario;public interface UsuarioRepository {
+package zup.com.br.ProjetofinalEstrelas.usuario;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface UsuarioRepository extends CrudRepository<Usuario, String> {
 }
