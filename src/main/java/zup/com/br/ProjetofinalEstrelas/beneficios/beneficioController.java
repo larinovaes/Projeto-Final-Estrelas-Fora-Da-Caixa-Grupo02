@@ -22,6 +22,11 @@ public class beneficioController {
         return beneficioService.exibirBeneficios();
     }
 
-
+   public Beneficio atualizarBeneficio(@RequestBody Beneficio beneficio){
+        return beneficioService.atualizarBeneficio(beneficio);}
 
 }
+
+
+
+
