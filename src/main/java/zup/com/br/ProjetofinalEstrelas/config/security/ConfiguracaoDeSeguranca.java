@@ -13,8 +13,11 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http.csrf().disable();
+
         http.authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
                 .anyRequest().authenticated();
     }
+
 }
