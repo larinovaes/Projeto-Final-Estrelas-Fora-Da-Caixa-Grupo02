@@ -27,6 +27,10 @@ public class beneficioController {
         return beneficioService.atualizarBeneficio(beneficio);
     }
 
+    public void deletarBeneficio(@RequestParam String email) {
+        beneficioService.deletarBeneficio(id);
+    }
+
 
 }
 
