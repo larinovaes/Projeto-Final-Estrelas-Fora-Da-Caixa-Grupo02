@@ -1,4 +1,4 @@
-package zup.com.br.ProjetofinalEstrelas.usuario;
+package zup.com.br.ProjetofinalEstrelas.usuario.dtos;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

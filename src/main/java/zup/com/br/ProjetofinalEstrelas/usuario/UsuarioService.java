@@ -40,8 +40,11 @@ public class UsuarioService {
         usuarioRepository.save(usuarioDoBanco);
     }
 
-     public void deletarUsuario(String email) {
+    public void deletarUsuario(String email) {
         usuarioRepository.deleteByEmail(email);
     }
 
+    public Iterable<Usuario> exibirUsuarios() {
+        return usuarioRepository.findAll();
+    }
 }
