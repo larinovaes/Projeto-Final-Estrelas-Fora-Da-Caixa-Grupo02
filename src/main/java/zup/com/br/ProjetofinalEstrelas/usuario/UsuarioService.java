@@ -25,7 +25,7 @@ public class UsuarioService {
     public void atualizarUsuario(Usuario usuario, String id) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
 
-        if (usuarioOptional.isEmpty()){
+        if (usuarioOptional.isEmpty()) {
             throw new UsuarioNaoEncontrado("Usuario não encontrado");
         }
 
@@ -38,6 +38,10 @@ public class UsuarioService {
         String senha = encoder.encode(usuario.getSenha());
         usuarioDoBanco.setSenha(senha);
         usuarioRepository.save(usuarioDoBanco);
+    }
+
+     public void deletarUsuario(String email) {
+        usuarioRepository.deleteByEmail(email);
     }
 
 }
