@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
+import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
 
 import java.util.Optional;
 
