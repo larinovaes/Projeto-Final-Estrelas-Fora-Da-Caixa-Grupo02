@@ -26,8 +26,9 @@ public class beneficioController {
     public Beneficio atualizarBeneficio(@RequestBody Beneficio beneficio) {
         return beneficioService.atualizarBeneficio(beneficio);
     }
-
-    public void deletarBeneficio(@RequestParam String email) {
+    @DeleteMapping//D
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarBeneficio(@RequestParam String id) {
         beneficioService.deletarBeneficio(id);
     }
 
