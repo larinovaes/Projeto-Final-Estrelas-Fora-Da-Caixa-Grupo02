@@ -1,8 +1,12 @@
 package zup.com.br.ProjetofinalEstrelas.beneficios;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/beneficio")
@@ -10,6 +14,10 @@ public class beneficioController {
 
     @Autowired
     private beneficioService beneficioService;
+    @Autowired
+    ModelMapper modelMapper;
+
+
 
     @PostMapping()//C
     @ResponseStatus(HttpStatus.CREATED)
@@ -30,6 +38,11 @@ public class beneficioController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarBeneficio(@RequestParam String id) {
         beneficioService.deletarBeneficio(id);
+    }
+
+    @GetMapping("/{id}")
+    public ExibirDetalheBeneficioDTO exibirBeneficioPorId(@PathVariable String id) {
+        return modelMapper.map(beneficioService.pesquisarBeneficioPorID(id), ExibirDetalheBeneficioDTO.class);
     }
 
 

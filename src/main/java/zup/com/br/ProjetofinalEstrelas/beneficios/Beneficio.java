@@ -7,7 +7,7 @@ import javax.persistence.Column;
 public class Beneficio {
 
     @Id
-    private int id;
+    private String id;
     @Column(nullable = false)
     private String nome;
     private String descrição;

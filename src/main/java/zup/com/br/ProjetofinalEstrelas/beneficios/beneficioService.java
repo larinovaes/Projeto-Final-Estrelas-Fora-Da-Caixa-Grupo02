@@ -3,6 +3,8 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 public class beneficioService {
 
     @Autowired
@@ -23,6 +25,8 @@ public class beneficioService {
     public void deletarBeneficio(String id) {
         beneficioRepository.deleteById(id);
     }
+
+
 
 
 }
