@@ -26,7 +26,11 @@ public class beneficioService {
         beneficioRepository.deleteById(id);
     }
 
+    public Beneficio pesquisarBeneficioPorID(String id) {
+        Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
 
+        return beneficioId.get();
+    }
 
 
 }
