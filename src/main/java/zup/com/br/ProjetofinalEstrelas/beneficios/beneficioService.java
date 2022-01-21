@@ -12,13 +12,17 @@ public class beneficioService {
         return beneficioRepository.save(beneficio);
     }
 
-    public Iterable<Beneficio> exibirBeneficios(){
-       return beneficioRepository.findAll();
+    public Iterable<Beneficio> exibirBeneficios() {
+        return beneficioRepository.findAll();
     }
-    public Beneficio atualizarBeneficio(Beneficio beneficio){
+
+    public Beneficio atualizarBeneficio(Beneficio beneficio) {
         return beneficioRepository.save(beneficio);
     }
 
+    public void deletarBeneficio(String id) {
+        beneficioRepository.deleteById(id);
+    }
 
 
 }
