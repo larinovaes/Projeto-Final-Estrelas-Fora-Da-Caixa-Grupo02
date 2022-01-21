@@ -20,4 +20,10 @@ public class UsuarioController {
     public Iterable<Usuario> exibirUsuarios() {
         return usuarioService.exibirUsuarios();
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarUsuario(String email) {
+        usuarioService.deletarUsuario(email);
+    }
 }
