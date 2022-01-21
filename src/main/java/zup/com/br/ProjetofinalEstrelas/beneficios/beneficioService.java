@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class beneficioService {
 
     @Autowired
@@ -22,15 +23,13 @@ public class beneficioService {
         return beneficioRepository.save(beneficio);
     }
 
-    public void deletarBeneficio(String id) {
+    public void deletarBeneficio(int id) {
         beneficioRepository.deleteById(id);
     }
 
-    public Beneficio pesquisarBeneficioPorID(String id) {
+    public Beneficio pesquisarBeneficioPorID(int id) {
         Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
 
         return beneficioId.get();
     }
-
-
 }

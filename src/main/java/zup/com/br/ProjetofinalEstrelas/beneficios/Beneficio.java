@@ -1,21 +1,21 @@
 package zup.com.br.ProjetofinalEstrelas.beneficios;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.*;
 
-import javax.persistence.Column;
-
+@Entity
+@Table(name="Beneficio")
 public class Beneficio {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(nullable = false)
     private String nome;
     private String descrição;
 
-    public Beneficio(String nome, String descrição) {
-        this.nome = nome;
-        this.descrição = descrição;
+    public Beneficio() {
     }
+
 
     public String getNome() {
         return nome;
