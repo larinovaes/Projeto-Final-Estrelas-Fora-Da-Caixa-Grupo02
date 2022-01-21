@@ -12,4 +12,8 @@ public class beneficioService {
         return beneficioRepository.save(beneficio);
     }
 
+    public Iterable<Beneficio> exibirBeneficios(){
+       return beneficioRepository.findAll();
+    }
+
 }
