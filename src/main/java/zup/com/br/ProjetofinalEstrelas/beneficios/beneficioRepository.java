@@ -1,4 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.beneficios;
 
-public class beneficioRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface beneficioRepository extends CrudRepository< beneficio, String> {
+
 }
