@@ -15,7 +15,9 @@ private beneficioService beneficioService;
 
 public Beneficio cadastrarBeneficio (@RequestBody Beneficio beneficio){ return beneficioService.salvarBeneficio(beneficio);}
 
-
+public Iterable<Beneficio>exibirTodosBeneficios(){
+return beneficioService.exibirBeneficios();
+}
 
 
 }
