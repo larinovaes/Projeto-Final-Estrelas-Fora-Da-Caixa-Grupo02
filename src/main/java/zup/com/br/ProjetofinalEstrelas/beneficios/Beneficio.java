@@ -3,7 +3,7 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Beneficio")
+@Table(name = "beneficio")
 public class Beneficio {
 
     @Id
@@ -11,7 +11,7 @@ public class Beneficio {
     private int id;
     @Column(nullable = false)
     private String nome;
-    private String descrição;
+    private String descricao;
 
     public Beneficio() {
     }
@@ -25,11 +25,11 @@ public class Beneficio {
         this.nome = nome;
     }
 
-    public String getDescrição() {
-        return descrição;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescrição(String descrição) {
-        this.descrição = descrição;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

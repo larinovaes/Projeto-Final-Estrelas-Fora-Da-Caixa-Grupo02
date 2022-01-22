@@ -1,4 +1,4 @@
-package zup.com.br.ProjetofinalEstrelas.beneficios.componentes;
+package zup.com.br.ProjetofinalEstrelas.componentes;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

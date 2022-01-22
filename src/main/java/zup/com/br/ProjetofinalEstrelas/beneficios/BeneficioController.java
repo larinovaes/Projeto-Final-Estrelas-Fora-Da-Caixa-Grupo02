@@ -6,14 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/beneficio")
-public class beneficioController {
+public class BeneficioController {
 
     @Autowired
-    private beneficioService beneficioService;
+    private BeneficioService beneficioService;
     @Autowired
     ModelMapper modelMapper;
 

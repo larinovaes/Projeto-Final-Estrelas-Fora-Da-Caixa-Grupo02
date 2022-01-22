@@ -1,11 +1,9 @@
 package zup.com.br.ProjetofinalEstrelas.beneficios.dtos;
 
-import javax.persistence.Column;
-
 public class ExibirDetalheBeneficioDTO {
     private String id;
     private String nome;
-    private String descrição;
+    private String descricao;
 
     public ExibirDetalheBeneficioDTO() {
     }
@@ -26,11 +24,11 @@ public class ExibirDetalheBeneficioDTO {
         this.nome = nome;
     }
 
-    public String getDescrição() {
-        return descrição;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescrição(String descrição) {
-        this.descrição = descrição;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

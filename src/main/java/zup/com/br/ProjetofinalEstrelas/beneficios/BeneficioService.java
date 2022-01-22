@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class beneficioService {
+public class BeneficioService {
 
     @Autowired
-    private beneficioRepository beneficioRepository;
+    private BeneficioRepository beneficioRepository;
 
     public Beneficio salvarBeneficio(Beneficio beneficio) {
         return beneficioRepository.save(beneficio);
