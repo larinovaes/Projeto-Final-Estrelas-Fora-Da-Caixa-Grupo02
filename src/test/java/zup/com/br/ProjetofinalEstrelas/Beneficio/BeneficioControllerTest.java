@@ -40,7 +40,7 @@ public class BeneficioControllerTest {
         beneficio.setDescrição("Sulámerica");
 
         beneficios = Arrays.asList(beneficio);
-        //   beneficio.setbeneficiosDeInteresse;
+        //beneficio.setbeneficiosDeInteresse;
         beneficios = Arrays.asList(beneficio);
     }
 
