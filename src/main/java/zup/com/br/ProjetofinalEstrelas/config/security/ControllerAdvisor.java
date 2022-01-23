@@ -14,6 +14,12 @@ import java.util.List;
 @RestControllerAdvice
 public class ControllerAdvisor {
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public void manipularValidacao(MethodArgumentNotValidException exception){
+
+    }
+
     @ExceptionHandler(BeneficioNaoEncontradoException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public MensagemErro manipularCodigoInvalido(BeneficioNaoEncontradoException exception) {
