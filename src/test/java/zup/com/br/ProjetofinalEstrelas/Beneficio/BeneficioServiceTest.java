@@ -10,8 +10,15 @@ import java.util.List;
 @SpringBootTest
 public class BeneficioServiceTest {
 
-@MockBean
-private beneficioRepository beneficioRepository;
+
+    @MockBean
+    private beneficioRepository beneficioRepository;
+
+    @Autowired
+    private BeneficioService beneficioService;
+
+    private Beneficio beneficio;
+    private List<Beneficio> beneficios;
 
 
 }
