@@ -32,7 +32,7 @@ public class BeneficioService {
     public Beneficio pesquisarBeneficioPorID(int id) {
         Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
         if (beneficioId.isEmpty()) {
-            throw new BeneficioNaoEncontradoException("Este beneficio não foi encontrado");
+            throw new BeneficioNaoEncontradoException("Este benefcio não foi encontrado, id inválido");
         }
 
         return beneficioId.get();
