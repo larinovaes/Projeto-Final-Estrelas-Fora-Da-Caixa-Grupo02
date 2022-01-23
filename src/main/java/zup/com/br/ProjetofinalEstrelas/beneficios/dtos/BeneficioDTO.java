@@ -1,11 +1,15 @@
 package zup.com.br.ProjetofinalEstrelas.beneficios.dtos;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 
 public class BeneficioDTO {
 
+    @NotNull(message = "Benefício não encontrado ou id inválido")
     private int id;
+    @NotNull(message = "O Preenchimento do campo é obrigatório")
     private String nome;
+    @NotNull(message = "O Preenchimento do campo é obrigatório")
     private String descrição;
 
     public BeneficioDTO() {
