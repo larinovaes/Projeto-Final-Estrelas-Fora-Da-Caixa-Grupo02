@@ -1,6 +1,9 @@
 package zup.com.br.ProjetofinalEstrelas.Beneficio;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,8 +33,39 @@ public class BeneficioServiceTest {
 
         beneficios = Arrays.asList(beneficio);
         beneficio.setbeneficiosDeInteresse(beneficios);
+    }
 
+    @Test
+    public void testarBuscarProdutosCadastradosCaminhoPositivo() {
+        Mockito.when(produtoRepository.existsByNome(Mockito.anyString())).thenReturn(true);
+        Mockito.when(produtoRepository.findByNome(Mockito.anyString())).thenReturn(produto);
 
+        List<Produto> listaAtualizada = leadService.buscarProdutos(produtos);
+
+        for (Produto produtoDaListaAtualizada : listaAtualizada) {
+            Assertions.assertEquals(produtoDaListaAtualizada, produto);
+            Assertions.assertEquals(produtoDaListaAtualizada.getId(), produto.getId());
+        }
+
+        Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
+    }
+
+    @Test
+    public void testarBuscarBeneficiosNaoCadastradosCaminhoPositivo() {
+        var beneficioNaoCadastrado = new Beneficio();
+        beneficioNaoCadastrado.setNome("Plano de saúde");
+        Mockito.when(beneficioRepository.existsByNome(Mockito.anyString())).thenReturn(false);
+        Mockito.when(beneficioRepository.findByNome(Mockito.anyString())).thenReturn(beneficio);
+
+        List<Beneficio> listaAtualizada = beneficioService.buscarBeneficios(Arrays.asList(beneficioNaoCadastrado));
+
+        for (Beneficio beneficioDaListaAtualizada : listaAtualizada) {
+            Assertions.assertNotEquals(beneficioDaListaAtualizada, beneficio);
+            Assertions.assertEquals(beneficioDaListaAtualizada.getId(), 0);
+        }
+
+        Mockito.verify(beneficioRepository, Mockito.times(0)).findByNome(Mockito.anyString());
+        Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
 
     }
 }
