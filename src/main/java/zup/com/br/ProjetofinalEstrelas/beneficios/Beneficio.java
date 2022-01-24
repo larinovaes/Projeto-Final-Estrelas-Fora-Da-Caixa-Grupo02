@@ -2,7 +2,6 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 @Table(name = "beneficio")
@@ -16,8 +15,6 @@ public class Beneficio {
     private String nome;
     private String descricao;
 
-  //  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    //private List<Beneficio> beneficiosDeInteresse;
 
     public Beneficio() {
     }

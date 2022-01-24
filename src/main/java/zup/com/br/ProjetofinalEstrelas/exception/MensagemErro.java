@@ -1,4 +1,4 @@
-package zup.com.br.ProjetofinalEstrelas.config.security;
+package zup.com.br.ProjetofinalEstrelas.exception;
 
 public class MensagemErro {
     private String mensagem;

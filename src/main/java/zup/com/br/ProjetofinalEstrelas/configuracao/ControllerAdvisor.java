@@ -1,15 +1,12 @@
-package zup.com.br.ProjetofinalEstrelas.config.security;
+package zup.com.br.ProjetofinalEstrelas.configuracao;
 
+import zup.com.br.ProjetofinalEstrelas.exception.MensagemErro;
 import zup.com.br.ProjetofinalEstrelas.exception.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestControllerAdvice
 public class ControllerAdvisor {

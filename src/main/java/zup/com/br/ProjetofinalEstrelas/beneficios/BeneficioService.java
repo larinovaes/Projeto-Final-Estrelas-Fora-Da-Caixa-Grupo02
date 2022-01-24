@@ -2,7 +2,6 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioJaCadastradoException;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 
