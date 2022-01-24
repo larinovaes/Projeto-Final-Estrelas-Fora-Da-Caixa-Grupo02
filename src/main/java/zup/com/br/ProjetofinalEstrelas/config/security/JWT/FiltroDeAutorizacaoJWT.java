@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.config.security.JWT;
 
-
+/*
+>>>>>>> fc1f830 (Modelar classe funcionario)
 import io.jsonwebtoken.Claims;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,3 +58,4 @@ public class FiltroDeAutorizacaoJWT extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 }
+*/

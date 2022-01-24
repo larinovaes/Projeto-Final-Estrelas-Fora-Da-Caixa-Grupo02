@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.config.security;
-
+/*
 import lombok.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -50,3 +51,4 @@ public class UsuarioLogado implements UserDetails {
         return true;
     }
 }
+*/

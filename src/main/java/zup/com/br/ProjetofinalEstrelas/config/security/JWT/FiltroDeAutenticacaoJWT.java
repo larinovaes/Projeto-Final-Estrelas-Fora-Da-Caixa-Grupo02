@@ -1,5 +1,5 @@
 package zup.com.br.ProjetofinalEstrelas.config.security.JWT;
-
+/*
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -59,4 +59,8 @@ public class FiltroDeAutenticacaoJWT extends UsernamePasswordAuthenticationFilte
         response.setHeader("Access-Control-Expose-Headers","Authorization");
         response.addHeader("Authorization", "Token "+token);
     }
+<<<<<<< HEAD
 }
+=======
+}
+*/

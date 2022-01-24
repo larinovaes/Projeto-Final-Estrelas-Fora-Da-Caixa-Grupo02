@@ -1,5 +1,5 @@
 package zup.com.br.ProjetofinalEstrelas.config.security;
-
+/*
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,3 +25,4 @@ public class UsuarioLoginService implements UserDetailsService {
         return new UsuarioLogado(usuario.getId(), usuario.getEmail(), usuario.getSenha());
     }
 }
+*/
