@@ -1,9 +1,11 @@
 package zup.com.br.ProjetofinalEstrelas.config.security.JWT;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.TokenInvalidoException;
 
 import java.util.Date;
 
@@ -22,5 +24,14 @@ public class JWTComponent {
                 .signWith(SignatureAlgorithm.HS512, segredo.getBytes()).compact();
 
         return token;
+    }
+
+    public Claims pegarClaims(String token){
+        try{
+            Claims claims = Jwts.parser().setSigningKey(segredo.getBytes()).parseClaimsJws(token).getBody();
+            return claims;
+        }catch (Exception e){
+            throw new TokenInvalidoException();
+        }
     }
 }
