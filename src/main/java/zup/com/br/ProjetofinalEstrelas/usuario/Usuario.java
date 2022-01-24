@@ -26,7 +26,4 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
-    @Enumerated(EnumType.STRING)
-    private NivelZupper nivelZupper;
-
 }
