@@ -6,12 +6,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioLogado implements UserDetails {
     private String id;
     private String email;
     private String senha;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
