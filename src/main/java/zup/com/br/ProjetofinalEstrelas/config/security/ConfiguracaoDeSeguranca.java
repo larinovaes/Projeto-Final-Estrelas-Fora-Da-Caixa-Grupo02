@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.FiltroDeAutenticacaoJWT;
+import zup.com.br.ProjetofinalEstrelas.config.security.JWT.FiltroDeAutorizacaoJWT;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 
 @Configuration
@@ -38,6 +39,7 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilter(new FiltroDeAutenticacaoJWT(jwtComponent, authenticationManager()));
+        http.addFilter(new FiltroDeAutorizacaoJWT(authenticationManager(), jwtComponent, userDetailsService));
     }
 
     @Override
