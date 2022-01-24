@@ -2,6 +2,8 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.exception.BeneficioJaCadastradoException;
+import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 
 import java.util.Optional;
 
@@ -29,7 +31,18 @@ public class BeneficioService {
 
     public Beneficio pesquisarBeneficioPorID(int id) {
         Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
+        if (beneficioId.isEmpty()) {
+            throw new BeneficioNaoEncontradoException("Este benefcio não foi encontrado, id inválido");
+        }
 
         return beneficioId.get();
+    }
+
+    public void verificarBeneficio(int id) {
+        Optional<Beneficio> beneficioExiste = beneficioRepository.findById(id);
+
+        if (beneficioExiste.isPresent()) {
+            throw new BeneficioJaCadastradoException("Este benefício já foi cadastrado!");
+        }
     }
 }
