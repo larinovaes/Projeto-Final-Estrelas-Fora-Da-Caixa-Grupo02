@@ -22,6 +22,11 @@ public class Beneficio {
     public Beneficio() {
     }
 
+    public Beneficio(int id, String nome, String descricao) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
 
     public String getNome() {
         return nome;
@@ -37,5 +42,14 @@ public class Beneficio {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+
     }
 }

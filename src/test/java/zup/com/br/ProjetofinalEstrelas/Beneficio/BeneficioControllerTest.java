@@ -78,6 +78,5 @@ public class BeneficioControllerTest {
         String jsonDeRespostaDaAPI = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
         Beneficio beneficioDaResposta = objectMapper.readValue(jsonDeRespostaDaAPI, Beneficio.class);
 
-
     }
 }

@@ -1,5 +1,6 @@
 package zup.com.br.ProjetofinalEstrelas.Beneficio;
 
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioRepository;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +20,7 @@ public class BeneficioServiceTest {
 
 
     @MockBean
-    private beneficioRepository beneficioRepository;
+    private BeneficioRepository beneficioRepository;
 
     @Autowired
     private BeneficioService beneficioService;
@@ -36,15 +39,15 @@ public class BeneficioServiceTest {
     }
 
     @Test
-    public void testarBuscarProdutosCadastradosCaminhoPositivo() {
-        Mockito.when(produtoRepository.existsByNome(Mockito.anyString())).thenReturn(true);
-        Mockito.when(produtoRepository.findByNome(Mockito.anyString())).thenReturn(produto);
+    public void testarBuscarBeneficioCadastradosCaminhoPositivo() {
+        Mockito.when(BeneficioRepository.existsByNome(Mockito.anyString())).thenReturn(true);
+        Mockito.when(BeneficioRepository.findByNome(Mockito.anyString())).thenReturn(produto);
 
-        List<Produto> listaAtualizada = leadService.buscarProdutos(produtos);
+        List<Beneficio> listaAtualizada = beneficioService.buscarBeneficios(beneficios);
 
-        for (Produto produtoDaListaAtualizada : listaAtualizada) {
-            Assertions.assertEquals(produtoDaListaAtualizada, produto);
-            Assertions.assertEquals(produtoDaListaAtualizada.getId(), produto.getId());
+        for (Beneficio beneficioDaListaAtualizada : listaAtualizada) {
+            Assertions.assertEquals(beneficioDaListaAtualizada, beneficio);
+            Assertions.assertEquals(beneficioDaListaAtualizada.getId(), beneficio.getId());
         }
 
         Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
