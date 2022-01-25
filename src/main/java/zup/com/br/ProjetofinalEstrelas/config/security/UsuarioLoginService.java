@@ -1,5 +1,5 @@
 package zup.com.br.ProjetofinalEstrelas.config.security;
-/*
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +22,7 @@ public class UsuarioLoginService implements UserDetailsService {
         usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Email ou Senha incorreto"));
         Usuario usuario = usuarioOptional.get();
 
-        return new UsuarioLogado(usuario.getId(), usuario.getEmail(), usuario.getSenha());
+        UsuarioLogado usuarioLogado = new UsuarioLogado(usuario.getEmail(), usuario.getSenha());
+        return usuarioLogado;
     }
 }
-*/
