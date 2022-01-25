@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +46,11 @@ public class ControllerAdvisor {
     public  MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontrado exception) {
         return new MensagemErro(exception.getMessage());
     }
+    @ExceptionHandler(FuncionarioNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public  MensagemErro tratarExcessaoDeFuncionarioNaoEncontrado(FuncionarioNaoEncontradoException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
+
 
 }
