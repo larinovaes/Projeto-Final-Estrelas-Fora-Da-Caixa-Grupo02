@@ -37,4 +37,8 @@ public class UsuarioService {
     public Iterable<Usuario> exibirUsuarios() {
         return usuarioRepository.findAll();
     }
+
+    public Usuario buscarUsuarioPeloOEmail(String email) {
+        return usuarioRepository.findByemail(email);
+    }
 }
