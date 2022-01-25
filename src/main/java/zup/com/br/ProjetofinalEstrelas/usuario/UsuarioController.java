@@ -18,17 +18,20 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioDTO cadastrarUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+    public void cadastrarUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
         usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
         usuarioService.salvarUsuario(usuario);
-
-       return usuarioDTO;
     }
 
     @GetMapping
     public Iterable<Usuario> exibirUsuarios() {
         return usuarioService.exibirUsuarios();
+    }
+
+    @GetMapping("/{email}")
+    public Usuario buscarUsuarioPorEmail(@PathVariable String email) {
+        return usuarioService.buscarUsuarioPeloOEmail(email);
     }
 
     @DeleteMapping("/{email}")
