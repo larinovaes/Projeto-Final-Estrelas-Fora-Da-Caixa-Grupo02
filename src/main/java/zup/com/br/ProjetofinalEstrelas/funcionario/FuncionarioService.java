@@ -6,7 +6,6 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioRepository;
 
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
 
-
 @Service
 public class FuncionarioService {
     @Autowired
@@ -17,6 +16,6 @@ public class FuncionarioService {
     private UsuarioRepository usuarioRepository;
 
     public Funcionario salvarFuncionario(Funcionario funcionario) {
-     return null;
+       return null;
     }
 }
