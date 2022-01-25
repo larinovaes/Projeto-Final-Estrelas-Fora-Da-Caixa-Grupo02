@@ -14,7 +14,7 @@ import java.util.List;
 @RestControllerAdvice
 public class ControllerAdvisor {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+   @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public void manipularValidacao(MethodArgumentNotValidException exception){
 

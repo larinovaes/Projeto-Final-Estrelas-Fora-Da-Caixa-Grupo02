@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/beneficio")
 public class BeneficioController {
@@ -16,7 +20,6 @@ public class BeneficioController {
     ModelMapper modelMapper;
 
 
-
     @PostMapping()//C
     @ResponseStatus(HttpStatus.CREATED)
     public Beneficio cadastrarBeneficio(@RequestBody Beneficio beneficio) {
@@ -24,13 +27,17 @@ public class BeneficioController {
     }
 
     @GetMapping//R
-    public Iterable<Beneficio> exibirTodosBeneficios() {
-        return beneficioService.exibirBeneficios();
+    public Iterable<ExibirDetalheBeneficioDTO> exibirTodosBeneficios() {
+        List<ExibirDetalheBeneficioDTO> todosBeneficios = new ArrayList<>();
+        beneficioService.exibirBeneficios().forEach(beneficio -> {
+            todosBeneficios.add(modelMapper.map(beneficio, ExibirDetalheBeneficioDTO.class));
+        });
+        return todosBeneficios;
     }
 
-    @PutMapping//U
-    public Beneficio atualizarBeneficio(@RequestBody Beneficio beneficio) {
-        return beneficioService.atualizarBeneficio(beneficio);
+    @PutMapping("/{id}")//U
+    public Beneficio atualizarBeneficio(@PathVariable int id, @RequestBody @Valid Beneficio beneficio) {
+        return beneficioService.atualizarBeneficio(id, beneficio);
     }
     @DeleteMapping//D
     @ResponseStatus(HttpStatus.NO_CONTENT)
