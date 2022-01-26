@@ -27,15 +27,27 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    private static final String[] ENDPOINT = {
+            "/beneficio",
+            "/usuario",
+            "/funcionario"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
         http.cors().configurationSource(configurarCORS());
 
+
         http.authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
-                .antMatchers(HttpMethod.POST,"/beneficios").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, ENDPOINT).hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/usuario").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.DELETE, ENDPOINT).hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/beneficio").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/funcionario").hasAnyRole("ADMIN", "USER")
+
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
