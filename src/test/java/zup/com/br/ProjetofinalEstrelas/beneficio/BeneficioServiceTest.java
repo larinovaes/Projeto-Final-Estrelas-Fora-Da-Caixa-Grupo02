@@ -1,4 +1,4 @@
-package zup.com.br.ProjetofinalEstrelas.Beneficio;
+package zup.com.br.ProjetofinalEstrelas.beneficio;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
