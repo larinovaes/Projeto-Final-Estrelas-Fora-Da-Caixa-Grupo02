@@ -42,7 +42,13 @@ public class UsuarioService {
     }
 
     public void deletarUsuario(String email) {
-       usuarioRepository.deleteById(email);
+        try {
+            usuarioRepository.deleteById(email);
+        } catch (Exception exception) {
+            if (!usuarioRepository.existsById(email)){
+                throw new UsuarioNaoEncontrado("O usuario não existe");
+            }
+        }
     }
 
     public Iterable<Usuario> exibirUsuarios() {
