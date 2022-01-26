@@ -3,14 +3,14 @@ package zup.com.br.ProjetofinalEstrelas.usuario;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Optional;
+
 
 @SpringBootTest
 public class UsuarioServiceTeste {
@@ -49,6 +49,16 @@ public class UsuarioServiceTeste {
         });
 
         Assertions.assertEquals("Esse email não corresponde aos funcionarios da ZUP", exception.getMessage());
+    }
+
+    @Test
+    public void testarDeletarUsuarioComSucesso() {
+        Mockito.when(usuarioRepository.findById(Mockito.anyString())).thenReturn(Optional.of(usuario));
+
+        Mockito.doNothing().when(usuarioRepository).deleteById(Mockito.anyString());
+        usuarioService.deletarUsuario(usuario.getEmail());
+
+        Mockito.verify(usuarioRepository, Mockito.times(1)).deleteById(Mockito.anyString());
     }
 
 }
