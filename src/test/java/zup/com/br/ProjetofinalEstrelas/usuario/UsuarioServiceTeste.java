@@ -7,6 +7,7 @@ import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
 
 import java.util.Optional;
@@ -59,6 +60,18 @@ public class UsuarioServiceTeste {
         usuarioService.deletarUsuario(usuario.getEmail());
 
         Mockito.verify(usuarioRepository, Mockito.times(1)).deleteById(Mockito.anyString());
+    }
+
+    @Test
+    public void testarDeletarUsuarioSemSucesso() {
+        Mockito.when(usuarioRepository.findById(Mockito.anyString()))
+                .thenThrow(new UsuarioNaoEncontrado("O usuario não existe"));
+        try {
+            usuarioService.deletarUsuario(usuario.getEmail());
+        } catch (Exception exception) {
+            Assertions.assertEquals(UsuarioNaoEncontrado.class, exception.getClass());
+            Assertions.assertEquals("O usuario não existe", exception.getMessage());
+        }
     }
 
 }
