@@ -26,7 +26,7 @@ public class UsuarioServiceTeste {
     @BeforeEach
     private void setup() {
         usuario = new Usuario();
-        usuario.setEmail("larissa@zup.com");
+        usuario.setEmail("larissa@zup.com.br");
         usuario.setSenha("Larissa@123");
     }
 
