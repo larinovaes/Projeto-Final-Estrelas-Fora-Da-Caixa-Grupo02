@@ -13,6 +13,7 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public Usuario salvarUsuario(Usuario usuario) {
+        usuario.setRole("USER");
         return usuarioRepository.save(usuario);
     }
 
