@@ -43,4 +43,8 @@ public class AtividadeFisicaService {
 
         return atividadeFisicaId.get();
     }
+
+    public void deletarAtividadeFisica(int id) {
+        atividadeFisicaRepository.deleteById(id);
+    }
 }
