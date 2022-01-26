@@ -4,10 +4,16 @@ package zup.com.br.ProjetofinalEstrelas.atividadeFisica;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/atividadefisica")
 public class AtividadeFisicaController {
 
 
@@ -23,6 +29,16 @@ public class AtividadeFisicaController {
         return atividadeFisicaService.salvarAtividadeFisica(atividadeFisica);
     }
 
-
-
+    @GetMapping//R
+    public Iterable<ExibirDetalheAtividadeFisicaDTO> exibirTodasAtividadesFisicas() {
+        List<ExibirDetalheAtividadeFisicaDTO> todasAtividadesFisicas = new ArrayList<>();
+        atividadeFisicaService.exibirAtividadesFisicas().forEach(AtividadeFisica -> {
+            todasAtividadesFisicas.add(modelMapper.map(AtividadeFisica, ExibirDetalheAtividadeFisicaDTO.class));
+        });
+        return todasAtividadesFisicas;
+    }
 }
+
+
+
+
