@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
-import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
 
 
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,11 @@ public class AtividadeFisicaController {
             todasAtividadesFisicas.add(modelMapper.map(AtividadeFisica, ExibirDetalheAtividadeFisicaDTO.class));
         });
         return todasAtividadesFisicas;
+    }
+
+    @PutMapping("/{id}")//U
+    public AtividadeFisica atualizarAtividadeFisica(@PathVariable int id, @RequestBody @Valid AtividadeFisica atividadeFisica) {
+        return atividadeFisicaService.atualizarAtividadeFisica(id, atividadeFisica);
     }
 }
 

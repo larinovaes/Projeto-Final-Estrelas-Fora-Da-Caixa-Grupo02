@@ -1,7 +1,17 @@
 package zup.com.br.ProjetofinalEstrelas.atividadeFisica;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "Atividade Fisica")
 public class AtividadeFisica {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(nullable = false)
+    @Size(min = 3,message = "O nome deve ter no mínimo 3 caracteres")
     private String nome;
     private String cidade;
     private String bairro;

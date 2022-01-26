@@ -34,12 +34,22 @@ public class BeneficioServiceTest {
         beneficio.setId(2);
         beneficio.setNome("Plano de Saúde");
 
+<<<<<<< HEAD
         beneficios = Arrays.asList(beneficio);
+=======
+        System.setProperty("SEGREDO_JWT", "jujuba");
+        System.setProperty("JWT_TIME", "123");
+
+>>>>>>> 564f27e (Criar Metodos Atualizar Atividade Fisica e Metodo Pesquisar Atividade Fisicar (Controller&Service))
 
     }
 
     @Test
+<<<<<<< HEAD
     public void testarBuscarProdutosCadastradosCaminhoPositivo() {
+=======
+    public void testarBuscarBeneficioCadastradosCaminhoPositivo() {
+>>>>>>> 564f27e (Criar Metodos Atualizar Atividade Fisica e Metodo Pesquisar Atividade Fisicar (Controller&Service))
         Mockito.when(beneficioRepository.existsById(Mockito.anyInt())).thenReturn(true);
         Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
 
@@ -47,14 +57,22 @@ public class BeneficioServiceTest {
 
         Assertions.assertEquals(beneficioDoBanco, beneficio);
         Assertions.assertEquals(beneficioDoBanco.getId(), beneficio.getId());
+<<<<<<< HEAD
+=======
+
+>>>>>>> 564f27e (Criar Metodos Atualizar Atividade Fisica e Metodo Pesquisar Atividade Fisicar (Controller&Service))
     }
 
     @Test
-    public void testarBuscarBeneficiosNaoCadastradosCaminhoPositivo() {
+    public void testarBuscarBeneficiosNaoCadastrados() {
         var beneficioNaoCadastrado = new Beneficio();
         beneficioNaoCadastrado.setNome("Plano de saúde");
         Mockito.when(beneficioRepository.existsById(Mockito.anyInt())).thenReturn(false);
+<<<<<<< HEAD
         Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
+=======
+        Mockito.when(beneficioRepository.findAll()).thenReturn(List.of(beneficio));
+>>>>>>> 564f27e (Criar Metodos Atualizar Atividade Fisica e Metodo Pesquisar Atividade Fisicar (Controller&Service))
 
         Iterable<Beneficio> listaAtualizada = beneficioService.exibirBeneficios();
 
@@ -63,7 +81,17 @@ public class BeneficioServiceTest {
             Assertions.assertEquals(beneficioDaListaAtualizada.getId(), 2);
         }
 
+<<<<<<< HEAD
         Mockito.verify(beneficioRepository, Mockito.times(0)).findAll();
         Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
     }
 }
+=======
+        Mockito.verify(beneficioRepository, Mockito.times(1)).findAll();
+        Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
+
+
+    }
+}
+
+>>>>>>> 564f27e (Criar Metodos Atualizar Atividade Fisica e Metodo Pesquisar Atividade Fisicar (Controller&Service))

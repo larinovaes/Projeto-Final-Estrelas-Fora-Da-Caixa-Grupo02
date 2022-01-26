@@ -3,7 +3,6 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
-import zup.com.br.ProjetofinalEstrelas.exception.BeneficioJaCadastradoException;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 
 import java.util.List;
@@ -43,15 +42,8 @@ public class BeneficioService {
         return beneficioId.get();
     }
 
-    public void verificarBeneficio(int id) {
-        Optional<Beneficio> beneficioExiste = beneficioRepository.findById(id);
-
-        if (beneficioExiste.isPresent()) {
-            throw new BeneficioJaCadastradoException("Este benefício já foi cadastrado!");
-        }
-    }
 
     public List<Beneficio> exibirBeneficios(NivelZupper nivelZupper) {
-         return beneficioRepository.findByNivelZupper(nivelZupper);
+        return beneficioRepository.findByNivelZupper(nivelZupper);
     }
 }

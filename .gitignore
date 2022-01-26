@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/test/java/zup/com/br/ProjetofinalEstrelas/ProjetoFinalEstrelasForaDaCaixaApplicationTests.java/
+/src/test/java/zup/com/br/ProjetofinalEstrelas/Beneficio/BeneficioServiceTest.java/
+/src/test/java/zup/com/br/ProjetofinalEstrelas/ProjetoFinalEstrelasForaDaCaixaApplicationTests.java/
+/src/test/resources/application.properties/

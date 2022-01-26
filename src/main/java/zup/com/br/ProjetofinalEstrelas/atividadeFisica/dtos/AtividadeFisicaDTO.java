@@ -2,7 +2,6 @@ package zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos;
 
 public class AtividadeFisicaDTO {
 
-
     private String nome;
     private String cidade;
     private String bairro;
@@ -80,3 +79,5 @@ public class AtividadeFisicaDTO {
         this.contato = contato;
     }
 }
+
+
