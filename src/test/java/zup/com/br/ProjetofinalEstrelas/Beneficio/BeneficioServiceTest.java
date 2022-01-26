@@ -1,5 +1,5 @@
 package zup.com.br.ProjetofinalEstrelas.Beneficio;
-/*
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,16 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioRepository;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class BeneficioServiceTest {
 
 
     @MockBean
-    private BeneficioRepository beneficioRepositoryene;
+    private BeneficioRepository beneficioRepository;
 
     @Autowired
     private BeneficioService beneficioService;
@@ -28,46 +31,39 @@ public class BeneficioServiceTest {
     @BeforeEach
     public void setup() {
         beneficio = new Beneficio();
-        beneficio.setId("2");
+        beneficio.setId(2);
         beneficio.setNome("Plano de Saúde");
 
         beneficios = Arrays.asList(beneficio);
-        beneficio.setbeneficiosDeInteresse(beneficios);
+
     }
 
     @Test
     public void testarBuscarProdutosCadastradosCaminhoPositivo() {
-        Mockito.when(produtoRepository.existsByNome(Mockito.anyString())).thenReturn(true);
-        Mockito.when(produtoRepository.findByNome(Mockito.anyString())).thenReturn(produto);
+        Mockito.when(beneficioRepository.existsById(Mockito.anyInt())).thenReturn(true);
+        Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
 
-        List<Produto> listaAtualizada = leadService.buscarProdutos(produtos);
+        Beneficio beneficioDoBanco = beneficioService.pesquisarBeneficioPorID(2);
 
-        for (Produto produtoDaListaAtualizada : listaAtualizada) {
-            Assertions.assertEquals(produtoDaListaAtualizada, produto);
-            Assertions.assertEquals(produtoDaListaAtualizada.getId(), produto.getId());
-        }
-
-        Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
+        Assertions.assertEquals(beneficioDoBanco, beneficio);
+        Assertions.assertEquals(beneficioDoBanco.getId(), beneficio.getId());
     }
 
     @Test
     public void testarBuscarBeneficiosNaoCadastradosCaminhoPositivo() {
         var beneficioNaoCadastrado = new Beneficio();
         beneficioNaoCadastrado.setNome("Plano de saúde");
-        Mockito.when(BeneficioRepository.existsByNome(Mockito.anyString())).thenReturn(false);
-        Mockito.when(BeneficioRepository.findByNome(Mockito.anyString())).thenReturn(beneficio);
+        Mockito.when(beneficioRepository.existsById(Mockito.anyInt())).thenReturn(false);
+        Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
 
-        List<Beneficio> listaAtualizada = beneficioService.buscarBeneficios(Arrays.asList(beneficioNaoCadastrado));
+        Iterable<Beneficio> listaAtualizada = beneficioService.exibirBeneficios();
 
         for (Beneficio beneficioDaListaAtualizada : listaAtualizada) {
-            Assertions.assertNotEquals(beneficioDaListaAtualizada, beneficio);
-            Assertions.assertEquals(beneficioDaListaAtualizada.getId(), 0);
+            Assertions.assertNotEquals(beneficioDaListaAtualizada, beneficios);
+            Assertions.assertEquals(beneficioDaListaAtualizada.getId(), 2);
         }
 
-        Mockito.verify(BeneficioRepository, Mockito.times(0)).findByNome(Mockito.anyString());
+        Mockito.verify(beneficioRepository, Mockito.times(0)).findAll();
         Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
-
     }
 }
-
- */
