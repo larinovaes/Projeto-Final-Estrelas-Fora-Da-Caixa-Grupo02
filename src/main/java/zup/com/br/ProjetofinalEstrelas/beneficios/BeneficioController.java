@@ -39,11 +39,6 @@ public class BeneficioController {
     public Beneficio atualizarBeneficio(@PathVariable int id, @RequestBody @Valid Beneficio beneficio) {
         return beneficioService.atualizarBeneficio(id, beneficio);
     }
-    @DeleteMapping//D
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarBeneficio(@RequestParam int id) {
-        beneficioService.deletarBeneficio(id);
-    }
 
     @GetMapping("/{id}")
     public ExibirDetalheBeneficioDTO exibirBeneficioPorId(@PathVariable int id) {
