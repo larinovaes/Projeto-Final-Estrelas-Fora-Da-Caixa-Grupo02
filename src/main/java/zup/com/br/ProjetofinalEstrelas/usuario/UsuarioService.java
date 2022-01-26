@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 
@@ -12,7 +13,13 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     public Usuario salvarUsuario(Usuario usuario) {
+        usuario.setRole("ROLE_USER");
+        String senhaEscondida = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaEscondida);
         return usuarioRepository.save(usuario);
     }
 

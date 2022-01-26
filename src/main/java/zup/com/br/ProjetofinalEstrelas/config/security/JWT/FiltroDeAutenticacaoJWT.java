@@ -51,7 +51,7 @@ public class FiltroDeAutenticacaoJWT extends UsernamePasswordAuthenticationFilte
 
         UsuarioLogado usuarioLogado = (UsuarioLogado) authResult.getPrincipal();
         String username = usuarioLogado.getUsername();
-        String id = usuarioLogado.getId();
+        String id = usuarioLogado.getEmail();
 
         String token = jwtComponent.gerarToken(username, id);
 
