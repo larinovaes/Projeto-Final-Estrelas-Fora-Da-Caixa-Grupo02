@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
 
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class UsuarioService {
 
     public Usuario salvarUsuario(Usuario usuario) {
         if (!usuario.getEmail().contains("zup.com.br")) {
-            throw new RuntimeException("Esse email não corresponde aos funcionarios da ZUP");
+            throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
         }
         usuario.setRole("ROLE_USER");
         String senhaEscondida = encoder.encode(usuario.getSenha());
