@@ -22,6 +22,7 @@ public class UsuarioLoginService implements UserDetailsService {
         usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Email ou Senha incorreto"));
         Usuario usuario = usuarioOptional.get();
 
-        return new UsuarioLogado(usuario.getId(), usuario.getEmail(), usuario.getSenha());
+        UsuarioLogado usuarioLogado = new UsuarioLogado(usuario.getEmail(), usuario.getSenha());
+        return usuarioLogado;
     }
 }

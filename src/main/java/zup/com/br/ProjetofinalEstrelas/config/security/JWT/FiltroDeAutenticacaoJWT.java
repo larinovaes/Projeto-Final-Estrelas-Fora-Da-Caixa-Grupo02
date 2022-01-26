@@ -1,6 +1,5 @@
 package zup.com.br.ProjetofinalEstrelas.config.security.JWT;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +25,12 @@ public class FiltroDeAutenticacaoJWT extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
-                                                                                  HttpServletResponse response) throws AuthenticationException {
+                                                HttpServletResponse response) throws AuthenticationException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try{
-            LoginDTO login =  objectMapper.readValue(request.getInputStream(), LoginDTO.class);
+        try {
+            LoginDTO login = objectMapper.readValue(request.getInputStream(), LoginDTO.class);
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     login.getEmail(), login.getSenha(), new ArrayList<>()
@@ -39,7 +38,7 @@ public class FiltroDeAutenticacaoJWT extends UsernamePasswordAuthenticationFilte
 
             Authentication autenticacao = authenticationManager.authenticate(authToken);
             return autenticacao;
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new AcessoNegadoException();
         }
     }
@@ -56,7 +55,14 @@ public class FiltroDeAutenticacaoJWT extends UsernamePasswordAuthenticationFilte
 
         String token = jwtComponent.gerarToken(username, id);
 
-        response.setHeader("Access-Control-Expose-Headers","Authorization");
-        response.addHeader("Authorization", "Token "+token);
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        response.addHeader("Authorization", "Token " + token);
     }
+
 }
+
+
+
+
+
+

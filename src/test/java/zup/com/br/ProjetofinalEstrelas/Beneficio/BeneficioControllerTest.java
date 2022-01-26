@@ -13,16 +13,17 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
-import zup.com.br.ProjetofinalEstrelas.beneficios.beneficioController;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 
 import java.util.Arrays;
 import java.util.List;
 
-@WebMvcTest(beneficioController.class)
+ @WebMvcTest(BeneficioController.class)
 public class BeneficioControllerTest {
 
     @MockBean
-    private beneficioService beneficioService;
+    private BeneficioService beneficioService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,7 +38,7 @@ public class BeneficioControllerTest {
         objectMapper = new ObjectMapper();
         beneficio = new Beneficio();
         beneficio.setNome("Plano de saúde");
-        beneficio.setDescrição("Sulámerica");
+        beneficio.setDescricao("Sulámerica");
 
         beneficios = Arrays.asList(beneficio);
         //beneficio.setbeneficiosDeInteresse;
@@ -46,7 +47,7 @@ public class BeneficioControllerTest {
 
     @Test
     public void testarRotaParaBuscarBeneficios() throws Exception {
-        Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyString())).thenReturn(beneficios);
+        Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyInt())).thenReturn(beneficio);
 
         ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
                         .param("nomeBeneficio", "Foice")
@@ -57,7 +58,7 @@ public class BeneficioControllerTest {
     @Test
     public void testarRotaParaCadastrarBeneficioValidacoesId() throws Exception {
         Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
-        beneficio.setId("Id errado");
+        beneficio.setId(3);
         String json = objectMapper.writeValueAsString(beneficio);
 
         ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio")
@@ -78,5 +79,7 @@ public class BeneficioControllerTest {
         String jsonDeRespostaDaAPI = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
         Beneficio beneficioDaResposta = objectMapper.readValue(jsonDeRespostaDaAPI, Beneficio.class);
 
+
     }
 }
+

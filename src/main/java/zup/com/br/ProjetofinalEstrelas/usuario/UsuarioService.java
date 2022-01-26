@@ -31,10 +31,14 @@ public class UsuarioService {
     }
 
     public void deletarUsuario(String email) {
-        usuarioRepository.deleteByEmail(email);
+       usuarioRepository.deleteById(email);
     }
 
     public Iterable<Usuario> exibirUsuarios() {
         return usuarioRepository.findAll();
+    }
+
+    public Usuario buscarUsuarioPeloOEmail(String email) {
+        return usuarioRepository.findByemail(email);
     }
 }

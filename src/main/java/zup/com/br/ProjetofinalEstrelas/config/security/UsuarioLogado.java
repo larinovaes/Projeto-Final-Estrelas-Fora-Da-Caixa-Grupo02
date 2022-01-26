@@ -1,6 +1,6 @@
 package zup.com.br.ProjetofinalEstrelas.config.security;
-
 import lombok.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +14,9 @@ public class UsuarioLogado implements UserDetails {
     private String id;
     private String email;
     private String senha;
+
+    public UsuarioLogado(String email, String senha) {
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
