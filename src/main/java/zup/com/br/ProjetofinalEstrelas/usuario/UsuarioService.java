@@ -17,6 +17,9 @@ public class UsuarioService {
     private BCryptPasswordEncoder encoder;
 
     public Usuario salvarUsuario(Usuario usuario) {
+        if (!usuario.getEmail().contains("zup.com.br")) {
+            throw new RuntimeException("Esse email não corresponde aos funcionarios da ZUP");
+        }
         usuario.setRole("ROLE_USER");
         String senhaEscondida = encoder.encode(usuario.getSenha());
         usuario.setSenha(senhaEscondida);
