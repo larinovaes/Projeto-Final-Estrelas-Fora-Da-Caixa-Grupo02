@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -72,6 +74,15 @@ public class UsuarioServiceTeste {
             Assertions.assertEquals(UsuarioNaoEncontrado.class, exception.getClass());
             Assertions.assertEquals("O usuario não existe", exception.getMessage());
         }
+    }
+
+    @Test
+    public void testarExibirTodosOsUsuarios() {
+        Iterable<Usuario> usuarios = Arrays.asList(usuario);
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+
+        Iterable<Usuario> usuariosDeInteresse = usuarioService.exibirUsuarios();
+        Mockito.verify(usuarioRepository, Mockito.times(1)).findAll();
     }
 
 }
