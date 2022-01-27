@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "usuario")
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Getter
 public class Usuario {
     @Id
+    @NotNull
     private String email;
 
     @Column(nullable = false)
