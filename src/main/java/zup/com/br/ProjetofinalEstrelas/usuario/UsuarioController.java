@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.UsuarioSaidaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import javax.validation.Valid;
