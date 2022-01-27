@@ -46,7 +46,7 @@ public class UsuarioService {
             usuarioRepository.deleteById(email);
         } catch (Exception exception) {
             if (!usuarioRepository.existsById(email)) {
-                throw new UsuarioNaoEncontrado("O usuario não existe");
+                throw new UsuarioNaoEncontrado("Usuario não encontrado");
             }
         }
     }
@@ -56,6 +56,10 @@ public class UsuarioService {
     }
 
     public Usuario buscarUsuarioPeloOEmail(String email) {
-        return usuarioRepository.findByemail(email);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(email);
+        if (usuarioOptional.isPresent()){
+            return usuarioOptional.get();
+        }
+        throw new UsuarioNaoEncontrado("Usuario não encontrado");
     }
 }
