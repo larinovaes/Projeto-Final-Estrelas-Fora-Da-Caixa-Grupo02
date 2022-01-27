@@ -45,6 +45,12 @@ public class BeneficioController {
         return modelMapper.map(beneficioService.pesquisarBeneficioPorID(id), ExibirDetalheBeneficioDTO.class);
     }
 
+    @DeleteMapping("/{id}")//D
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarBeneficio(@PathVariable int id) {
+
+        beneficioService.deletarBeneficio(id);
+    }
 
 }
 
