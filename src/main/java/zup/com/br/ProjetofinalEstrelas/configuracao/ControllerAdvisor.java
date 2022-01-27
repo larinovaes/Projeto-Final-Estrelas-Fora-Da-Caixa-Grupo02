@@ -16,7 +16,7 @@ import java.util.List;
 @RestControllerAdvice
 public class ControllerAdvisor {
 
-   @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public List<MensagemErro> manipularErrosDeValidacao(MethodArgumentNotValidException exception) {
         List<MensagemErro> erros = new ArrayList<>();
@@ -31,7 +31,7 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(BeneficioNaoEncontradoException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public MensagemErro tratarExcessaoDeBeneficioNaoEncontrado(BeneficioNaoEncontradoException exception){
+    public MensagemErro tratarExcessaoDeBeneficioNaoEncontrado(BeneficioNaoEncontradoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
@@ -43,12 +43,19 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(UsuarioNaoEncontrado.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public  MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontrado exception) {
+    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontrado exception) {
         return new MensagemErro(exception.getMessage());
     }
+
     @ExceptionHandler(FuncionarioNaoEncontradoException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public  MensagemErro tratarExcessaoDeFuncionarioNaoEncontrado(FuncionarioNaoEncontradoException exception) {
+    public MensagemErro tratarExcessaoDeFuncionarioNaoEncontrado(FuncionarioNaoEncontradoException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
+
+    @ExceptionHandler(UsuarioNaoZupper.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public MensagemErro tratarExcessaoDeUsuarioNaoZupper(UsuarioNaoZupper exception) {
         return new MensagemErro(exception.getMessage());
     }
 
