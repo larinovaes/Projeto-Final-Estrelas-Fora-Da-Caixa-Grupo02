@@ -34,8 +34,17 @@ public class FuncionarioController {
     }
 
     @GetMapping("/{id}")
-    public Funcionario buscarFuncionarioExpecifico(@PathVariable Integer id) {
-        return funcionarioService.buscarFuncionarioPorId(id);
+    public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable Integer id) {
+        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+        funcionarioService.buscarFuncionarioPorId(id);
+        Funcionario funcionario = modelMapper.map(funcionarioDTO, Funcionario.class);
+        funcionarioDTO = modelMapper.map(funcionario, FuncionarioDTO.class);
+        return funcionarioDTO;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletarFuncionario(@PathVariable Integer id) {
+        funcionarioService.deletarFuncionario(id);
     }
 
 }
