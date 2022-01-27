@@ -85,4 +85,15 @@ public class UsuarioServiceTeste {
         Mockito.verify(usuarioRepository, Mockito.times(1)).findAll();
     }
 
+    @Test
+    public void testarBuscarUsuarioPeloOEmailCaminhoPositivo() {
+        Mockito.when(usuarioRepository.findById(Mockito.anyString())).thenReturn(Optional.of(usuario));
+
+        Usuario usuarioDeInteresse = usuarioService.buscarUsuarioPeloOEmail(usuario.getEmail());
+
+        Assertions.assertNotNull(usuario.getEmail());
+        Assertions.assertEquals(usuario.getEmail(), usuarioDeInteresse.getEmail());
+
+        Mockito.verify(usuarioRepository, Mockito.times(1)).findById(usuario.getEmail());
+    }
 }
