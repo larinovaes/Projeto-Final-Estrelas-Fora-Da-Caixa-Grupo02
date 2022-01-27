@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
-
+import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 
 
 import javax.validation.Valid;
@@ -47,7 +47,13 @@ public class AtividadeFisicaController {
     @DeleteMapping//D
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarAtividadeFisica(@RequestParam int id) {
+
         atividadeFisicaService.deletarAtividadeFisica(id);
+    }
+
+    @GetMapping("/{id}")
+    public AtividadeFisica buscarAtividadeFisicaEspecifica(@PathVariable Integer id) {
+        return atividadeFisicaService.pesquisarAtividadeFisicaPorId(id);
     }
 
 }

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 
 import java.util.Optional;
 
@@ -44,7 +46,10 @@ public class AtividadeFisicaService {
         return atividadeFisicaId.get();
     }
 
+
     public void deletarAtividadeFisica(int id) {
         atividadeFisicaRepository.deleteById(id);
     }
+
+
 }
