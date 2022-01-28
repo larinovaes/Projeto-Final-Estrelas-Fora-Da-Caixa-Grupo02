@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,6 +17,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
+import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
+import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +32,17 @@ public class BeneficioControllerTest {
 
     @MockBean
     private BeneficioService beneficioService;
+    @MockBean
+    private UsuarioLoginService usuarioLoginService;
+    @MockBean
+    private JWTComponent jwtComponent;
 
     @Autowired
     private MockMvc mockMvc;
 
     private ObjectMapper objectMapper;
     private Beneficio beneficio;
-    private List<Beneficio> beneficios;
+    private BeneficioDTO beneficioDTO;
 
 
     @BeforeEach
@@ -43,44 +52,32 @@ public class BeneficioControllerTest {
         beneficio.setNome("Plano de saúde");
         beneficio.setDescricao("Sulámerica");
         beneficio.setId(2);
-        beneficios = Arrays.asList(beneficio);
-    }
 
-    @Test
-    public void testarRotaParaBuscarBeneficios() throws Exception {
-        Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyInt())).thenReturn(beneficio);
-
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
-                        .param("nomeBeneficio", "Foice")
-                        .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
-    }
-
-    @Test
-    public void testarRotaParaCadastrarBeneficioValidacoesId() throws Exception {
-        Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
-
-        beneficio.setId(3);
-        beneficio.setId(4);
-        String json = objectMapper.writeValueAsString(beneficio);
-
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio")
-                        .contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(MockMvcResultMatchers.status().is(422));
+        beneficioDTO = new BeneficioDTO();
+        beneficioDTO.setNome("Plano de saúde");
 
     }
 
     @Test
+    @WithMockUser(username = "admin",roles={"USER","ADMIN"})
     public void testarRotaParaCadastrarBeneficio() throws Exception {
         Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
-        String json = objectMapper.writeValueAsString(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
 
         ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio")
-                        .contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(MockMvcResultMatchers.status().is(200));
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect((MockMvcResultMatchers.status().is(201)));
 
-        String jsonDeRespostaDaAPI = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        Beneficio beneficioDaResposta = objectMapper.readValue(jsonDeRespostaDaAPI, Beneficio.class);
+        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResponse,BeneficioDTO.class);
     }
-}
+
+
+
+    }
+
+
+
+
 
