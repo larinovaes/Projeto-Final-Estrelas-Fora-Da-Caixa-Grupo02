@@ -1,2 +1,4 @@
-package zup.com.br.ProjetofinalEstrelas.funcionario;public class FuncionarioServiceTest {
+package zup.com.br.ProjetofinalEstrelas.funcionario;
+
+public class FuncionarioServiceTest {
 }
