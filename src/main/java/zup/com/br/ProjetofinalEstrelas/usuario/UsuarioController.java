@@ -10,7 +10,6 @@ import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
