@@ -132,6 +132,18 @@ public class BeneficioControllerTest {
 
         Mockito.verify(beneficioService, Mockito.times(1)).deletarBeneficio(Mockito.anyInt());
     }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastroDeBeneficioValidarNome() throws Exception{
+        beneficioDTO.setNome("");
+        Mockito.when((beneficioService.salvarBeneficio(Mockito.any(Beneficio.class)))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
 }
 
 
