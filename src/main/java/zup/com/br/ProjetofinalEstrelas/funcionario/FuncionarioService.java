@@ -23,7 +23,6 @@ public class FuncionarioService {
 
             if (usuarioRef.getEmail().equals(funcionario.getUsuario().getEmail())){
                 return funcionarioRepository.save(funcionario);
-
             }
         }
         throw new UsuarioNaoEncontrado("Esse funcionario não está cadastrado");
@@ -31,6 +30,10 @@ public class FuncionarioService {
 
     public void deletarFuncionario(Integer id) {
         funcionarioRepository.deleteById(id);
+    }
+
+    public Iterable<Funcionario> exibirTodosOsFuncionarios() {
+        return funcionarioRepository.findAll();
     }
 
     public Funcionario buscarFuncionarioPorId(Integer id) {
