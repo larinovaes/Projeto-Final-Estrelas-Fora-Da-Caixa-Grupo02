@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.Beneficio;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ public class BeneficioControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin",roles={"USER","ADMIN"})
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarRotaParaCadastrarBeneficio() throws Exception {
         Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
         String json = objectMapper.writeValueAsString(beneficioDTO);
@@ -70,12 +71,25 @@ public class BeneficioControllerTest {
                 .andExpect((MockMvcResultMatchers.status().is(201)));
 
         String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResponse,BeneficioDTO.class);
+        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResponse, BeneficioDTO.class);
     }
 
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarRotaParaBuscarBeneficios() throws Exception {
+        Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyInt())).thenReturn(beneficio);
 
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResponse, new TypeReference<List<BeneficioDTO>>() {
+        });
     }
+}
 
 
 
