@@ -76,4 +76,18 @@ public class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(422));
     }
 
+    @Test
+    public void testarCadastroDeUsuarioValidacaoDeSenha() throws Exception {
+        usuarioDTO.setSenha("senha");
+
+        Mockito.when(usuarioService.salvarUsuario(Mockito.any(Usuario.class))).thenReturn(usuario);
+        String json = objectMapper.writeValueAsString(usuarioDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/usuario")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    public void testar
+
 }
