@@ -3,8 +3,16 @@ package zup.com.br.ProjetofinalEstrelas.usuario;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
@@ -20,24 +28,40 @@ public class UsuarioControllerTest {
     @MockBean
     private JWTComponent jwtComponent;
 
-    private ObjectMapper objectMapper;
+    @Autowired
+    MockMvc mockMvc;
+
     private Usuario usuario;
     private UsuarioDTO usuarioDTO;
     private UsuarioSaidaDTO usuarioSaidaDTO;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
         usuario = new Usuario();
-        usuario.setEmail("usuario@email.com");
-        usuario.setSenha("senha123");
+        usuario.setEmail("usuario@zup.com.br");
+        usuario.setSenha("Senha@123");
 
         usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setEmail("usuario@email.com");
-        usuarioDTO.setSenha("aviao11");
+        usuarioDTO.setEmail("usuario@zup.com.br");
+        usuarioDTO.setSenha("Senha@123");
 
         usuarioSaidaDTO = new UsuarioSaidaDTO();
-        usuarioSaidaDTO.setEmail("usuario@email.com");
+        usuarioSaidaDTO.setEmail("usuario@zup.com.br");
 
         objectMapper = new ObjectMapper();
     }
+
+    @Test
+    public void testarCadastroDeUsuarioController() throws Exception {
+        Mockito.when(usuarioService.salvarUsuario(Mockito.any(Usuario.class))).thenReturn(usuario);
+        String json = objectMapper.writeValueAsString(usuarioDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/usuario")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(201));
+
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+    }
+
 }
