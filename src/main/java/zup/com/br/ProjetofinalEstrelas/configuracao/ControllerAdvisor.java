@@ -1,7 +1,6 @@
 package zup.com.br.ProjetofinalEstrelas.configuracao;
 
 import org.springframework.validation.FieldError;
-import zup.com.br.ProjetofinalEstrelas.exception.MensagemErro;
 import zup.com.br.ProjetofinalEstrelas.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;

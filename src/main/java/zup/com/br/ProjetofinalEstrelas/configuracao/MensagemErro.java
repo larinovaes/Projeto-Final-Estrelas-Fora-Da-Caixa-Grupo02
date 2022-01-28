@@ -1,4 +1,4 @@
-package zup.com.br.ProjetofinalEstrelas.exception;
+package zup.com.br.ProjetofinalEstrelas.configuracao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
