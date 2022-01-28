@@ -28,9 +28,9 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     private static final String[] ENDPOINT = {
-            "/beneficio",
-            "/usuario",
-            "/funcionario"
+            "/beneficio/**",
+            "/usuario/**",
+            "/funcionario/**"
     };
 
     @Override
@@ -43,12 +43,12 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
         http.authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
                 .antMatchers(HttpMethod.GET, ENDPOINT).hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/usuario").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.PUT, "/usuario/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.POST, "/beneficio/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/beneficio/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, ENDPOINT).hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/beneficio").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/funcionario").hasAnyRole("ADMIN", "USER")
-
                 .anyRequest().authenticated();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilter(new FiltroDeAutenticacaoJWT(jwtComponent, authenticationManager()));
