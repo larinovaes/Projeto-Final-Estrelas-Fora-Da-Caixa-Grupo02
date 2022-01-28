@@ -92,7 +92,7 @@ public class BeneficioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarRotaParaBuscarBeneficios() throws Exception {
+    public void testarRotaParaBuscarBeneficiosEspecifico() throws Exception {
         Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyInt())).thenReturn(beneficio);
 
         ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
