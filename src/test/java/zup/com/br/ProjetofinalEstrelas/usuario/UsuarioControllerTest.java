@@ -118,7 +118,7 @@ public class UsuarioControllerTest {
 
     @Test
     @WithMockUser("user@user.com")
-    public void testarDeletarMuscia() throws Exception {
+    public void testarDeletarUsuario() throws Exception {
         usuario.setEmail("usuario@zup.com.br");
         Mockito.doNothing().when(usuarioService).deletarUsuario(Mockito.anyString());
 
