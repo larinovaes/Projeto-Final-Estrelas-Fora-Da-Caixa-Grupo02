@@ -117,9 +117,25 @@ public class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarBuscarUsuarioEspecifico() throws Exception {
+        usuario.setEmail("larissa@Zup.com.br");
+
+        Mockito.when(usuarioService.buscarUsuarioPeloOEmail(Mockito.anyString())).thenReturn(usuario);
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/usuario")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+        List<UsuarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<UsuarioDTO>> () {
+        });
+    }
+
+    @Test
     @WithMockUser("user@user.com")
     public void testarDeletarUsuario() throws Exception {
-        usuario.setEmail("usuario@zup.com.br");
+        usuario.setEmail("larissa@zup.com.br");
         Mockito.doNothing().when(usuarioService).deletarUsuario(Mockito.anyString());
 
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/usuario/" +
