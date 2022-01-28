@@ -63,7 +63,7 @@ public class UsuarioControllerTest {
         String json = objectMapper.writeValueAsString(usuarioDTO);
 
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/usuario")
-                .content(json).contentType(MediaType.APPLICATION_JSON))
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
@@ -77,7 +77,7 @@ public class UsuarioControllerTest {
         String json = objectMapper.writeValueAsString(usuarioDTO);
 
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/usuario")
-                .content(json).contentType(MediaType.APPLICATION_JSON))
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(422));
     }
 
@@ -97,14 +97,27 @@ public class UsuarioControllerTest {
     public void testarExibirUsuarios() throws Exception {
         Mockito.when(usuarioService.exibirUsuarios()).thenReturn(Arrays.asList(usuario));
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/usuario")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
-        List<UsuarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<UsuarioDTO>>()
-        {});
+        List<UsuarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<UsuarioDTO>>() {
+        });
 
+    }
+
+    @Test
+    public void testarDeletarMuscia() throws Exception {
+        usuario.setEmail("usuario@zup.com.br");
+        Mockito.doNothing().when(usuarioService).deletarUsuario(Mockito.anyString());
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/usuario/" +
+                                usuario.getEmail())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+
+        Mockito.verify(usuarioService, Mockito.times(1)).deletarUsuario(Mockito.anyString());
     }
 
 }
