@@ -159,4 +159,10 @@ public class UsuarioControllerTest {
 
         Mockito.verify(usuarioService, Mockito.times(1)).deletarUsuario(Mockito.anyString());
     }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarAtualizarUsuario() throws Exception {
+
+    }
 }
