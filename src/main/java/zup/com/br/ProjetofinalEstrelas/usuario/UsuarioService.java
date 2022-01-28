@@ -27,8 +27,8 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public void atualizarUsuario(Usuario usuario, String id) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+    public void atualizarUsuario(Usuario usuario, String email) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(email);
 
         if (usuarioOptional.isEmpty()) {
             throw new UsuarioNaoEncontrado("Usuario não encontrado");
@@ -62,4 +62,5 @@ public class UsuarioService {
         }
         throw new UsuarioNaoEncontrado("Usuario não encontrado");
     }
+
 }
