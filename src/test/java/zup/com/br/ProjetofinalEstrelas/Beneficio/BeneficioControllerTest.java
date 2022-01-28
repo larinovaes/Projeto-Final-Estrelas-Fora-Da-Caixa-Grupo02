@@ -119,6 +119,19 @@ public class BeneficioControllerTest {
         BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResposta, BeneficioDTO.class);
 
     }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarBeneficio() throws Exception {
+        beneficio.setId(1);
+        Mockito.doNothing().when(beneficioService).deletarBeneficio(Mockito.anyInt());
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/beneficio/"+ beneficio.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+
+        Mockito.verify(beneficioService, Mockito.times(1)).deletarBeneficio(Mockito.anyInt());
+    }
 }
 
 
