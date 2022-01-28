@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.usuario;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +13,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.UsuarioSaidaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
+
+import java.util.Arrays;
+import java.util.List;
 
 @WebMvcTest({UsuarioController.class, ConversorModelMapper.class, UsuarioLoginService.class, JWTComponent.class})
 public class UsuarioControllerTest {
@@ -88,6 +93,18 @@ public class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(422));
     }
 
-    public void testar
+    @Test
+    public void testarExibirUsuarios() throws Exception {
+        Mockito.when(usuarioService.exibirUsuarios()).thenReturn(Arrays.asList(usuario));
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/usuario")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+        List<UsuarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<UsuarioDTO>>()
+        {});
+
+    }
 
 }
