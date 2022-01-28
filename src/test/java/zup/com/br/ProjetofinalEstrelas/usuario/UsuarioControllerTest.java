@@ -64,4 +64,16 @@ public class UsuarioControllerTest {
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
     }
 
+    @Test
+    public void testarCadastroDeUsuarioValidacaoDeEmail() throws Exception {
+        usuarioDTO.setEmail("usuario.zup.com.br");
+
+        Mockito.when(usuarioService.salvarUsuario(Mockito.any(Usuario.class))).thenReturn(usuario);
+        String json = objectMapper.writeValueAsString(usuarioDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/usuario")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
 }
