@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import java.util.Arrays;
@@ -118,18 +119,31 @@ public class UsuarioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarBuscarUsuarioEspecifico() throws Exception {
+    public void testarBuscarUsuarioEspecificoCaminhoPostivo() throws Exception {
         usuario.setEmail("larissa@Zup.com.br");
 
-        Mockito.when(usuarioService.buscarUsuarioPeloOEmail(Mockito.anyString())).thenReturn(usuario);
+        Mockito.when(usuarioService.buscarUsuarioPeloOEmail(usuario.getEmail())).thenReturn(usuario);
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/usuario")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
-        List<UsuarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<UsuarioDTO>> () {
+        List<UsuarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<UsuarioDTO>>() {
         });
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarBuscarUsuarioEspecificoCaminhoNegativo() throws Exception {
+        Mockito.doThrow(UsuarioNaoEncontrado.class).when(usuarioService).buscarUsuarioPeloOEmail(Mockito.anyString());
+
+        String json = objectMapper.writeValueAsString(usuarioDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/usuarios/0")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(404));
     }
 
     @Test
