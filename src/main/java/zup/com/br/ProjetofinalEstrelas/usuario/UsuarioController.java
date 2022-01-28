@@ -9,6 +9,9 @@ import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLogado;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
@@ -28,8 +31,13 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public Iterable<Usuario> exibirUsuarios() {
-        return usuarioService.exibirUsuarios();
+    public Iterable<UsuarioDTO> exibirUsuarios() {
+        List<UsuarioDTO> resumoDTO = new ArrayList<>();
+        for (Usuario musicaRef: usuarioService.exibirUsuarios()) {
+            UsuarioDTO resumo = modelMapper.map(musicaRef, UsuarioDTO.class);
+            resumoDTO.add(resumo);
+        }
+        return resumoDTO;
     }
 
     @GetMapping("/{email}")
