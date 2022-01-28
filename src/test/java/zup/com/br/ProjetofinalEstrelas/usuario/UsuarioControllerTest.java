@@ -1,6 +1,5 @@
 package zup.com.br.ProjetofinalEstrelas.usuario;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,15 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
-import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.UsuarioSaidaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import java.util.Arrays;
@@ -34,11 +32,10 @@ public class UsuarioControllerTest {
     private JWTComponent jwtComponent;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     private Usuario usuario;
     private UsuarioDTO usuarioDTO;
-    private UsuarioSaidaDTO usuarioSaidaDTO;
     private ObjectMapper objectMapper;
 
     @BeforeEach
@@ -50,9 +47,6 @@ public class UsuarioControllerTest {
         usuarioDTO = new UsuarioDTO();
         usuarioDTO.setEmail("usuario@zup.com.br");
         usuarioDTO.setSenha("Senha@123");
-
-        usuarioSaidaDTO = new UsuarioSaidaDTO();
-        usuarioSaidaDTO.setEmail("usuario@zup.com.br");
 
         objectMapper = new ObjectMapper();
     }
@@ -94,6 +88,21 @@ public class UsuarioControllerTest {
     }
 
     @Test
+    public void testarValidacaoDeCamposNotBlank() throws Exception {
+        usuarioDTO.setEmail(" ");
+        usuarioDTO.setSenha(" ");
+
+        Mockito.when(usuarioService.salvarUsuario(Mockito.any(Usuario.class))).thenReturn(usuario);
+        String json = objectMapper.writeValueAsString(usuarioDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/usuario")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarExibirUsuarios() throws Exception {
         Mockito.when(usuarioService.exibirUsuarios()).thenReturn(Arrays.asList(usuario));
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/usuario")
@@ -108,6 +117,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser("user@user.com")
     public void testarDeletarMuscia() throws Exception {
         usuario.setEmail("usuario@zup.com.br");
         Mockito.doNothing().when(usuarioService).deletarUsuario(Mockito.anyString());
@@ -119,5 +129,4 @@ public class UsuarioControllerTest {
 
         Mockito.verify(usuarioService, Mockito.times(1)).deletarUsuario(Mockito.anyString());
     }
-
 }
