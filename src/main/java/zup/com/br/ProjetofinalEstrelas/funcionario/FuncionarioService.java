@@ -29,7 +29,10 @@ public class FuncionarioService {
     }
 
     public void deletarFuncionario(Integer id) {
-        funcionarioRepository.deleteById(id);
+        if (funcionarioRepository.existsById(id)){
+            funcionarioRepository.deleteById(id);
+        }
+        throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
     }
 
     public Iterable<Funcionario> exibirTodosOsFuncionarios() {
