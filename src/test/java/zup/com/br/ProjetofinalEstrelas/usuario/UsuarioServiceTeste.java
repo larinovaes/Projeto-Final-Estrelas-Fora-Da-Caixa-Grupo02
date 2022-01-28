@@ -98,12 +98,12 @@ public class UsuarioServiceTeste {
     }
 
     @Test
-    public void testarExcessaoDeUsuarioNaoEncontrado() {
+    public void testarBuscarUsuarioPeloOEmailCaminhoNegativo() {
         Mockito.when(usuarioRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
         UsuarioNaoEncontrado exception = Assertions.assertThrows(UsuarioNaoEncontrado.class, () -> {
-            usuarioService.buscarUsuarioPeloOEmail("0");
+            usuarioService.buscarUsuarioPeloOEmail("usuario@zup.com.br");
         });
         Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
     }
