@@ -104,6 +104,21 @@ public class BeneficioControllerTest {
         List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResponse, new TypeReference<List<BeneficioDTO>>() {
         });
     }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarAtualizarBeneficio() throws Exception {
+        Mockito.when(beneficioService.atualizarBeneficio(Mockito.anyInt(),Mockito.any(Beneficio.class))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio/2")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+
+        String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
+        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResposta, BeneficioDTO.class);
+
+    }
 }
 
 
