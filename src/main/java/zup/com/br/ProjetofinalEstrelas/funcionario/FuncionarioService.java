@@ -6,6 +6,8 @@ import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoExcepti
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
+
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 
@@ -19,18 +21,24 @@ public class FuncionarioService {
     public Funcionario salvarFuncionario(Funcionario funcionario) {
         Iterable<Usuario> usuarios = usuarioRepository.findAll();
 
-        for (Usuario usuarioRef: usuarios) {
+        for (Usuario usuarioRef : usuarios) {
 
-            if (usuarioRef.getEmail().equals(funcionario.getUsuario().getEmail())){
+            if (usuarioRef.getEmail().equals(funcionario.getUsuario().getEmail())) {
                 return funcionarioRepository.save(funcionario);
-
             }
         }
         throw new UsuarioNaoEncontrado("Esse funcionario não está cadastrado");
     }
 
     public void deletarFuncionario(Integer id) {
-        funcionarioRepository.deleteById(id);
+        if (funcionarioRepository.existsById(id)) {
+            funcionarioRepository.deleteById(id);
+        }
+        throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
+    }
+
+    public Iterable<Funcionario> exibirTodosOsFuncionarios() {
+        return funcionarioRepository.findAll();
     }
 
     public Funcionario buscarFuncionarioPorId(Integer id) {
@@ -40,5 +48,16 @@ public class FuncionarioService {
         }
 
         return funcionarioDeInteresse.get();
+    }
+
+    public Funcionario atualizarUsuario(Integer id, Funcionario funcionario) {
+        Funcionario funcionarioParaAtualizar = buscarFuncionarioPorId(id);
+
+        funcionarioParaAtualizar.setId(funcionario.getId());
+        funcionarioParaAtualizar.setUsuario(funcionario.getUsuario());
+        funcionarioParaAtualizar.setDataDeContratacao(funcionario.getDataDeContratacao());
+        funcionarioParaAtualizar.setNivelZupper(funcionario.getNivelZupper());
+
+        return funcionarioRepository.save(funcionarioParaAtualizar);
     }
 }

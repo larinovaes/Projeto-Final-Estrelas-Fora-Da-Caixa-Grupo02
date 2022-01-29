@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 public class UsuarioDTO {
     @Email(message = "${validacao.email.email}")
+    @NotBlank(message = "${validacao.senha.not-blank}")
     private String email;
 
     @NotBlank(message = "${validacao.senha.not-blank}")

@@ -67,12 +67,12 @@ public class UsuarioServiceTeste {
     @Test
     public void testarDeletarUsuarioSemSucesso() {
         Mockito.when(usuarioRepository.findById(Mockito.anyString()))
-                .thenThrow(new UsuarioNaoEncontrado("O usuario não existe"));
+                .thenThrow(new UsuarioNaoEncontrado("Usuario não encontrado"));
         try {
             usuarioService.deletarUsuario(usuario.getEmail());
         } catch (Exception exception) {
             Assertions.assertEquals(UsuarioNaoEncontrado.class, exception.getClass());
-            Assertions.assertEquals("O usuario não existe", exception.getMessage());
+            Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
         }
     }
 
@@ -83,6 +83,29 @@ public class UsuarioServiceTeste {
 
         Iterable<Usuario> usuariosDeInteresse = usuarioService.exibirUsuarios();
         Mockito.verify(usuarioRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    public void testarBuscarUsuarioPeloOEmailCaminhoPositivo() {
+        Mockito.when(usuarioRepository.findById(Mockito.anyString())).thenReturn(Optional.of(usuario));
+
+        Usuario usuarioDeInteresse = usuarioService.buscarUsuarioPeloOEmail(usuario.getEmail());
+
+        Assertions.assertNotNull(usuario.getEmail());
+        Assertions.assertEquals(usuario.getEmail(), usuarioDeInteresse.getEmail());
+
+        Mockito.verify(usuarioRepository, Mockito.times(1)).findById(usuario.getEmail());
+    }
+
+    @Test
+    public void testarBuscarUsuarioPeloOEmailCaminhoNegativo() {
+        Mockito.when(usuarioRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        UsuarioNaoEncontrado exception = Assertions.assertThrows(UsuarioNaoEncontrado.class, () -> {
+            usuarioService.buscarUsuarioPeloOEmail("usuario@zup.com.br");
+        });
+        Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
     }
 
 }

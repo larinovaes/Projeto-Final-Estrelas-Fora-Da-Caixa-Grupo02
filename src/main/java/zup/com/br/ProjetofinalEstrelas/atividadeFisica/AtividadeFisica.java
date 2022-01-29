@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "Atividade Fisica")
+@Table(name = "atividade")
 public class AtividadeFisica {
 
     @Id
