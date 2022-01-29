@@ -61,4 +61,14 @@ public class FuncionarioController {
         funcionarioService.deletarFuncionario(id);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public FuncionarioDTO atualizarFuncionario (@PathVariable Integer id, @RequestBody FuncionarioDTO funcionarioDTO)
+            throws Exception {
+            Funcionario funcionario = funcionarioService.atualizarUsuario(id ,
+                    modelMapper.map(funcionarioDTO, Funcionario.class));
+
+            return modelMapper.map(funcionario, FuncionarioDTO.class);
+    }
+
 }
