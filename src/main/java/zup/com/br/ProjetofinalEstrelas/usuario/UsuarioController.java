@@ -30,7 +30,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public Iterable<UsuarioDTO> exibirUsuarios() {
+    public List<UsuarioDTO> exibirUsuarios() {
         List<UsuarioDTO> resumoDTO = new ArrayList<>();
         for (Usuario musicaRef: usuarioService.exibirUsuarios()) {
             UsuarioDTO resumo = modelMapper.map(musicaRef, UsuarioDTO.class);
