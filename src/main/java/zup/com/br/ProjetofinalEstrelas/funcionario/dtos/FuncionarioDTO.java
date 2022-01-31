@@ -18,7 +18,7 @@ import java.util.List;
 public class FuncionarioDTO {
 
     @NotBlank
-    @Size(min = 3, max = 100, message = "O nome de funcionario deve ter no minimo 3 caractere e no máixmo 100")
+    @Size(min = 3, max = 100, message = "{validacao.size.nomeDeFuncionario}")
     private String nomeDeFuncionario;
 
     @NotBlank
