@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
+import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioEntradaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
@@ -20,18 +21,15 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
     @Autowired
-    private BeneficioService beneficioService;
-    @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FuncionarioDTO cadastrarFuncionario(@RequestBody @Valid FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTO cadastrarFuncionario(@RequestBody @Valid FuncionarioEntradaDTO funcionarioDTO) {
         Funcionario funcionario = modelMapper.map(funcionarioDTO, Funcionario.class);
-        funcionarioService.salvarFuncionario(funcionario);
-        List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
+
+        funcionarioService.salvarFuncionario(funcionario, funcionarioDTO.getEmail());
         FuncionarioDTO funcionarioCadastrado = modelMapper.map(funcionario, FuncionarioDTO.class);
-        funcionarioCadastrado.setBeneficios(beneficios);
 
         return funcionarioCadastrado;
     }

@@ -2,12 +2,13 @@ package zup.com.br.ProjetofinalEstrelas.funcionario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,17 +18,20 @@ public class FuncionarioService {
     private FuncionarioRepository funcionarioRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private BeneficioService beneficioService;
 
-    public Funcionario salvarFuncionario(Funcionario funcionario) {
-        Iterable<Usuario> usuarios = usuarioRepository.findAll();
+    public Funcionario salvarFuncionario(Funcionario funcionario, String email) {
+        Optional<Usuario> usuarios = usuarioRepository.findById(email);
+        List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
 
-        for (Usuario usuarioRef : usuarios) {
-
-            if (usuarioRef.getEmail().equals(funcionario.getUsuario().getEmail())) {
-                return funcionarioRepository.save(funcionario);
-            }
+        if(usuarios.isEmpty()){
+            throw new FuncionarioNaoEncontradoException("Esse funcionario não está cadastrado");
         }
-        throw new FuncionarioNaoEncontradoException("Esse funcionario não está cadastrado");
+
+        funcionario.setUsuario(usuarios.get());
+        funcionario.setBeneficios(beneficios);
+        return funcionarioRepository.save(funcionario);
     }
 
     public void deletarFuncionario(Integer id) {
