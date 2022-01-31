@@ -147,7 +147,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    @WithMockUser("user@user.com")
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarDeletarUsuario() throws Exception {
         usuario.setEmail("larissa@zup.com.br");
         Mockito.doNothing().when(usuarioService).deletarUsuario(Mockito.anyString());
