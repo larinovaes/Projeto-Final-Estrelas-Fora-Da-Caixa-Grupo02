@@ -20,12 +20,11 @@ public class FuncionarioDTO {
     @NotBlank
     @Size(min = 3, max = 100, message = "O nome de funcionario deve ter no minimo 3 caractere e no máixmo 100")
     private String nomeDeFuncionario;
-
     @NotBlank
     private UsuarioSaidaDTO usuario;
-    @NotBlank
+    @NotNull
     private NivelZupper nivelZupper;
-    @NotBlank
+    @NotNull
     private LocalDate dataDeContratacao;
     @NotBlank
     private List<Beneficio> beneficios;
