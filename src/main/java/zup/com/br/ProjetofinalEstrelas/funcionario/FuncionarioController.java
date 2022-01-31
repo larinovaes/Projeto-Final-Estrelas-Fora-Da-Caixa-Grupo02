@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
+import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioEntradaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
@@ -58,12 +59,11 @@ public class FuncionarioController {
         funcionarioService.deletarFuncionario(id);
     }
 
-    @PutMapping("/{id}")
-    public FuncionarioDTO atualizarFuncionario (@PathVariable Integer id, @RequestBody FuncionarioDTO funcionarioDTO) {
-            Funcionario funcionario = funcionarioService.atualizarFuncionario(id ,
-                    modelMapper.map(funcionarioDTO, Funcionario.class));
+    @PutMapping("/{email}")
+    public FuncionarioDTO atualizarFuncionario (@PathVariable String email, @RequestBody AtualizarDTO atualizarDTO) {
+        Funcionario funcionario = funcionarioService.atualizarFuncionario(email , modelMapper.map(atualizarDTO, Funcionario.class));
 
-            return modelMapper.map(funcionario, FuncionarioDTO.class);
+        return modelMapper.map(funcionario, FuncionarioDTO.class);
     }
 
 }
