@@ -1,7 +1,8 @@
 package zup.com.br.ProjetofinalEstrelas.configuracao;
 
 import org.springframework.validation.FieldError;
-import zup.com.br.ProjetofinalEstrelas.exception.MensagemErro;
+import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.AcessoNegadoException;
+import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.TokenInvalidoException;
 import zup.com.br.ProjetofinalEstrelas.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -59,5 +60,15 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
+    @ExceptionHandler(TokenInvalidoException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public MensagemErro manipularExcessaoDeTokenInvalido(TokenInvalidoException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
 
+    @ExceptionHandler(AcessoNegadoException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public MensagemErro manipularExcessaoDeAcessoNegado(AcessoNegadoException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
 }

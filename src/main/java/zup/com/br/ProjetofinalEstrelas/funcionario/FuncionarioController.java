@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
+import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
+import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,6 +36,16 @@ public class FuncionarioController {
         return funcionarioCadastrado;
     }
 
+    @GetMapping()
+    public Iterable<FuncionarioDTO> exibirTodosOsFuncionarios() {
+        List<FuncionarioDTO> resumoDTO = new ArrayList<>();
+        for (Funcionario funcionario: funcionarioService.exibirTodosOsFuncionarios()) {
+            FuncionarioDTO resumo = modelMapper.map(funcionario, FuncionarioDTO.class);
+            resumoDTO.add(resumo);
+        }
+        return resumoDTO;
+    }
+
     @GetMapping("/{id}")
     public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable Integer id) {
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
@@ -43,8 +56,17 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarFuncionario(@PathVariable Integer id) {
         funcionarioService.deletarFuncionario(id);
+    }
+
+    @PutMapping("/{id}")
+    public FuncionarioDTO atualizarFuncionario (@PathVariable Integer id, @RequestBody FuncionarioDTO funcionarioDTO) {
+            Funcionario funcionario = funcionarioService.atualizarFuncionario(id ,
+                    modelMapper.map(funcionarioDTO, Funcionario.class));
+
+            return modelMapper.map(funcionario, FuncionarioDTO.class);
     }
 
 }
