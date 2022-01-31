@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
+import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
+import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioEntradaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
@@ -20,18 +22,15 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
     @Autowired
-    private BeneficioService beneficioService;
-    @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FuncionarioDTO cadastrarFuncionario(@RequestBody @Valid FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTO cadastrarFuncionario(@RequestBody @Valid FuncionarioEntradaDTO funcionarioDTO) {
         Funcionario funcionario = modelMapper.map(funcionarioDTO, Funcionario.class);
-        funcionarioService.salvarFuncionario(funcionario);
-        List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
+
+        funcionarioService.salvarFuncionario(funcionario, funcionarioDTO.getEmail());
         FuncionarioDTO funcionarioCadastrado = modelMapper.map(funcionario, FuncionarioDTO.class);
-        funcionarioCadastrado.setBeneficios(beneficios);
 
         return funcionarioCadastrado;
     }
@@ -46,27 +45,25 @@ public class FuncionarioController {
         return resumoDTO;
     }
 
-    @GetMapping("/{id}")
-    public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable Integer id) {
+    @GetMapping("/{email}")
+    public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable String email) {
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
-        funcionarioService.buscarFuncionarioPorId(id);
-        Funcionario funcionario = modelMapper.map(funcionarioDTO, Funcionario.class);
+        Funcionario funcionario = funcionarioService.buscarFuncionarioPorEmail(email);
         funcionarioDTO = modelMapper.map(funcionario, FuncionarioDTO.class);
         return funcionarioDTO;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarFuncionario(@PathVariable Integer id) {
-        funcionarioService.deletarFuncionario(id);
+    public void deletarFuncionario(@PathVariable String email) {
+        funcionarioService.deletarFuncionario(email);
     }
 
-    @PutMapping("/{id}")
-    public FuncionarioDTO atualizarFuncionario (@PathVariable Integer id, @RequestBody FuncionarioDTO funcionarioDTO) {
-            Funcionario funcionario = funcionarioService.atualizarFuncionario(id ,
-                    modelMapper.map(funcionarioDTO, Funcionario.class));
+    @PutMapping("/{email}")
+    public FuncionarioDTO atualizarFuncionario (@PathVariable String email, @RequestBody AtualizarDTO atualizarDTO) {
+        Funcionario funcionario = funcionarioService.atualizarFuncionario(email , modelMapper.map(atualizarDTO, Funcionario.class));
 
-            return modelMapper.map(funcionario, FuncionarioDTO.class);
+        return modelMapper.map(funcionario, FuncionarioDTO.class);
     }
 
 }

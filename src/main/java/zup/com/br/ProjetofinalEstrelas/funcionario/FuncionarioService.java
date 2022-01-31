@@ -2,12 +2,13 @@ package zup.com.br.ProjetofinalEstrelas.funcionario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
+import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,47 +18,51 @@ public class FuncionarioService {
     private FuncionarioRepository funcionarioRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private BeneficioService beneficioService;
 
-    public Funcionario salvarFuncionario(Funcionario funcionario) {
-        Iterable<Usuario> usuarios = usuarioRepository.findAll();
+    public Funcionario salvarFuncionario(Funcionario funcionario, String email) {
+        Optional<Usuario> usuarios = usuarioRepository.findById(email);
+        List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
 
-        for (Usuario usuarioRef : usuarios) {
-
-            if (usuarioRef.getEmail().equals(funcionario.getUsuario().getEmail())) {
-                return funcionarioRepository.save(funcionario);
-            }
+        if(usuarios.isEmpty()){
+            throw new FuncionarioNaoEncontradoException("Esse funcionario não está cadastrado");
         }
-        throw new FuncionarioNaoEncontradoException("Esse funcionario não está cadastrado");
+
+        funcionario.setUsuario(usuarios.get());
+        funcionario.setBeneficios(beneficios);
+        return funcionarioRepository.save(funcionario);
     }
 
-    public void deletarFuncionario(Integer id) {
-        if (funcionarioRepository.existsById(id)) {
-            funcionarioRepository.deleteById(id);
+    public Funcionario buscarFuncionarioPorEmail(String email){
+        Optional<Funcionario> funcionario = funcionarioRepository.findByUsuarioEmail(email);
+        if(funcionario.isEmpty()){
+            throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
         }
-        throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
+
+
+        Funcionario funcionario1 = funcionario.get();
+        funcionario1.setBeneficios(beneficioService.exibirBeneficiosPorNivel
+                (funcionario1.getNivelZupper()));
+        return funcionario1;
+    }
+
+    public void deletarFuncionario(String email) {
+        Funcionario funcionario = buscarFuncionarioPorEmail(email);
+
+        funcionarioRepository.deleteById(funcionario.getId());
     }
 
     public Iterable<Funcionario> exibirTodosOsFuncionarios() {
         return funcionarioRepository.findAll();
     }
 
-    public Funcionario buscarFuncionarioPorId(Integer id) {
-        Optional<Funcionario> funcionarioDeInteresse = funcionarioRepository.findById(id);
-        if (funcionarioDeInteresse.isEmpty()) {
-            throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
-        }
+    public Funcionario atualizarFuncionario(String email, Funcionario funcionario) {
+        Funcionario funcionarioParaAtualizar = buscarFuncionarioPorEmail(email);
 
-        return funcionarioDeInteresse.get();
-    }
-
-    public Funcionario atualizarFuncionario(Integer id, Funcionario funcionario) {
-        Funcionario funcionarioParaAtualizar = buscarFuncionarioPorId(id);
-
-        funcionarioParaAtualizar.setId(funcionario.getId());
-        funcionarioParaAtualizar.setUsuario(funcionario.getUsuario());
-        funcionarioParaAtualizar.setDataDeContratacao(funcionario.getDataDeContratacao());
         funcionarioParaAtualizar.setNivelZupper(funcionario.getNivelZupper());
-
+        funcionarioParaAtualizar.setBeneficios(beneficioService.exibirBeneficiosPorNivel
+                (funcionarioParaAtualizar.getNivelZupper()));
         return funcionarioRepository.save(funcionarioParaAtualizar);
     }
 }

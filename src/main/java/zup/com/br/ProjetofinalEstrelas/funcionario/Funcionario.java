@@ -3,11 +3,13 @@ package zup.com.br.ProjetofinalEstrelas.funcionario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "funcionario")
@@ -20,7 +22,6 @@ public class Funcionario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
     private String nomeDeFuncionario;
 
     @OneToOne
@@ -30,5 +31,8 @@ public class Funcionario {
     private NivelZupper nivelZupper;
 
     private LocalDate dataDeContratacao;
+
+    @ManyToMany
+    private List<Beneficio> beneficios;
 
 }
