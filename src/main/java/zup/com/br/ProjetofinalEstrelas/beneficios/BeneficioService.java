@@ -43,7 +43,7 @@ public class BeneficioService {
     }
 
 
-    public List<Beneficio> exibirBeneficios(NivelZupper nivelZupper) {
+    public List<Beneficio> exibirBeneficiosPorNivel(NivelZupper nivelZupper) {
         return beneficioRepository.findByNivelZupper(nivelZupper);
     }
 }
