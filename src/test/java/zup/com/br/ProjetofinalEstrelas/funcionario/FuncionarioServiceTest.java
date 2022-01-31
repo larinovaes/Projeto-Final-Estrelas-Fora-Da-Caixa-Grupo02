@@ -36,16 +36,6 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void testarSalvarFuncionarioCaminhoPositivo() {
-
-    }
-
-    @Test
-    public void testarBuscarFuncionarioPorEmail() {
-
-    }
-
-    @Test
     public void testarexibirTodosOsFuncionarios() {
         Iterable<Funcionario> funcionarios = Arrays.asList(funcionario);
         Mockito.when(funcionarioRepository.findAll()).thenReturn(funcionarios);
