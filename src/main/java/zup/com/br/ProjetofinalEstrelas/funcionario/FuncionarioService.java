@@ -46,24 +46,14 @@ public class FuncionarioService {
         return funcionario1;
     }
 
-    public void deletarFuncionario(Integer id) {
-        if (funcionarioRepository.existsById(id)) {
-            funcionarioRepository.deleteById(id);
-        }
-        throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
+    public void deletarFuncionario(String email) {
+        Funcionario funcionario = buscarFuncionarioPorEmail(email);
+
+        funcionarioRepository.deleteById(funcionario.getId());
     }
 
     public Iterable<Funcionario> exibirTodosOsFuncionarios() {
         return funcionarioRepository.findAll();
-    }
-
-    public Funcionario buscarFuncionarioPorId(Integer id) {
-        Optional<Funcionario> funcionarioDeInteresse = funcionarioRepository.findById(id);
-        if (funcionarioDeInteresse.isEmpty()) {
-            throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
-        }
-
-        return funcionarioDeInteresse.get();
     }
 
     public Funcionario atualizarFuncionario(String email, Funcionario funcionario) {
