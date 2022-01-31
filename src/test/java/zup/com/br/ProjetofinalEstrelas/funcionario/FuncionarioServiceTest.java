@@ -33,7 +33,7 @@ public class FuncionarioServiceTest {
             Mockito.when(funcionarioRepository.existsById(Mockito.anyInt())).thenReturn(true);
 
             Mockito.doNothing().when(funcionarioRepository).deleteById(Mockito.anyInt());
-            funcionarioService.deletarFuncionario(funcionario.getId());
+            funcionarioService.deletarFuncionario(funcionario.getUsuario().getEmail());
 
             Mockito.verify(funcionarioRepository, Mockito.times(1))
                     .deleteById(Mockito.anyInt());

@@ -53,10 +53,10 @@ public class FuncionarioController {
         return funcionarioDTO;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarFuncionario(@PathVariable Integer id) {
-        funcionarioService.deletarFuncionario(id);
+    public void deletarFuncionario(@PathVariable String email) {
+        funcionarioService.deletarFuncionario(email);
     }
 
     @PutMapping("/{email}")
