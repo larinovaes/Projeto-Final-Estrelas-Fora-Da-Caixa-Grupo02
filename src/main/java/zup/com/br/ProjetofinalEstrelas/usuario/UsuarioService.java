@@ -18,7 +18,7 @@ public class UsuarioService {
     private BCryptPasswordEncoder encoder;
 
     public Usuario salvarUsuario(Usuario usuario) {
-        if (!usuario.getEmail().contains("zup.com.br")) {
+        if (!usuario.getEmail().endsWith("zup.com.br")) {
             throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
         }
         usuario.setRole("ROLE_ADMIN");
