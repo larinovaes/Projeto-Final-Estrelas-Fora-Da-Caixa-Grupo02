@@ -23,7 +23,7 @@ public class UsuarioService {
             throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
         }
        if (usuarioRepository.existsById(usuario.getEmail())){
-           throw new UsuarioJaCadastrado("usuario já esta cadastrado");
+           throw new UsuarioJaCadastrado("Esse usuário já esta cadastrado");
        }
         usuario.setRole("ROLE_ADMIN");
         String senhaEscondida = encoder.encode(usuario.getSenha());
