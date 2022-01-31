@@ -66,14 +66,11 @@ public class FuncionarioService {
         return funcionarioDeInteresse.get();
     }
 
-    public Funcionario atualizarFuncionario(Integer id, Funcionario funcionario) {
-        Funcionario funcionarioParaAtualizar = buscarFuncionarioPorId(id);
+    public Funcionario atualizarFuncionario(String email, Funcionario funcionario) {
+        Funcionario funcionarioParaAtualizar = buscarFuncionarioPorEmail(email);
 
-        funcionarioParaAtualizar.setId(funcionario.getId());
-        funcionarioParaAtualizar.setUsuario(funcionario.getUsuario());
-        funcionarioParaAtualizar.setDataDeContratacao(funcionario.getDataDeContratacao());
         funcionarioParaAtualizar.setNivelZupper(funcionario.getNivelZupper());
-
+        funcionarioParaAtualizar.setBeneficios(beneficioService.exibirBeneficios(funcionarioParaAtualizar.getNivelZupper()));
         return funcionarioRepository.save(funcionarioParaAtualizar);
     }
 }
