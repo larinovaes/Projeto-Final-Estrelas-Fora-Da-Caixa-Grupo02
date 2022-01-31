@@ -42,7 +42,8 @@ public class FuncionarioService {
 
 
         Funcionario funcionario1 = funcionario.get();
-        funcionario1.setBeneficios(beneficioService.exibirBeneficios(funcionario1.getNivelZupper()));
+        funcionario1.setBeneficios(beneficioService.exibirBeneficiosPorNivel
+                (funcionario1.getNivelZupper()));
         return funcionario1;
     }
 
@@ -60,7 +61,8 @@ public class FuncionarioService {
         Funcionario funcionarioParaAtualizar = buscarFuncionarioPorEmail(email);
 
         funcionarioParaAtualizar.setNivelZupper(funcionario.getNivelZupper());
-        funcionarioParaAtualizar.setBeneficios(beneficioService.exibirBeneficios(funcionarioParaAtualizar.getNivelZupper()));
+        funcionarioParaAtualizar.setBeneficios(beneficioService.exibirBeneficiosPorNivel
+                (funcionarioParaAtualizar.getNivelZupper()));
         return funcionarioRepository.save(funcionarioParaAtualizar);
     }
 }
