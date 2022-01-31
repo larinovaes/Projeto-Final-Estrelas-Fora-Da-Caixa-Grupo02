@@ -3,8 +3,8 @@ package zup.com.br.ProjetofinalEstrelas.beneficios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
-import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontrada;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,28 +31,17 @@ public class BeneficioService {
     }
 
     public void deletarBeneficio(int id) {
-        try {
-            beneficioRepository.deleteById(id);
-        } catch (Exception exception) {
-            if (!beneficioRepository.existsById(id)) {
-                throw new BeneficioNaoEncontradoException("Esta beneficio não existe");
-            }
-        }
+        beneficioRepository.deleteById(id);
     }
 
-            public Beneficio pesquisarBeneficioPorID ( int id){
-                Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
-                if (beneficioId.isEmpty()) {
-                    throw new BeneficioNaoEncontradoException("Este benefício não foi encontrado, id inválido");
-                }
+    public Beneficio pesquisarBeneficioPorID(int id) {
+        Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
+        if (beneficioId.isEmpty()) {
+            throw new BeneficioNaoEncontradoException("Este benefício não foi encontrado, id inválido");
+        }
 
-                return beneficioId.get();
-            }
-
-            public List<Beneficio> exibirBeneficios (NivelZupper nivelZupper){
-                return beneficioRepository.findByNivelZupper(nivelZupper);
-            }
-
+        return beneficioId.get();
+    }
 
 
     public List<Beneficio> exibirBeneficiosPorNivel(NivelZupper nivelZupper) {

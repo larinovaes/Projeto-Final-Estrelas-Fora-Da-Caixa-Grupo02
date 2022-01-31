@@ -46,7 +46,7 @@ public class BeneficioController {
     }
 
     @DeleteMapping("/{id}")//D
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public void deletarBeneficio(@PathVariable int id) {
 
         beneficioService.deletarBeneficio(id);

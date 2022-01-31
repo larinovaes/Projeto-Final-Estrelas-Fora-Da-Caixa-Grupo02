@@ -21,6 +21,7 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
@@ -76,7 +77,7 @@ public class BeneficioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarExibirDeBeneficios() throws Exception{
+    public void testarExibirDeBeneficios() throws Exception {
         Mockito.when(beneficioService.exibirBeneficios()).thenReturn(Arrays.asList(beneficio));
 
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
@@ -85,8 +86,8 @@ public class BeneficioControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 
         String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
-        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResposta, new TypeReference<List<BeneficioDTO>>()
-        {});
+        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResposta, new TypeReference<List<BeneficioDTO>>() {
+        });
     }
 
 
@@ -108,7 +109,7 @@ public class BeneficioControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarAtualizarBeneficio() throws Exception {
-        Mockito.when(beneficioService.atualizarBeneficio(Mockito.anyInt(),Mockito.any(Beneficio.class))).thenReturn(beneficio);
+        Mockito.when(beneficioService.atualizarBeneficio(Mockito.anyInt(), Mockito.any(Beneficio.class))).thenReturn(beneficio);
         String json = objectMapper.writeValueAsString(beneficioDTO);
 
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio/2")
@@ -126,7 +127,7 @@ public class BeneficioControllerTest {
         beneficio.setId(1);
         Mockito.doNothing().when(beneficioService).deletarBeneficio(Mockito.anyInt());
 
-        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/beneficio/"+ beneficio.getId())
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/beneficio/" + beneficio.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
@@ -135,7 +136,7 @@ public class BeneficioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarCadastroDeBeneficioValidarNome() throws Exception{
+    public void testarCadastroDeBeneficioValidarNome() throws Exception {
         beneficioDTO.setNome("");
         Mockito.when((beneficioService.salvarBeneficio(Mockito.any(Beneficio.class)))).thenReturn(beneficio);
         String json = objectMapper.writeValueAsString(beneficioDTO);
@@ -143,6 +144,17 @@ public class BeneficioControllerTest {
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarBeneficioNaoEncontrado() throws Exception {
+        Mockito.doThrow(BeneficioNaoEncontradoException.class).when(beneficioService).deletarBeneficio(Mockito.anyInt());
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.delete("/beneficio/" + beneficio.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(404));
+
     }
 }
 
