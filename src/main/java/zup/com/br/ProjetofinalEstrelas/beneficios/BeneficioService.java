@@ -19,9 +19,11 @@ public class BeneficioService {
         return beneficioRepository.save(beneficio);
     }
 
+
     public Iterable<Beneficio> exibirBeneficios() {
         return beneficioRepository.findAll();
     }
+
 
     public Beneficio atualizarBeneficio(int id, Beneficio beneficio) {
         Beneficio beneficioInDB = pesquisarBeneficioPorID(id);
@@ -40,8 +42,10 @@ public class BeneficioService {
             throw new BeneficioNaoEncontradoException("Este benefício não foi encontrado, id inválido");
         }
 
+
         return beneficioId.get();
     }
+
 
 
     public List<Beneficio> exibirBeneficiosPorNivel(NivelZupper nivelZupper) {
