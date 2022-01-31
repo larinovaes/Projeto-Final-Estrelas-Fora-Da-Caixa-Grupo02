@@ -44,11 +44,10 @@ public class FuncionarioController {
         return resumoDTO;
     }
 
-    @GetMapping("/{id}")
-    public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable Integer id) {
+    @GetMapping("/{email}")
+    public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable String email) {
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
-        funcionarioService.buscarFuncionarioPorId(id);
-        Funcionario funcionario = modelMapper.map(funcionarioDTO, Funcionario.class);
+        Funcionario funcionario = funcionarioService.buscarFuncionarioPorEmail(email);
         funcionarioDTO = modelMapper.map(funcionario, FuncionarioDTO.class);
         return funcionarioDTO;
     }
