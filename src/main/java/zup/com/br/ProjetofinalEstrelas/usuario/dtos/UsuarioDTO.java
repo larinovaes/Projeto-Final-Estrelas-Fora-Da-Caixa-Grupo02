@@ -12,12 +12,12 @@ import javax.validation.constraints.Pattern;
 @Setter
 @Getter
 public class UsuarioDTO {
-    @Email(message = "${validacao.email.email}")
-    @NotBlank(message = "${validacao.senha.not-blank}")
+    @Email
+    @NotBlank(message = "{validacao.not-blank}")
     private String email;
 
-    @NotBlank(message = "${validacao.senha.not-blank}")
+    @NotBlank(message = "{validacao.not-blank}")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$" ,
-            message = "${validacao.senha.pattern}")
+            message = "{validacao.senha.pattern}")
     private String senha;
 }
