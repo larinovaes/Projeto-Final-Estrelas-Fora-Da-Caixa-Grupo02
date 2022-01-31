@@ -7,7 +7,6 @@ import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
@@ -22,7 +21,6 @@ public class Funcionario {
     private int id;
 
     @Column(unique = true)
-    @NotBlank
     private String nomeDeFuncionario;
 
     @OneToOne

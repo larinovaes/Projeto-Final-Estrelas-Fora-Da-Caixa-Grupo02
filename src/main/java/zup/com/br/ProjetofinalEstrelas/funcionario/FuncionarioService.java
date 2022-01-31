@@ -27,7 +27,7 @@ public class FuncionarioService {
                 return funcionarioRepository.save(funcionario);
             }
         }
-        throw new UsuarioNaoEncontrado("Esse funcionario não está cadastrado");
+        throw new FuncionarioNaoEncontradoException("Esse funcionario não está cadastrado");
     }
 
     public void deletarFuncionario(Integer id) {
@@ -50,7 +50,7 @@ public class FuncionarioService {
         return funcionarioDeInteresse.get();
     }
 
-    public Funcionario atualizarUsuario(Integer id, Funcionario funcionario) {
+    public Funcionario atualizarFuncionario(Integer id, Funcionario funcionario) {
         Funcionario funcionarioParaAtualizar = buscarFuncionarioPorId(id);
 
         funcionarioParaAtualizar.setId(funcionario.getId());
