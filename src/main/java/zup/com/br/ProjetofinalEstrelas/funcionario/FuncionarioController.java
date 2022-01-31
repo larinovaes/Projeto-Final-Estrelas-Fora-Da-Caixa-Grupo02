@@ -29,7 +29,7 @@ public class FuncionarioController {
     public FuncionarioDTO cadastrarFuncionario(@RequestBody @Valid FuncionarioDTO funcionarioDTO) {
         Funcionario funcionario = modelMapper.map(funcionarioDTO, Funcionario.class);
         funcionarioService.salvarFuncionario(funcionario);
-        List<Beneficio> beneficios = beneficioService.exibirBeneficios(funcionario.getNivelZupper());
+        List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
         FuncionarioDTO funcionarioCadastrado = modelMapper.map(funcionario, FuncionarioDTO.class);
         funcionarioCadastrado.setBeneficios(beneficios);
 
