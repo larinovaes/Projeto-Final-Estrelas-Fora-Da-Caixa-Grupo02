@@ -71,4 +71,10 @@ public class ControllerAdvisor {
     public MensagemErro manipularExcessaoDeAcessoNegado(AcessoNegadoException exception) {
         return new MensagemErro(exception.getMessage());
     }
+
+    @ExceptionHandler(UsuarioJaCadastrado.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastrado exception) {
+        return new MensagemErro(exception.getMessage());
+    }
 }
