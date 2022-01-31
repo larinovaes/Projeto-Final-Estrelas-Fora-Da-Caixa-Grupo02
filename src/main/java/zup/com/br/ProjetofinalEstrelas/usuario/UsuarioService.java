@@ -3,6 +3,7 @@ package zup.com.br.ProjetofinalEstrelas.usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
 
@@ -21,6 +22,9 @@ public class UsuarioService {
         if (!usuario.getEmail().endsWith("zup.com.br")) {
             throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
         }
+       if (usuarioRepository.existsById(usuario.getEmail())){
+           throw new UsuarioJaCadastrado("usuario já esta cadastrado");
+       }
         usuario.setRole("ROLE_ADMIN");
         String senhaEscondida = encoder.encode(usuario.getSenha());
         usuario.setSenha(senhaEscondida);
