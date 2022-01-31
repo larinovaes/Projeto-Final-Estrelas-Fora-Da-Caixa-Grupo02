@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
-import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 
 import java.time.LocalDate;
 
@@ -29,4 +28,14 @@ public class FuncionarioServiceTest {
         funcionario.setDataDeContratacao(LocalDate.now());
     }
 
+    @Test
+    public void testarDeleteDeFuncionarioCaminhoPositivo() {
+            Mockito.when(funcionarioRepository.existsById(Mockito.anyInt())).thenReturn(true);
+
+            Mockito.doNothing().when(funcionarioRepository).deleteById(Mockito.anyInt());
+            funcionarioService.deletarFuncionario(funcionario.getId());
+
+            Mockito.verify(funcionarioRepository, Mockito.times(1))
+                    .deleteById(Mockito.anyInt());
+    }
 }

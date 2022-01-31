@@ -1,11 +1,14 @@
 package zup.com.br.ProjetofinalEstrelas.funcionario.dtos;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,9 +17,17 @@ import java.util.List;
 @Setter
 public class FuncionarioDTO {
 
+    @NotBlank
+    @Size(min = 3, max = 100, message = "O nome de funcionario deve ter no minimo 3 caractere e no máixmo 100")
+    private String nomeDeFuncionario;
+
+    @NotBlank
     private UsuarioSaidaDTO usuario;
+    @NotBlank
     private NivelZupper nivelZupper;
+    @NotBlank
     private LocalDate dataDeContratacao;
+    @NotBlank
     private List<Beneficio> beneficios;
 
 }
