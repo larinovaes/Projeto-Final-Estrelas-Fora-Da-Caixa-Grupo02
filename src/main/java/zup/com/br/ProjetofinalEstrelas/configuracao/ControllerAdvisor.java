@@ -42,6 +42,12 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
+    @ExceptionHandler(UsuarioJaCadastrado.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastrado exception) {
+        return new MensagemErro(exception.getMessage());
+    }
+
     @ExceptionHandler(UsuarioNaoEncontrado.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontrado exception) {
@@ -69,12 +75,6 @@ public class ControllerAdvisor {
     @ExceptionHandler(AcessoNegadoException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public MensagemErro manipularExcessaoDeAcessoNegado(AcessoNegadoException exception) {
-        return new MensagemErro(exception.getMessage());
-    }
-
-    @ExceptionHandler(UsuarioJaCadastrado.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastrado exception) {
         return new MensagemErro(exception.getMessage());
     }
 }
