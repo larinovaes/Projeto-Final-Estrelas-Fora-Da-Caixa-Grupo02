@@ -1,5 +1,6 @@
 package zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeFisicaDTO {
 
     @NotBlank(message = "{validacao.not-blank}")

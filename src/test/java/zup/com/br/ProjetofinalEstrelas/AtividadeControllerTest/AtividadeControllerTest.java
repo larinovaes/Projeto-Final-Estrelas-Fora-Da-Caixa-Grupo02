@@ -19,17 +19,10 @@ import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaController;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaService;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
-import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
-import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
-import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
-import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
-import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontrada;
-import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
+import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontradaException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -82,7 +75,7 @@ public class AtividadeControllerTest {
         String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
 
 
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/atividade")
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect((MockMvcResultMatchers.status().is(201)));
 
@@ -95,7 +88,7 @@ public class AtividadeControllerTest {
     public void testarExibirDeAtividadeFisica() throws Exception {
         Mockito.when(atividadeFisicaService.exibirAtividadesFisicas()).thenReturn(Arrays.asList(atividadeFisica));
 
-        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.get("/atividade")
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.get("/atividadefisica")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -111,7 +104,7 @@ public class AtividadeControllerTest {
         Mockito.when(atividadeFisicaService.atualizarAtividadeFisica(Mockito.anyInt(), Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
         String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
 
-        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.put("/atividade/2")
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.put("/atividadefisica/2")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
@@ -125,7 +118,7 @@ public class AtividadeControllerTest {
     public void testarRotaParaBuscarAtividadeEspecifica() throws Exception {
         Mockito.when(atividadeFisicaService.pesquisarAtividadeFisicaPorId(Mockito.anyInt())).thenReturn(atividadeFisica);
 
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/atividade")
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/atividadefisica")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -141,7 +134,7 @@ public class AtividadeControllerTest {
         atividadeFisica.setId(1);
         Mockito.doNothing().when(atividadeFisicaService).deletarAtividadeFisica(Mockito.anyInt());
 
-        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/atividade/" + atividadeFisica.getId())
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/atividadefisica/" + atividadeFisica.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
@@ -156,17 +149,17 @@ public class AtividadeControllerTest {
         Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
         String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
 
-        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividade")
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(422));
     }
 
-    @Test
+  @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarDeletarAtividadeFisicaNaoEncontrada() throws Exception {
-        Mockito.doThrow(AtividadeFisicaNaoEncontrada.class).when(atividadeFisicaService).deletarAtividadeFisica(Mockito.anyInt());
+        Mockito.doThrow(AtividadeFisicaNaoEncontradaException.class).when(atividadeFisicaService).deletarAtividadeFisica(Mockito.anyInt());
 
-        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.delete("/atividade/" + atividadeFisica.getId())
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.delete("/atividadefisica/" + atividadeFisica.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(404));
 

@@ -3,6 +3,7 @@ package zup.com.br.ProjetofinalEstrelas.atividadeFisica;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontradaException;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 
@@ -32,28 +33,34 @@ public class AtividadeFisicaService {
         atividadeFisicaInDB.setContato(atividadeFisica.getContato());
         atividadeFisicaInDB.setHorario(atividadeFisica.getHorario());
         atividadeFisicaInDB.setResponsavel(atividadeFisica.getResponsavel());
-        return atividadeFisicaRepository.save(atividadeFisicaInDB);
-    }
-
-    public AtividadeFisica pesquisarAtividadeFisicaPorId(int id) {
-        Optional<AtividadeFisica> atividadeFisicaId = atividadeFisicaRepository.findById(id);
-        if (atividadeFisicaId.isEmpty()) {
-            throw new BeneficioNaoEncontradoException("Esta  atividade física não foi encontrada, id inválido");
-        }
-
-        return atividadeFisicaId.get();
-    }
-
-
-    public void deletarAtividadeFisica(int id) {
         try {
-        atividadeFisicaRepository.deleteById(id);
-    }catch (Exception exception){
-            if (!atividadeFisicaRepository.existsById(id)){
+            atividadeFisicaRepository.save(atividadeFisicaInDB);
+        } catch (Exception exception) {
+            if (!atividadeFisicaRepository.existsById(id)) {
                 throw new AtividadeFisicaNaoEncontradaException("Esta atividade física não existe");
             }
+        }return atividadeFisicaRepository.save(atividadeFisicaInDB);
+    }
+
+        public AtividadeFisica pesquisarAtividadeFisicaPorId ( int id){
+            Optional<AtividadeFisica> atividadeFisicaId = atividadeFisicaRepository.findById(id);
+            if (atividadeFisicaId.isEmpty()) {
+                throw new AtividadeFisicaNaoEncontradaException("Esta  atividade física não foi encontrada");
+            }
+
+            return atividadeFisicaId.get();
+        }
+
+
+        public void deletarAtividadeFisica ( int id){
+            try {
+                atividadeFisicaRepository.deleteById(id);
+            } catch (Exception exception) {
+                if (!atividadeFisicaRepository.existsById(id)) {
+                    throw new AtividadeFisicaNaoEncontradaException("Esta atividade física não existe");
+                }
+            }
+
         }
 
     }
-
-}

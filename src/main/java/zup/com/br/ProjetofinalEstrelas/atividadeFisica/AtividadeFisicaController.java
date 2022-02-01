@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
+import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 
 
@@ -26,11 +27,12 @@ public class AtividadeFisicaController {
 
     @PostMapping()//C
     @ResponseStatus(HttpStatus.CREATED)
-    public AtividadeFisica cadastrarAtividadeFisica(@RequestBody AtividadeFisica atividadeFisica) {
+    public AtividadeFisica cadastrarAtividadeFisica(@RequestBody @Valid AtividadeFisica atividadeFisica) {
         return atividadeFisicaService.salvarAtividadeFisica(atividadeFisica);
     }
 
-    @GetMapping//R
+
+       @GetMapping//R
     public Iterable<ExibirDetalheAtividadeFisicaDTO> exibirTodasAtividadesFisicas() {
         List<ExibirDetalheAtividadeFisicaDTO> todasAtividadesFisicas = new ArrayList<>();
         atividadeFisicaService.exibirAtividadesFisicas().forEach(AtividadeFisica -> {
@@ -50,6 +52,7 @@ public class AtividadeFisicaController {
 
         atividadeFisicaService.deletarAtividadeFisica(id);
     }
+
 
     @GetMapping("/{id}")
     public AtividadeFisica buscarAtividadeFisicaEspecifica(@PathVariable Integer id) {

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
@@ -24,11 +25,9 @@ public class AtividadeServiceTest {
     @MockBean
     private AtividadeFisicaRepository atividadeFisicaRepository;
 
-    @MockBean
+    @Autowired
     private AtividadeFisicaService atividadeFisicaService;
 
-    @MockBean
-    private UsuarioService usuarioService;
 
     private AtividadeFisica atividadeFisica;
     private List<AtividadeFisica> atividades;
@@ -96,7 +95,7 @@ public class AtividadeServiceTest {
         AtividadeFisica atividadeResposta = atividadeFisicaService.pesquisarAtividadeFisicaPorId(Mockito.anyInt());
 
         Assertions.assertNotNull(atividadeResposta);
-        Assertions.assertEquals(Beneficio.class, atividadeResposta.getClass());
+        Assertions.assertEquals(AtividadeFisica.class, atividadeResposta.getClass());
         Assertions.assertEquals(atividadeFisica.getId(), atividadeResposta.getId());
     }
 
@@ -132,6 +131,17 @@ public class AtividadeServiceTest {
         atividadeFisicaService.deletarAtividadeFisica(Mockito.anyInt());
 
         Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).deleteById(Mockito.anyInt());
+
+    }
+
+    @Test
+    public void testarDeletarAtividadeFisicaNaoEncontrada() {
+        Mockito.doNothing().when(atividadeFisicaRepository).deleteById(Mockito.anyInt());
+
+        AtividadeFisicaNaoEncontradaException exception = Assertions.assertThrows(AtividadeFisicaNaoEncontradaException.class, () -> {
+            atividadeFisicaService.deletarAtividadeFisica(1);
+        });
+
 
     }
 }
