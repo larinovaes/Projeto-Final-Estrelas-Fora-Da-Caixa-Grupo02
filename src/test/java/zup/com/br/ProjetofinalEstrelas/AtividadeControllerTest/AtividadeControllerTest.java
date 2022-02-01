@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
+import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaController;
+import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaService;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
@@ -31,10 +33,11 @@ import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 import java.util.Arrays;
 import java.util.List;
 
+@WebMvcTest({AtividadeFisicaController.class, ConversorModelMapper.class, UsuarioLoginService.class, JWTComponent.class})
 public class AtividadeControllerTest {
 
     @MockBean
-    private BeneficioService beneficioService;
+    private AtividadeFisicaService atividadeFisicaService;
     @MockBean
     private UsuarioLoginService usuarioLoginService;
     @MockBean
@@ -46,7 +49,29 @@ public class AtividadeControllerTest {
     private MockMvc mockMvc;
 
     private ObjectMapper objectMapper;
-    private AtividadeFisica;
-    private AtividadeFisicaDTO;
+    private AtividadeFisica atividadeFisica;
+    private AtividadeFisicaDTO atividadeFisicaDTO;
 
+    @BeforeEach
+    public void setup() {
+        objectMapper = new ObjectMapper();
+        atividadeFisica = new AtividadeFisica();
+        atividadeFisica.setNome("Yoga");
+        atividadeFisica.setCidade("Rio de Janeiro");
+        atividadeFisica.setBairro("Ipanema");
+        atividadeFisica.setHorario("8:00");
+        atividadeFisica.setEndereco("Posto 9");
+        atividadeFisica.setResponsavel("Babi Ann");
+        atividadeFisica.setContato("(21)99150-2997");
+
+        atividadeFisicaDTO = new AtividadeFisicaDTO();
+        atividadeFisicaDTO.setNome("Yoga");
+        atividadeFisicaDTO.setCidade("Rio de Janeiro");
+        atividadeFisicaDTO.setBairro("Ipanema");
+        atividadeFisicaDTO.setHorario("8:00");
+        atividadeFisicaDTO.setEndereco("Posto 9");
+        atividadeFisicaDTO.setResponsavel("Babi Ann");
+        atividadeFisicaDTO.setContato("(21)99150-2997");
+
+    }
 }
