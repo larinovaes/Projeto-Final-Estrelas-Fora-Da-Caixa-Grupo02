@@ -72,6 +72,23 @@ public class AtividadeControllerTest {
         atividadeFisicaDTO.setEndereco("Posto 9");
         atividadeFisicaDTO.setResponsavel("Babi Ann");
         atividadeFisicaDTO.setContato("(21)99150-2997");
+    }
+
+        @Test
+        @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+        public void testarRotaParaCadastrarAtividadeFisica() throws Exception {
+            Mockito.when(atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
+            String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+
+            ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/atividade")
+                            .content(json).contentType(MediaType.APPLICATION_JSON))
+                    .andExpect((MockMvcResultMatchers.status().is(201)));
+
+            String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+            AtividadeFisicaDTO AtividadeFisicaResposta = objectMapper.readValue(jsonResponse, AtividadeFisicaDTO.class);
+        }
+
 
     }
-}
+
