@@ -44,9 +44,9 @@ public class AtividadeFisicaController {
         return atividadeFisicaService.atualizarAtividadeFisica(id, atividadeFisica);
     }
 
-    @DeleteMapping//D
+    @DeleteMapping("/{id}")//D
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarAtividadeFisica(@RequestParam int id) {
+    public void deletarAtividadeFisica(@PathVariable int id) {
 
         atividadeFisicaService.deletarAtividadeFisica(id);
     }

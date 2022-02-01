@@ -1,14 +1,17 @@
 package zup.com.br.ProjetofinalEstrelas.Beneficio;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,24 +19,37 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
+import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
+import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
+import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
 import java.util.List;
 
 
-@WebMvcTest(BeneficioController.class)
+@WebMvcTest({BeneficioController.class, ConversorModelMapper.class, UsuarioLoginService.class, JWTComponent.class})
 
 public class BeneficioControllerTest {
 
     @MockBean
     private BeneficioService beneficioService;
+    @MockBean
+    private UsuarioLoginService usuarioLoginService;
+    @MockBean
+    private JWTComponent jwtComponent;
+    @MockBean
+    ModelMapper modelMapper;
 
     @Autowired
     private MockMvc mockMvc;
 
     private ObjectMapper objectMapper;
     private Beneficio beneficio;
-    private List<Beneficio> beneficios;
+    private BeneficioDTO beneficioDTO;
 
 
     @BeforeEach
@@ -42,45 +58,116 @@ public class BeneficioControllerTest {
         beneficio = new Beneficio();
         beneficio.setNome("Plano de saúde");
         beneficio.setDescricao("Sulámerica");
+        beneficio.setNivelZupper(NivelZupper.ZUPPER3);
         beneficio.setId(2);
-        beneficios = Arrays.asList(beneficio);
+
+        beneficioDTO = new BeneficioDTO();
+        beneficioDTO.setNome("Plano de saúde");
+        beneficioDTO.setDescricao("Sulamérica");
+        beneficioDTO.setNivelZupper(NivelZupper.ZUPPER3);
+        beneficioDTO.setId(2);
+
     }
 
     @Test
-    public void testarRotaParaBuscarBeneficios() throws Exception {
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarRotaParaCadastrarBeneficio() throws Exception {
+        Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
+
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect((MockMvcResultMatchers.status().is(201)));
+
+        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResponse, BeneficioDTO.class);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarExibirDeBeneficios() throws Exception {
+        Mockito.when(beneficioService.exibirBeneficios()).thenReturn(Arrays.asList(beneficio));
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
+        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResposta, new TypeReference<List<BeneficioDTO>>() {
+        });
+    }
+
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarRotaParaBuscarBeneficiosEspecifico() throws Exception {
         Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyInt())).thenReturn(beneficio);
 
         ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
-                        .param("nomeBeneficio", "Foice")
-                        .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResponse, new TypeReference<List<BeneficioDTO>>() {
+        });
     }
 
     @Test
-    public void testarRotaParaCadastrarBeneficioValidacoesId() throws Exception {
-        Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarAtualizarBeneficio() throws Exception {
+        Mockito.when(beneficioService.atualizarBeneficio(Mockito.anyInt(), Mockito.any(Beneficio.class))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
 
-        beneficio.setId(3);
-        beneficio.setId(4);
-        String json = objectMapper.writeValueAsString(beneficio);
-
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio")
-                        .contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(MockMvcResultMatchers.status().is(422));
-
-    }
-
-    @Test
-    public void testarRotaParaCadastrarBeneficio() throws Exception {
-        Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
-        String json = objectMapper.writeValueAsString(beneficio);
-
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio")
-                        .contentType(MediaType.APPLICATION_JSON).content(json))
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio/2")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        String jsonDeRespostaDaAPI = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        Beneficio beneficioDaResposta = objectMapper.readValue(jsonDeRespostaDaAPI, Beneficio.class);
+        String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
+        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResposta, BeneficioDTO.class);
+
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarBeneficio() throws Exception {
+        beneficio.setId(1);
+        Mockito.doNothing().when(beneficioService).deletarBeneficio(Mockito.anyInt());
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/beneficio/" + beneficio.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+
+        Mockito.verify(beneficioService, Mockito.times(1)).deletarBeneficio(Mockito.anyInt());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastroDeBeneficioValidarNome() throws Exception {
+        beneficioDTO.setNome("");
+        Mockito.when((beneficioService.salvarBeneficio(Mockito.any(Beneficio.class)))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarBeneficioNaoEncontrado() throws Exception {
+        Mockito.doThrow(BeneficioNaoEncontradoException.class).when(beneficioService).deletarBeneficio(Mockito.anyInt());
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.delete("/beneficio/" + beneficio.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(404));
+
     }
 }
+
+
+
+
 

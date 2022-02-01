@@ -21,7 +21,7 @@ public class UsuarioService {
         if (!usuario.getEmail().contains("zup.com.br")) {
             throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
         }
-        usuario.setRole("ROLE_USER");
+        usuario.setRole("ROLE_ADMIN");
         String senhaEscondida = encoder.encode(usuario.getSenha());
         usuario.setSenha(senhaEscondida);
         return usuarioRepository.save(usuario);
