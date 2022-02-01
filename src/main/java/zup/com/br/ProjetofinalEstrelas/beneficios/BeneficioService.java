@@ -33,13 +33,14 @@ public class BeneficioService {
     }
 
     public void deletarBeneficio(int id) {
+        pesquisarBeneficioPorID(id);
         beneficioRepository.deleteById(id);
     }
 
     public Beneficio pesquisarBeneficioPorID(int id) {
         Optional<Beneficio> beneficioId = beneficioRepository.findById(id);
         if (beneficioId.isEmpty()) {
-            throw new BeneficioNaoEncontradoException("Este benefício não foi encontrado, id inválido");
+            throw new BeneficioNaoEncontradoException("Este benefício não foi encontrado");
         }
 
 
