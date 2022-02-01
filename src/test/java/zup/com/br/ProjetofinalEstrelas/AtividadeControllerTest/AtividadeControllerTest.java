@@ -27,6 +27,7 @@ import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontrada;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
@@ -158,6 +159,17 @@ public class AtividadeControllerTest {
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividade")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarAtividadeFisicaNaoEncontrada() throws Exception {
+        Mockito.doThrow(AtividadeFisicaNaoEncontrada.class).when(atividadeFisicaService).deletarAtividadeFisica(Mockito.anyInt());
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.delete("/atividade/" + atividadeFisica.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(404));
+
     }
 
 
