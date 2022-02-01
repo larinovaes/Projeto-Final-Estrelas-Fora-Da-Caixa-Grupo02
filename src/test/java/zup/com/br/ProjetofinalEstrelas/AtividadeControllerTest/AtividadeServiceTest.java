@@ -123,6 +123,17 @@ public class AtividadeServiceTest {
         Assertions.assertEquals("Atividade não cadastrada.", exception.getMessage());
 
     }
+
+    @Test
+    public void testarDeletarAtividade() {
+        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
+        Mockito.doNothing().when(atividadeFisicaRepository).deleteById(Mockito.anyInt());
+
+        atividadeFisicaService.deletarAtividadeFisica(Mockito.anyInt());
+
+        Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).deleteById(Mockito.anyInt());
+
+    }
 }
 
 
