@@ -118,6 +118,21 @@ public class AtividadeControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarRotaParaBuscarAtividadeEspecifica() throws Exception {
+        Mockito.when(atividadeFisicaService.pesquisarAtividadeFisicaPorId(Mockito.anyInt())).thenReturn(atividadeFisica);
+
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/atividade")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+        List<AtividadeFisicaDTO> atividades = objectMapper.readValue(jsonResponse, new TypeReference<List<AtividadeFisicaDTO>>() {
+        });
+    }
+
 
 
 }
