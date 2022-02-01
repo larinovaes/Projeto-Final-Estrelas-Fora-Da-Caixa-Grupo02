@@ -74,6 +74,27 @@ public class BeneficioServiceTest {
         Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
     }
 
+    @Test
+    public void testarBuscarBeneficios() {
+        Iterable<Beneficio> beneficios = Arrays.asList(beneficio);
+        Mockito.when(beneficioRepository.findAll()).thenReturn(beneficios);
+        Iterable<Beneficio> livrosResposta = beneficioService.exibirBeneficios();
+        Assertions.assertNotNull(livrosResposta);
+        Mockito.verify(beneficioRepository, Mockito.times(1)).findAll();
+
+    }
+    @Test
+    public void testarBuscarBeneficioPorID() {
+        Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
+        Beneficio beneficioResposta = beneficioService.pesquisarBeneficioPorID(Mockito.anyInt());
+
+        Assertions.assertNotNull(beneficioResposta);
+        Assertions.assertEquals(Beneficio.class, beneficioResposta.getClass());
+        Assertions.assertEquals(beneficio.getId(), beneficioResposta.getId());
+    }
+
+
+
 
 }
 
