@@ -3,12 +3,8 @@ package zup.com.br.ProjetofinalEstrelas.atividadeFisica;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
-import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontrada;
+import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontradaException;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
-import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 
 import java.util.Optional;
 
@@ -54,7 +50,7 @@ public class AtividadeFisicaService {
         atividadeFisicaRepository.deleteById(id);
     }catch (Exception exception){
             if (!atividadeFisicaRepository.existsById(id)){
-                throw new AtividadeFisicaNaoEncontrada("Esta atividade física não existe");
+                throw new AtividadeFisicaNaoEncontradaException("Esta atividade física não existe");
             }
         }
 
