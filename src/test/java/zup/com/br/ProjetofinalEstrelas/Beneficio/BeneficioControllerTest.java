@@ -20,8 +20,10 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
+import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
@@ -29,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-@WebMvcTest(BeneficioController.class)
+@WebMvcTest({BeneficioController.class, ConversorModelMapper.class, UsuarioLoginService.class, JWTComponent.class})
 
 public class BeneficioControllerTest {
 
@@ -56,10 +58,14 @@ public class BeneficioControllerTest {
         beneficio = new Beneficio();
         beneficio.setNome("Plano de saúde");
         beneficio.setDescricao("Sulámerica");
+        beneficio.setNivelZupper(NivelZupper.ZUPPER3);
         beneficio.setId(2);
 
         beneficioDTO = new BeneficioDTO();
         beneficioDTO.setNome("Plano de saúde");
+        beneficioDTO.setDescricao("Sulamérica");
+        beneficioDTO.setNivelZupper(NivelZupper.ZUPPER3);
+        beneficioDTO.setId(2);
 
     }
 
@@ -70,7 +76,7 @@ public class BeneficioControllerTest {
         String json = objectMapper.writeValueAsString(beneficioDTO);
 
 
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.put("/beneficio")
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect((MockMvcResultMatchers.status().is(201)));
 
