@@ -90,6 +90,16 @@ public class AtividadeServiceTest {
         Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).findAll();
         Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
     }
+
+    @Test
+    public void testarBuscarAtividadePorID() {
+        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
+        AtividadeFisica atividadeResposta = atividadeFisicaService.pesquisarAtividadeFisicaPorId(Mockito.anyInt());
+
+        Assertions.assertNotNull(atividadeResposta);
+        Assertions.assertEquals(Beneficio.class, atividadeResposta.getClass());
+        Assertions.assertEquals(atividadeFisica.getId(), atividadeResposta.getId());
+    }
 }
 
 
