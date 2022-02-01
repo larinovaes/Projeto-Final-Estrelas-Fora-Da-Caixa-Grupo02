@@ -74,20 +74,20 @@ public class AtividadeControllerTest {
         atividadeFisicaDTO.setContato("(21)99150-2997");
     }
 
-        @Test
-        @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-        public void testarRotaParaCadastrarAtividadeFisica() throws Exception {
-            Mockito.when(atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
-            String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarRotaParaCadastrarAtividadeFisica() throws Exception {
+        Mockito.when(atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
 
 
-            ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/atividade")
-                            .content(json).contentType(MediaType.APPLICATION_JSON))
-                    .andExpect((MockMvcResultMatchers.status().is(201)));
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/atividade")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect((MockMvcResultMatchers.status().is(201)));
 
-            String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-            AtividadeFisicaDTO AtividadeFisicaResposta = objectMapper.readValue(jsonResponse, AtividadeFisicaDTO.class);
-        }
+        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
+        AtividadeFisicaDTO AtividadeFisicaResposta = objectMapper.readValue(jsonResponse, AtividadeFisicaDTO.class);
+    }
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
@@ -103,6 +103,7 @@ public class AtividadeControllerTest {
         List<AtividadeFisicaDTO> atividadeFisica = objectMapper.readValue(jsonResposta, new TypeReference<List<AtividadeFisicaDTO>>() {
         });
     }
+
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarAtualizarAtividadeFisica() throws Exception {
@@ -133,6 +134,18 @@ public class AtividadeControllerTest {
         });
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarAtividadeFisica() throws Exception {
+        atividadeFisica.setId(1);
+        Mockito.doNothing().when(atividadeFisicaService).deletarAtividadeFisica(Mockito.anyInt());
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/atividade/" + atividadeFisica.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+
+        Mockito.verify(atividadeFisicaService, Mockito.times(1)).deletarAtividadeFisica(Mockito.anyInt());
+    }
 
 
 }
