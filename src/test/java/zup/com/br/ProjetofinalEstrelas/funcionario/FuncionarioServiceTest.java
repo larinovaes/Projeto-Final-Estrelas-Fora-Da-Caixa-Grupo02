@@ -36,16 +36,16 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void testarDeleteDeFuncionarioCaminhoPositivo() {
-            Mockito.when(funcionarioRepository.existsById(Mockito.anyInt())).thenReturn(true);
+    public void testarSalvarFuncionarioCaminhoPositivo() {
 
-            Mockito.doNothing().when(funcionarioRepository).deleteById(Mockito.anyInt());
-            funcionarioService.deletarFuncionario(funcionario.getUsuario().getEmail());
-
-            Mockito.verify(funcionarioRepository, Mockito.times(1))
-                    .deleteById(Mockito.anyInt());
     }
 
+    @Test
+    public void testarBuscarFuncionarioPorEmail() {
+
+    }
+
+    @Test
     public void testarexibirTodosOsFuncionarios() {
         Iterable<Funcionario> funcionarios = Arrays.asList(funcionario);
         Mockito.when(funcionarioRepository.findAll()).thenReturn(funcionarios);

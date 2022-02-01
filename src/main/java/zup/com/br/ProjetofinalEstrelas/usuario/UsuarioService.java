@@ -22,9 +22,9 @@ public class UsuarioService {
         if (!usuario.getEmail().endsWith("zup.com.br")) {
             throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
         }
-       if (usuarioRepository.existsById(usuario.getEmail())){
-           throw new UsuarioJaCadastrado("Esse usuário já esta cadastrado");
-       }
+        if (usuarioRepository.existsById(usuario.getEmail())) {
+            throw new UsuarioJaCadastrado("Esse usuário já esta cadastrado");
+        }
         usuario.setRole("ROLE_ADMIN");
         String senhaEscondida = encoder.encode(usuario.getSenha());
         usuario.setSenha(senhaEscondida);
@@ -61,7 +61,7 @@ public class UsuarioService {
 
     public Usuario buscarUsuarioPeloOEmail(String email) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(email);
-        if (usuarioOptional.isPresent()){
+        if (usuarioOptional.isPresent()) {
             return usuarioOptional.get();
         }
         throw new UsuarioNaoEncontrado("Usuario não encontrado");
