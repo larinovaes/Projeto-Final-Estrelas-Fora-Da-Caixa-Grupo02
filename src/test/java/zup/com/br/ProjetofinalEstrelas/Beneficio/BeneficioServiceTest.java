@@ -84,6 +84,7 @@ public class BeneficioServiceTest {
         Mockito.verify(beneficioRepository, Mockito.times(1)).findAll();
 
     }
+
     @Test
     public void testarBuscarBeneficioPorID() {
         Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
@@ -107,19 +108,19 @@ public class BeneficioServiceTest {
     }
 
     @Test
-    public void testarAtualizarBeneficioNaoEncontrado(){
+    public void testarAtualizarBeneficioNaoEncontrado() {
         Mockito.when(beneficioRepository.save(Mockito.any())).thenReturn(beneficio);
         Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
 
         BeneficioNaoEncontradoException exception = Assertions.assertThrows(BeneficioNaoEncontradoException.class,
-                () -> beneficioService.atualizarBeneficio(2,beneficio));
+                () -> beneficioService.atualizarBeneficio(2, beneficio));
 
         Assertions.assertEquals("Benefício não cadastrado.", exception.getMessage());
 
     }
 
     @Test
-    public void testarDeletarBeneficio(){
+    public void testarDeletarBeneficio() {
         Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
         Mockito.doNothing().when(beneficioRepository).deleteById(Mockito.anyInt());
 
@@ -129,8 +130,14 @@ public class BeneficioServiceTest {
 
     }
 
+    @Test
+    public void testarDeletarBeneficioNaoEncontrado() {
+        Mockito.doNothing().when(beneficioRepository).deleteById(Mockito.anyInt());
+
+        BeneficioNaoEncontradoException exception = Assertions.assertThrows(BeneficioNaoEncontradoException.class, () -> {
+            beneficioService.deletarBeneficio(1);
+        });
 
 
-
+    }
 }
-
