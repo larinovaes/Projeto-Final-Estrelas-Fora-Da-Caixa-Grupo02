@@ -12,6 +12,7 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioRepository;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,9 @@ public class BeneficioServiceTest {
 
     @Autowired
     private BeneficioService beneficioService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     private Beneficio beneficio;
     private List<Beneficio> beneficios;
@@ -42,6 +46,15 @@ public class BeneficioServiceTest {
         System.setProperty("SEGREDO_JWT", "jujuba");
         System.setProperty("JWT_TIME", "123");
 
+    }
+
+    @Test
+    public void testarCadastrarBeneficio() {
+        Mockito.when(beneficioRepository.save(Mockito.any(Beneficio.class))).thenReturn(beneficio);
+
+        Beneficio beneficioObjeto = beneficioService.salvarBeneficio(beneficio);
+
+        Mockito.verify(beneficioRepository, Mockito.times(1)).save(Mockito.any(Beneficio.class));
     }
 
     @Test
@@ -75,15 +88,6 @@ public class BeneficioServiceTest {
         Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
     }
 
-    @Test
-    public void testarBuscarBeneficios() {
-        Iterable<Beneficio> beneficios = Arrays.asList(beneficio);
-        Mockito.when(beneficioRepository.findAll()).thenReturn(beneficios);
-        Iterable<Beneficio> livrosResposta = beneficioService.exibirBeneficios();
-        Assertions.assertNotNull(livrosResposta);
-        Mockito.verify(beneficioRepository, Mockito.times(1)).findAll();
-
-    }
 
     @Test
     public void testarBuscarBeneficioPorID() {
