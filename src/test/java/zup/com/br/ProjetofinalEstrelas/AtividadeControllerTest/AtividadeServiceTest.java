@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.AtividadeControllerTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,6 +17,7 @@ import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class AtividadeServiceTest {
@@ -51,11 +53,25 @@ public class AtividadeServiceTest {
     }
 
     @Test
-    public void testarCadastrarAtividadeFisicaCaminhoPositivo() {
+    public void testarCadastrarAtividadeFisica() {
         Mockito.when(atividadeFisicaRepository.save(Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
 
         AtividadeFisica atividadeFisicaObjeto = atividadeFisicaService.salvarAtividadeFisica(atividadeFisica);
 
         Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).save(Mockito.any(AtividadeFisica.class));
     }
+
+    @Test
+    public void testarBuscarAtividadeFisicaCadastradosCaminhoPositivo() {
+        Mockito.when(atividadeFisicaRepository.existsById(Mockito.anyInt())).thenReturn(true);
+        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
+
+        AtividadeFisica atividadeDoBanco = atividadeFisicaService.pesquisarAtividadeFisicaPorId(2);
+
+        Assertions.assertEquals(atividadeDoBanco, atividadeFisica);
+        Assertions.assertEquals(atividadeDoBanco.getId(), atividadeFisica.getId());
+
+    }
+
+
 }
