@@ -2,6 +2,8 @@ package zup.com.br.ProjetofinalEstrelas.AtividadeControllerTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -9,6 +11,7 @@ import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaRepository;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaService;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
+import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
@@ -45,5 +48,14 @@ public class AtividadeServiceTest {
         System.setProperty("SEGREDO_JWT", "jujuba");
         System.setProperty("JWT_TIME", "123");
 
+    }
+
+    @Test
+    public void testarCadastrarAtividadeFisicaCaminhoPositivo() {
+        Mockito.when(atividadeFisicaRepository.save(Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
+
+        AtividadeFisica atividadeFisicaObjeto = atividadeFisicaService.salvarAtividadeFisica(atividadeFisica);
+
+        Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).save(Mockito.any(AtividadeFisica.class));
     }
 }
