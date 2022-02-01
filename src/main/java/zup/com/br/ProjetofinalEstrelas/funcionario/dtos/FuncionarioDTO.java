@@ -27,6 +27,6 @@ public class FuncionarioDTO {
     @NotNull
     private LocalDate dataDeContratacao;
     @NotBlank
-    private List<Beneficio> beneficios;
+    private List<BeneficioDtoParaFuncionario> beneficios;
 
 }
