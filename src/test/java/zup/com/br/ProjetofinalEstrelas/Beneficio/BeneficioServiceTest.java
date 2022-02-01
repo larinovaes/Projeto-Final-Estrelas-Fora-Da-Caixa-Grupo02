@@ -11,6 +11,7 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioRepository;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -102,6 +103,29 @@ public class BeneficioServiceTest {
         beneficioService.atualizarBeneficio(Mockito.anyInt(), beneficio);
 
         Mockito.verify(beneficioRepository, Mockito.times(1)).save(beneficio);
+
+    }
+
+    @Test
+    public void testarAtualizarBeneficioNaoEncontrado(){
+        Mockito.when(beneficioRepository.save(Mockito.any())).thenReturn(beneficio);
+        Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
+
+        BeneficioNaoEncontradoException exception = Assertions.assertThrows(BeneficioNaoEncontradoException.class,
+                () -> beneficioService.atualizarBeneficio(2,beneficio));
+
+        Assertions.assertEquals("Benefício não cadastrado.", exception.getMessage());
+
+    }
+
+    @Test
+    public void testarDeletarBeneficio(){
+        Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
+        Mockito.doNothing().when(beneficioRepository).deleteById(Mockito.anyInt());
+
+        beneficioService.deletarBeneficio(Mockito.anyInt());
+
+        Mockito.verify(beneficioRepository, Mockito.times(1)).deleteById(Mockito.anyInt());
 
     }
 
