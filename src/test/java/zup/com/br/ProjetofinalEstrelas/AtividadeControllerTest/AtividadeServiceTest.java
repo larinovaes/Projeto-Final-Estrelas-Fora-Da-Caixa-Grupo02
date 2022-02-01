@@ -100,6 +100,18 @@ public class AtividadeServiceTest {
         Assertions.assertEquals(Beneficio.class, atividadeResposta.getClass());
         Assertions.assertEquals(atividadeFisica.getId(), atividadeResposta.getId());
     }
+
+    @Test
+    public void testarAtualizarAtividadeFisica() {
+        Mockito.when(atividadeFisicaRepository.save(Mockito.any())).thenReturn(atividadeFisica);
+
+        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
+
+        atividadeFisicaService.atualizarAtividadeFisica(Mockito.anyInt(), atividadeFisica);
+
+        Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).save(atividadeFisica);
+
+    }
 }
 
 
