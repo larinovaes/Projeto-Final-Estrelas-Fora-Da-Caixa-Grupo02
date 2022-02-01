@@ -93,6 +93,18 @@ public class BeneficioServiceTest {
         Assertions.assertEquals(beneficio.getId(), beneficioResposta.getId());
     }
 
+    @Test
+    public void testarAtualizarBeneficio() {
+        Mockito.when(beneficioRepository.save(Mockito.any())).thenReturn(beneficio);
+
+        Mockito.when(beneficioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(beneficio));
+
+        beneficioService.atualizarBeneficio(Mockito.anyInt(), beneficio);
+
+        Mockito.verify(beneficioRepository, Mockito.times(1)).save(beneficio);
+
+    }
+
 
 
 
