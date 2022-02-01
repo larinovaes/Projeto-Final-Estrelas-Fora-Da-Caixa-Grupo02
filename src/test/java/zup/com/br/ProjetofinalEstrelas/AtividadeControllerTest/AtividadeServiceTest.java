@@ -1,18 +1,17 @@
 package zup.com.br.ProjetofinalEstrelas.AtividadeControllerTest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaRepository;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaService;
-import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
+import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontradaException;
+import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
@@ -110,6 +109,18 @@ public class AtividadeServiceTest {
         atividadeFisicaService.atualizarAtividadeFisica(Mockito.anyInt(), atividadeFisica);
 
         Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).save(atividadeFisica);
+
+    }
+
+    @Test
+    public void testarAtualizarAtividadeNaoEncontrada() {
+        Mockito.when(atividadeFisicaRepository.save(Mockito.any())).thenReturn(atividadeFisica);
+        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
+
+        AtividadeFisicaNaoEncontradaException exception = Assertions.assertThrows(AtividadeFisicaNaoEncontradaException.class,
+                () -> atividadeFisicaService.atualizarAtividadeFisica(2, atividadeFisica));
+
+        Assertions.assertEquals("Atividade não cadastrada.", exception.getMessage());
 
     }
 }
