@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
+import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @SpringBootTest
 public class FuncionarioServiceTest {
@@ -18,9 +20,14 @@ public class FuncionarioServiceTest {
     private FuncionarioRepository funcionarioRepository;
 
     private Funcionario funcionario;
+    private Usuario usuario;
 
     @BeforeEach
     public void setUp() {
+        usuario = new Usuario();
+        usuario.setEmail("usuario@zup.com.br");
+        usuario.setSenha("Usuario@123");
+
         funcionario = new Funcionario();
         funcionario.setId(1);
         funcionario.setUsuario(funcionario.getUsuario());
@@ -29,13 +36,12 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void testarDeleteDeFuncionarioCaminhoPositivo() {
-            Mockito.when(funcionarioRepository.existsById(Mockito.anyInt())).thenReturn(true);
+    public void testarexibirTodosOsFuncionarios() {
+        Iterable<Funcionario> funcionarios = Arrays.asList(funcionario);
+        Mockito.when(funcionarioRepository.findAll()).thenReturn(funcionarios);
 
-            Mockito.doNothing().when(funcionarioRepository).deleteById(Mockito.anyInt());
-            funcionarioService.deletarFuncionario(funcionario.getUsuario().getEmail());
-
-            Mockito.verify(funcionarioRepository, Mockito.times(1))
-                    .deleteById(Mockito.anyInt());
+        Iterable<Funcionario> funcionarioDeInteresse = funcionarioService.exibirTodosOsFuncionarios();
+        Mockito.verify(funcionarioRepository, Mockito.times(1)).findAll();
     }
 }
+

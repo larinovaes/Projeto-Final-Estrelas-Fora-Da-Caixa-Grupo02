@@ -4,13 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
-import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioEntradaDTO;
-import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
-import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 
 import javax.validation.Valid;
 import java.util.ArrayList;

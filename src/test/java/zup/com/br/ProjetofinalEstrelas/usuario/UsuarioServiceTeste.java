@@ -7,6 +7,8 @@ import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
 
@@ -52,6 +54,16 @@ public class UsuarioServiceTeste {
         });
 
         Assertions.assertEquals("Esse email não corresponde aos funcionarios da ZUP", exception.getMessage());
+    }
+
+    @Test
+    public void testarExcessaoDeUsuarioRepetido() {
+        Mockito.when(usuarioRepository.save(usuario))
+                .thenThrow(new UsuarioJaCadastrado("Esse usuário já esta cadastrado"));
+
+        UsuarioJaCadastrado exception = Assertions.assertThrows(UsuarioJaCadastrado.class, () -> {
+            usuarioService.salvarUsuario(usuario);
+        });
     }
 
     @Test
