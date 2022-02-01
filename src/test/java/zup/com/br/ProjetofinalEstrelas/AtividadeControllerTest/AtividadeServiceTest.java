@@ -73,5 +73,23 @@ public class AtividadeServiceTest {
 
     }
 
+    @Test
+    public void testarBuscarAtividadeFisicaNaoCadastradas() {
+        var atividadeNaoCadastrada = new AtividadeFisica();
+        atividadeNaoCadastrada.setNome("Yoga");
+        Mockito.when(atividadeFisicaRepository.existsById(Mockito.anyInt())).thenReturn(false);
+        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
 
+        Iterable<AtividadeFisica> listaAtualizada = atividadeFisicaService.exibirAtividadesFisicas();
+
+        for (AtividadeFisica atividadeDaListaAtualizada : listaAtualizada) {
+            Assertions.assertNotEquals(atividadeDaListaAtualizada, atividades);
+            Assertions.assertEquals(atividadeDaListaAtualizada.getId(), 2);
+        }
+
+        Mockito.verify(atividadeFisicaRepository, Mockito.times(1)).findAll();
+        Assertions.assertTrue(listaAtualizada instanceof Iterable<?>);
+    }
 }
+
+
