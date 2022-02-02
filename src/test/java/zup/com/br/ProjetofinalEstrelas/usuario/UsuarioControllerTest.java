@@ -166,7 +166,8 @@ public class UsuarioControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarAtualizarUsuario() throws Exception {
-        Mockito.when(usuarioService.atualizarUsuario(Mockito.any(Usuario.class), Mockito.anyString())).thenReturn(usuario);
+        Mockito.when(usuarioService.atualizarUsuario(Mockito.any(Usuario.class), Mockito.anyString()))
+                .thenReturn(usuario);
         String json = objectMapper.writeValueAsString(usuarioDTO);
 
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.put("/usuario")
