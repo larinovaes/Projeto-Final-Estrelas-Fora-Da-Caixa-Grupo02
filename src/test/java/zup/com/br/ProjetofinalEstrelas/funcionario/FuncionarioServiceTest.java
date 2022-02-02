@@ -58,7 +58,7 @@ public class FuncionarioServiceTest {
         funcionario.setId(1);
         funcionario.setUsuario(usuario);
         funcionario.setNivelZupper(NivelZupper.ZUPPER3);
-        funcionario.setDataDeContratacao(LocalDate.now());
+        funcionario.setDataDeContratacao("11-03-1999");
         funcionario.setBeneficios(beneficios);
     }
 
