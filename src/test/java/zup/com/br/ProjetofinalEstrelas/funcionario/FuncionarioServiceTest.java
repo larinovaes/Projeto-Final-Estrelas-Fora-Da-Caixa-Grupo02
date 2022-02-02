@@ -125,7 +125,7 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void testarAtualizar() {
+    public void testarAtualizarCaminhoPositivo() {
         funcionario.setNivelZupper(NivelZupper.ZUPPER4);
 
         Mockito.when(funcionarioRepository.findByUsuarioEmail(Mockito.anyString()))
@@ -134,6 +134,16 @@ public class FuncionarioServiceTest {
         funcionarioService.atualizarFuncionario(Mockito.anyString(), funcionario);
 
         Mockito.verify(funcionarioRepository, Mockito.times(1)).save(funcionario);
+    }
+
+    @Test
+    public void TestarAtualizarCaminhoNegativo() {
+        Mockito.when(funcionarioRepository.findByUsuarioEmail(Mockito.anyString())).thenReturn(Optional.empty());
+
+        FuncionarioNaoEncontradoException exception = Assertions.assertThrows(FuncionarioNaoEncontradoException.class,
+                () -> {
+                    funcionarioService.atualizarFuncionario("usuarioNaoExiste@zup.com.br", funcionario);
+                });
     }
 }
 
