@@ -125,4 +125,21 @@ public class FuncionarioControllerTest {
                 });
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarBuscarFuncionarioEspecifico() throws Exception {
+        funcionario.getUsuario().setEmail("usuario@zup.com.br");
+
+        Mockito.when(funcionarioService.buscarFuncionarioPorEmail(Mockito.anyString())).thenReturn(funcionario);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/funcionario")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+        List<FuncionarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<FuncionarioDTO>>() {
+        });
+    }
+
 }
