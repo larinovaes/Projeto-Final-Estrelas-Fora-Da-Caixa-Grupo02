@@ -10,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
@@ -89,6 +90,27 @@ public class FuncionarioServiceTest {
 
         Mockito.verify(funcionarioRepository, Mockito.times(1))
                 .findByUsuarioEmail(Mockito.anyString());
+    }
+
+    @Test
+    public void testarBuscarFuncionarioPorEmailCaminhoNegativo() {
+        Mockito.when(funcionarioRepository.findByUsuarioEmail(Mockito.anyString())).thenReturn(Optional.empty());
+
+        FuncionarioNaoEncontradoException exception = Assertions.assertThrows(FuncionarioNaoEncontradoException.class,
+                () -> {
+            funcionarioService.buscarFuncionarioPorEmail(Mockito.anyString());
+                });
+
+    }
+
+    @Test
+    public void testarDeletarFuncionarioCaminhoNegativo() {
+        Mockito.doNothing().when(funcionarioRepository).deleteById(Mockito.anyInt());
+
+        FuncionarioNaoEncontradoException exception = Assertions.assertThrows(FuncionarioNaoEncontradoException.class,
+                () -> {
+            funcionarioService.deletarFuncionario("usuarioNaoExiste@zup.com.br");
+        });
     }
 }
 
