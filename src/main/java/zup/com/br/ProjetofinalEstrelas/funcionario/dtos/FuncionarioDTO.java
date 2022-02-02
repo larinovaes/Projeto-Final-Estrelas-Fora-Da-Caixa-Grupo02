@@ -9,7 +9,6 @@ import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,8 +24,8 @@ public class FuncionarioDTO {
     @NotNull
     private NivelZupper nivelZupper;
     @NotNull
-    private LocalDate dataDeContratacao;
-    @NotBlank
+    private String dataDeContratacao;
+    @NotNull
     private List<BeneficioDtoParaFuncionario> beneficios;
 
 }

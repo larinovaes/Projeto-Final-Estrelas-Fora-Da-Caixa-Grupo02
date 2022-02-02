@@ -19,5 +19,5 @@ public class FuncionarioEntradaDTO {
     @NotNull(message = "{validacao.not-blank}")
     private NivelZupper nivelZupper;
     @NotNull(message = "{validacao.not-blank}")
-    private LocalDate dataDeContratacao;
+    private String dataDeContratacao;
 }

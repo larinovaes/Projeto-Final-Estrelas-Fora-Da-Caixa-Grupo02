@@ -30,12 +30,11 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionario);
     }
 
-    public Funcionario buscarFuncionarioPorEmail(String email){
+    public Funcionario buscarFuncionarioPorEmail(String email) {
         Optional<Funcionario> funcionario = funcionarioRepository.findByUsuarioEmail(email);
-        if(funcionario.isEmpty()){
+        if (funcionario.isEmpty()) {
             throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
         }
-
 
         Funcionario funcionario1 = funcionario.get();
         funcionario1.setBeneficios(beneficioService.exibirBeneficiosPorNivel
