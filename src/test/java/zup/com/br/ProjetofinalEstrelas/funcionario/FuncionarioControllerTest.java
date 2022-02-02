@@ -144,7 +144,7 @@ public class FuncionarioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarDeletarUsuario() throws Exception {
+    public void testarDeletarFuncionario() throws Exception {
         funcionario.getUsuario().setEmail("usuario@zup.com.br");
         Mockito.doNothing().when(funcionarioService).deletarFuncionario(Mockito.anyString());
 
@@ -154,5 +154,24 @@ public class FuncionarioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
         Mockito.verify(funcionarioService, Mockito.times(1)).deletarFuncionario(Mockito.anyString());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarAtualizarFuncionario() throws Exception {
+        funcionario.setNivelZupper(NivelZupper.ZUPPER4);
+
+        Mockito.when(funcionarioService.atualizarFuncionario(Mockito.anyString(), Mockito.any(Funcionario.class)))
+                .thenReturn(funcionario);
+        String json = objectMapper.writeValueAsString(funcionarioEntradaDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.put("/funcionario/"
+                                + funcionario.getUsuario().getEmail())
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+        FuncionarioDTO funcionario = objectMapper.readValue(jsonResposta, FuncionarioDTO.class);
+
     }
 }
