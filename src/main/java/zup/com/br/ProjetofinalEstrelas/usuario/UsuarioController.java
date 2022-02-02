@@ -55,13 +55,13 @@ public class UsuarioController {
     }
 
     @PutMapping
-    public void atualizarUsuario(@RequestBody UsuarioDTO usuarioDTO, Authentication authentication) {
+    public UsuarioDTO atualizarUsuario(@RequestBody UsuarioDTO usuarioDTO, Authentication authentication) {
         UsuarioLogado usuarioLogado = (UsuarioLogado) authentication.getPrincipal();
 
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
         usuarioService.atualizarUsuario(usuario, usuarioLogado.getEmail());
 
-        usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        return usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
     }
 
 }
