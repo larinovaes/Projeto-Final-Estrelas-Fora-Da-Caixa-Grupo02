@@ -23,7 +23,7 @@ public class FuncionarioDTO {
     private UsuarioSaidaDTO usuario;
     @NotNull
     private NivelZupper nivelZupper;
-    @NotNull
+    @NotBlank
     private String dataDeContratacao;
     @NotNull
     private List<BeneficioDtoParaFuncionario> beneficios;
