@@ -142,4 +142,17 @@ public class FuncionarioControllerTest {
         });
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarDeletarUsuario() throws Exception {
+        funcionario.getUsuario().setEmail("usuario@zup.com.br");
+        Mockito.doNothing().when(funcionarioService).deletarFuncionario(Mockito.anyString());
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.delete("/funcionario/" +
+                                funcionario.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+
+        Mockito.verify(funcionarioService, Mockito.times(1)).deletarFuncionario(Mockito.anyString());
+    }
 }
