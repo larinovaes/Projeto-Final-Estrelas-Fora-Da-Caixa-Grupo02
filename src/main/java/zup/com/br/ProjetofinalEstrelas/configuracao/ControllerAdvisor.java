@@ -20,7 +20,7 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MensagemErro manipularErroDeEnumInvalido(HttpMessageNotReadableException exception) {
+    public MensagemErro manipularErroDeJsonInvalido(HttpMessageNotReadableException exception) {
 
         MensagemErro mensagemErro = new MensagemErro("Campo obrigatorio inválido");
 
