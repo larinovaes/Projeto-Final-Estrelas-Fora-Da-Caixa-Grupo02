@@ -172,6 +172,20 @@ public class FuncionarioControllerTest {
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
         FuncionarioDTO funcionario = objectMapper.readValue(jsonResposta, FuncionarioDTO.class);
+    }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarValidacaoDeCamposNotBlankFuncionario() throws Exception {
+        funcionarioDTO.setNomeDeFuncionario(" ");
+        funcionarioDTO.setDataDeContratacao(" ");
+
+        Mockito.when(funcionarioService.salvarFuncionario(Mockito.any(Funcionario.class), Mockito.anyString()))
+                .thenReturn(funcionario);
+        String json = objectMapper.writeValueAsString(funcionarioDTO);
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/funcionario")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
     }
 }
