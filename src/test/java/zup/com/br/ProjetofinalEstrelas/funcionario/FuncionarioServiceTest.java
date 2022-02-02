@@ -112,5 +112,17 @@ public class FuncionarioServiceTest {
             funcionarioService.deletarFuncionario("usuarioNaoExiste@zup.com.br");
         });
     }
+
+    @Test
+    public void testarAtualizar() {
+        funcionario.setNivelZupper(NivelZupper.ZUPPER4);
+
+        Mockito.when(funcionarioRepository.findByUsuarioEmail(Mockito.anyString()))
+                .thenReturn(Optional.of(funcionario));
+
+        funcionarioService.atualizarFuncionario(Mockito.anyString(), funcionario);
+
+        Mockito.verify(funcionarioRepository, Mockito.times(1)).save(funcionario);
+    }
 }
 
