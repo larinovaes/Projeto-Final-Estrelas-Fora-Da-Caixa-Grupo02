@@ -6,7 +6,7 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
-import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioRepository;
+import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,29 +17,24 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
     @Autowired
     private BeneficioService beneficioService;
 
     public Funcionario salvarFuncionario(Funcionario funcionario, String email) {
-        Optional<Usuario> usuarios = usuarioRepository.findById(email);
+        Usuario usuario = usuarioService.buscarUsuarioPeloOEmail(email);
         List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
 
-        if(usuarios.isEmpty()){
-            throw new FuncionarioNaoEncontradoException("Esse funcionario não está cadastrado");
-        }
-
-        funcionario.setUsuario(usuarios.get());
+        funcionario.setUsuario(usuario);
         funcionario.setBeneficios(beneficios);
         return funcionarioRepository.save(funcionario);
     }
 
-    public Funcionario buscarFuncionarioPorEmail(String email){
+    public Funcionario buscarFuncionarioPorEmail(String email) {
         Optional<Funcionario> funcionario = funcionarioRepository.findByUsuarioEmail(email);
-        if(funcionario.isEmpty()){
+        if (funcionario.isEmpty()) {
             throw new FuncionarioNaoEncontradoException("Funcionario não encontrado");
         }
-
 
         Funcionario funcionario1 = funcionario.get();
         funcionario1.setBeneficios(beneficioService.exibirBeneficiosPorNivel
@@ -65,4 +60,5 @@ public class FuncionarioService {
                 (funcionarioParaAtualizar.getNivelZupper()));
         return funcionarioRepository.save(funcionarioParaAtualizar);
     }
+
 }
