@@ -114,6 +114,17 @@ public class FuncionarioServiceTest {
     }
 
     @Test
+    public void testarDeletarFuncionario() {
+        Mockito.when(funcionarioRepository.findByUsuarioEmail(funcionario.getUsuario().getEmail()))
+                .thenReturn(Optional.of(funcionario));
+
+        Mockito.doNothing().when(funcionarioRepository).deleteById(Mockito.anyInt());
+        funcionarioService.deletarFuncionario(funcionario.getUsuario().getEmail());
+
+        Mockito.verify(funcionarioRepository, Mockito.times(1)).deleteById(funcionario.getId());
+    }
+
+    @Test
     public void testarAtualizar() {
         funcionario.setNivelZupper(NivelZupper.ZUPPER4);
 
