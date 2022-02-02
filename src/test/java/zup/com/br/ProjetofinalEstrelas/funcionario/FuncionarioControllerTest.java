@@ -101,11 +101,28 @@ public class FuncionarioControllerTest {
         String json = objectMapper.writeValueAsString(funcionarioEntradaDTO);
 
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/funcionario")
-                .content(json).contentType(MediaType.APPLICATION_JSON))
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
         String jsonReposta = resultado.andReturn().getResponse().getContentAsString();
         FuncionarioDTO funcionarioDTO = objectMapper.readValue(jsonReposta, FuncionarioDTO.class);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarExibirTodosOsFuncionarios() throws Exception {
+        Mockito.when(funcionarioService.exibirTodosOsFuncionarios()).thenReturn(Arrays.asList(funcionario));
+
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/funcionario")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+
+        List<FuncionarioDTO> funcionarioDTOS = objectMapper.readValue(jsonResposta,
+                new TypeReference<List<FuncionarioDTO>>() {
+                });
     }
 
 }
