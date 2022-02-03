@@ -134,4 +134,20 @@ public class UsuarioServiceTeste {
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(Mockito.any());
     }
 
+    @Test
+    public void testarAtualizarSenhaDeUsuarioNaoEncontrado() {
+        Mockito.when(usuarioRepository.save(Mockito.any()))
+                .thenReturn(usuario);
+
+        Mockito.when(usuarioRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.empty());
+
+        UsuarioNaoEncontrado exception = Assertions.assertThrows(UsuarioNaoEncontrado.class, () -> {
+            usuarioService.atualizarSenhaDeUsuario("lari@Zup.com.br", usuario);
+        });
+
+        Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
+
+    }
+
 }
