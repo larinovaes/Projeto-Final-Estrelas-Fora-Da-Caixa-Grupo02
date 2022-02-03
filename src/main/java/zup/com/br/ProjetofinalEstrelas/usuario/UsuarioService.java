@@ -32,18 +32,12 @@ public class UsuarioService {
     }
 
     public Usuario atualizarUsuario(Usuario usuario, String email) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(email);
+        Usuario usuarioParaAtualizar = buscarUsuarioPeloOEmail(email);
 
-        if (usuarioOptional.isEmpty()) {
-            throw new UsuarioNaoEncontrado("Usuario não encontrado");
-        }
+        usuarioParaAtualizar.setEmail(usuario.getEmail());
+        usuarioParaAtualizar.setSenha(usuario.getSenha());
 
-        Usuario usuarioDoBanco = usuarioOptional.get();
-
-        if (!usuarioDoBanco.getEmail().equals(usuario.getEmail())) {
-            usuarioDoBanco.setEmail(usuario.getEmail());
-        }
-        return usuarioDoBanco;
+        return usuarioRepository.save(usuarioParaAtualizar);
     }
 
     public void deletarUsuario(String email) {
