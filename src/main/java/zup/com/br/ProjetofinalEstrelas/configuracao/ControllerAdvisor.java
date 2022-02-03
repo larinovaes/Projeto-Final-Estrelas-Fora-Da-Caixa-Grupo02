@@ -46,9 +46,9 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(BeneficioJaCadastradoException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(BeneficioJaCadastradoException exception) {
+    @ExceptionHandler(AtividadeFisicaNaoEncontradaException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public MensagemErro tratarExcessaoDeAtividadeFisicaNaoEncontrada(AtividadeFisicaNaoEncontradaException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
