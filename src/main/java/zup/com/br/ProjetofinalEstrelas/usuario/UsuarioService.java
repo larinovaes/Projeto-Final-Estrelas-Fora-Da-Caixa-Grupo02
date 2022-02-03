@@ -31,7 +31,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public void atualizarUsuario(Usuario usuario, String email) {
+    public Usuario atualizarUsuario(Usuario usuario, String email) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(email);
 
         if (usuarioOptional.isEmpty()) {
@@ -43,6 +43,7 @@ public class UsuarioService {
         if (!usuarioDoBanco.getEmail().equals(usuario.getEmail())) {
             usuarioDoBanco.setEmail(usuario.getEmail());
         }
+        return usuarioDoBanco;
     }
 
     public void deletarUsuario(String email) {

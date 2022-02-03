@@ -1,5 +1,6 @@
 package zup.com.br.ProjetofinalEstrelas.configuracao;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.AcessoNegadoException;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.TokenInvalidoException;
@@ -16,6 +17,15 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ControllerAdvisor {
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public MensagemErro manipularErroDeJsonInvalido(HttpMessageNotReadableException exception) {
+
+        MensagemErro mensagemErro = new MensagemErro("Campo obrigatorio inválido");
+
+        return mensagemErro;
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -36,9 +46,9 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(BeneficioJaCadastradoException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(BeneficioJaCadastradoException exception) {
+    @ExceptionHandler(AtividadeFisicaNaoEncontradaException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public MensagemErro tratarExcessaoDeAtividadeFisicaNaoEncontrada(AtividadeFisicaNaoEncontradaException exception) {
         return new MensagemErro(exception.getMessage());
     }
 

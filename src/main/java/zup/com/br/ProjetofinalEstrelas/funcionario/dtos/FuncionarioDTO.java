@@ -4,12 +4,10 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -24,9 +22,9 @@ public class FuncionarioDTO {
     private UsuarioSaidaDTO usuario;
     @NotNull
     private NivelZupper nivelZupper;
-    @NotNull
-    private LocalDate dataDeContratacao;
     @NotBlank
-    private List<Beneficio> beneficios;
+    private String dataDeContratacao;
+    @NotNull
+    private List<BeneficioDtoParaFuncionario> beneficios;
 
 }

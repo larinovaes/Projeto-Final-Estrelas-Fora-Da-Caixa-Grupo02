@@ -30,7 +30,7 @@ public class Funcionario {
     @Enumerated(EnumType.STRING)
     private NivelZupper nivelZupper;
 
-    private LocalDate dataDeContratacao;
+    private String dataDeContratacao;
 
     @ManyToMany
     private List<Beneficio> beneficios;
