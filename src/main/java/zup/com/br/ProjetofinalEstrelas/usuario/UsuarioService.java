@@ -31,13 +31,14 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario atualizarUsuario(Usuario usuario, String email) {
+    public Usuario atualizarSenhaDeUsuario(String email, Usuario usuario) {
         Usuario usuarioParaAtualizar = buscarUsuarioPeloOEmail(email);
 
-        usuarioParaAtualizar.setEmail(usuario.getEmail());
-        usuarioParaAtualizar.setSenha(usuario.getSenha());
+        String senhaEscondida = encoder.encode(usuarioParaAtualizar.getSenha());
+        usuarioParaAtualizar.setSenha(senhaEscondida);
 
-        return usuarioRepository.save(usuarioParaAtualizar);
+        usuarioRepository.save(usuarioParaAtualizar);
+        return usuarioParaAtualizar;
     }
 
     public void deletarUsuario(String email) {
