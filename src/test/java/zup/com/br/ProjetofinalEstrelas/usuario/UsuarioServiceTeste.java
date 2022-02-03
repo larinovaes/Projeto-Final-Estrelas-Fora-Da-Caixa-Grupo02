@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
+import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
@@ -118,6 +119,19 @@ public class UsuarioServiceTeste {
             usuarioService.buscarUsuarioPeloOEmail("usuario@zup.com.br");
         });
         Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
+    }
+
+    @Test
+    public void testarAtualizarSenhaDeUsuario() {
+        Mockito.when(usuarioRepository.save(Mockito.any()))
+                .thenReturn(usuario);
+
+        Mockito.when(usuarioRepository.findById(Mockito.anyString()))
+                .thenReturn(Optional.of(usuario));
+
+        usuarioService.atualizarSenhaDeUsuario(Mockito.anyString(), usuario);
+
+        Mockito.verify(usuarioRepository, Mockito.times(1)).save(Mockito.any());
     }
 
 }
