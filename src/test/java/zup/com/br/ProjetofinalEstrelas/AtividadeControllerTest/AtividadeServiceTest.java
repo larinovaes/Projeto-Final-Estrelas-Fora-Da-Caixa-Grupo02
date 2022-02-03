@@ -10,10 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaRepository;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaService;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.exception.AtividadeFisicaNaoEncontradaException;
-import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +75,7 @@ public class AtividadeServiceTest {
         Mockito.when(atividadeFisicaRepository.existsById(Mockito.anyInt())).thenReturn(false);
         Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
 
-        Iterable<AtividadeFisica> listaAtualizada = atividadeFisicaService.exibirAtividadesFisicas();
+        Iterable<AtividadeFisica> listaAtualizada = atividadeFisicaService.exibirAtividadesFisicas(atividadeFisica.getCidade(), atividadeFisica.getBairro());
 
         for (AtividadeFisica atividadeDaListaAtualizada : listaAtualizada) {
             Assertions.assertNotEquals(atividadeDaListaAtualizada, atividades);
@@ -111,21 +108,12 @@ public class AtividadeServiceTest {
 
     }
 
-    @Test
-    public void testarAtualizarAtividadeNaoEncontrada() {
-        Mockito.when(atividadeFisicaRepository.save(Mockito.any())).thenReturn(atividadeFisica);
-        Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-
-        AtividadeFisicaNaoEncontradaException exception = Assertions.assertThrows(AtividadeFisicaNaoEncontradaException.class,
-                () -> atividadeFisicaService.atualizarAtividadeFisica(2, atividadeFisica));
-
-        Assertions.assertEquals("Atividade não cadastrada.", exception.getMessage());
-
-    }
 
     @Test
     public void testarDeletarAtividade() {
+
         Mockito.when(atividadeFisicaRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(atividadeFisica));
+
         Mockito.doNothing().when(atividadeFisicaRepository).deleteById(Mockito.anyInt());
 
         atividadeFisicaService.deletarAtividadeFisica(Mockito.anyInt());
@@ -134,16 +122,7 @@ public class AtividadeServiceTest {
 
     }
 
-    @Test
-    public void testarDeletarAtividadeFisicaNaoEncontrada() {
-        Mockito.doNothing().when(atividadeFisicaRepository).deleteById(Mockito.anyInt());
 
-        AtividadeFisicaNaoEncontradaException exception = Assertions.assertThrows(AtividadeFisicaNaoEncontradaException.class, () -> {
-            atividadeFisicaService.deletarAtividadeFisica(1);
-        });
-
-
-    }
 }
 
 

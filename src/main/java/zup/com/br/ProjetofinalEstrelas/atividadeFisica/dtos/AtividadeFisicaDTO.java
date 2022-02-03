@@ -23,6 +23,8 @@ public class AtividadeFisicaDTO {
     @NotBlank(message = "{validacao.not-blank}")
     private String horario;
     @NotBlank(message = "{validacao.not-blank}")
+    private String data;
+    @NotBlank(message = "{validacao.not-blank}")
     private String endereco;
     @NotBlank(message = "{validacao.not-blank}")
     private String responsavel;

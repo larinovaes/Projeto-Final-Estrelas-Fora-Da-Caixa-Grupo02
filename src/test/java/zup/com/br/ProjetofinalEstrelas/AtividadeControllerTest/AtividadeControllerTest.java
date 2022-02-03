@@ -86,7 +86,7 @@ public class AtividadeControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarExibirDeAtividadeFisica() throws Exception {
-        Mockito.when(atividadeFisicaService.exibirAtividadesFisicas()).thenReturn(Arrays.asList(atividadeFisica));
+        Mockito.when(atividadeFisicaService.exibirAtividadesFisicas(atividadeFisica.getCidade(), atividadeFisica.getBairro())).thenReturn(Arrays.asList(atividadeFisica));
 
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.get("/atividadefisica")
                         .contentType(MediaType.APPLICATION_JSON))

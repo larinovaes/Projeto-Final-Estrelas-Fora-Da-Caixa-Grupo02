@@ -32,10 +32,11 @@ public class AtividadeFisicaController {
     }
 
 
-       @GetMapping//R
-    public Iterable<ExibirDetalheAtividadeFisicaDTO> exibirTodasAtividadesFisicas() {
+    @GetMapping//R
+    public Iterable<ExibirDetalheAtividadeFisicaDTO> exibirTodasAtividadesFisicas(@RequestParam (required = false) String cidade,
+                                                                                  @RequestParam (required = false) String bairro ) {
         List<ExibirDetalheAtividadeFisicaDTO> todasAtividadesFisicas = new ArrayList<>();
-        atividadeFisicaService.exibirAtividadesFisicas().forEach(AtividadeFisica -> {
+        atividadeFisicaService.exibirAtividadesFisicas(cidade,bairro).forEach(AtividadeFisica -> {
             todasAtividadesFisicas.add(modelMapper.map(AtividadeFisica, ExibirDetalheAtividadeFisicaDTO.class));
         });
         return todasAtividadesFisicas;
@@ -55,7 +56,7 @@ public class AtividadeFisicaController {
 
 
     @GetMapping("/{id}")
-    public AtividadeFisica buscarAtividadeFisicaEspecifica(@PathVariable Integer id) {
+    public AtividadeFisica buscarAtividadeFisicaEspecifica(@PathVariable Integer id,String cidade,String bairro) {
         return atividadeFisicaService.pesquisarAtividadeFisicaPorId(id);
     }
 

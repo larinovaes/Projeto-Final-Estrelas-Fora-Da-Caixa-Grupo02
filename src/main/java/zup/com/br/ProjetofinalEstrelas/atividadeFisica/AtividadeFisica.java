@@ -31,6 +31,8 @@ public class AtividadeFisica {
     @NotBlank
     private String horario;
     @NotBlank
+    private String data;
+    @NotBlank
     private String endereco;
     @NotBlank
     private String responsavel;
