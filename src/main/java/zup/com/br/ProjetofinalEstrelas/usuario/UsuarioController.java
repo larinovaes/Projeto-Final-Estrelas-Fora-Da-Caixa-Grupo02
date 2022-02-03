@@ -9,6 +9,7 @@ import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLogado;
 import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
+import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioLogadoService usuarioLogadoService;
     @Autowired
     ModelMapper modelMapper;
 
@@ -34,7 +37,7 @@ public class UsuarioController {
     @GetMapping
     public List<UsuarioDTO> exibirUsuarios() {
         List<UsuarioDTO> resumoDTO = new ArrayList<>();
-        for (Usuario musicaRef: usuarioService.exibirUsuarios()) {
+        for (Usuario musicaRef : usuarioService.exibirUsuarios()) {
             UsuarioDTO resumo = modelMapper.map(musicaRef, UsuarioDTO.class);
             resumoDTO.add(resumo);
         }
@@ -55,14 +58,14 @@ public class UsuarioController {
         usuarioService.deletarUsuario(email);
     }
 
-    @PutMapping
-    public UsuarioDTO atualizarUsuario(@RequestBody UsuarioDTO usuarioDTO, Authentication authentication) {
-        UsuarioLogado usuarioLogado = (UsuarioLogado) authentication.getPrincipal();
 
-        Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        usuarioService.atualizarUsuario(usuario, usuarioLogado.getEmail());
-        usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
-        return usuarioDTO;
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void atualizarSenhaDeUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioService.atualizarSenhaDeUsuario(usuarioLogadoService.pegarEmail(),
+                modelMapper.map(usuarioDTO, Usuario.class));
+
+        modelMapper.map(usuario, UsuarioDTO.class);
     }
 
 }
