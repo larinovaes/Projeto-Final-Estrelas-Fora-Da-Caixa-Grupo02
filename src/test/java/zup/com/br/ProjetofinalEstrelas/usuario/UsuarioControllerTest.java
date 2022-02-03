@@ -168,7 +168,7 @@ public class UsuarioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarAtualizarUsuario() throws Exception {
+    public void testarAtualizarSenhaDeUsuario() throws Exception {
         Mockito.when(usuarioLogadoService.pegarEmail()).thenReturn("usuario@zup.com.br");
         Mockito.when(usuarioService.atualizarSenhaDeUsuario(Mockito.anyString(), Mockito.any(Usuario.class))).thenReturn(usuario);
         String json = objectMapper.writeValueAsString(usuarioDTO);
