@@ -1,6 +1,7 @@
 package zup.com.br.ProjetofinalEstrelas.configuracao;
 
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.AcessoNegadoException;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.exception.TokenInvalidoException;
@@ -85,6 +86,12 @@ public class ControllerAdvisor {
     @ExceptionHandler(AcessoNegadoException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public MensagemErro manipularExcessaoDeAcessoNegado(AcessoNegadoException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public MensagemErro manipularExcessaoDeEmailOuSenhaNaoCadastrado(UsernameNotFoundException exception) {
         return new MensagemErro(exception.getMessage());
     }
 }

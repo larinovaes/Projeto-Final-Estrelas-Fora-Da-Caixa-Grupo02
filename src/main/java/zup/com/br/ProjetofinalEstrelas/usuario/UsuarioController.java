@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLogado;
+import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
+import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
+import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioLogadoService usuarioLogadoService;
     @Autowired
     ModelMapper modelMapper;
 
@@ -32,7 +37,7 @@ public class UsuarioController {
     @GetMapping
     public List<UsuarioDTO> exibirUsuarios() {
         List<UsuarioDTO> resumoDTO = new ArrayList<>();
-        for (Usuario musicaRef: usuarioService.exibirUsuarios()) {
+        for (Usuario musicaRef : usuarioService.exibirUsuarios()) {
             UsuarioDTO resumo = modelMapper.map(musicaRef, UsuarioDTO.class);
             resumoDTO.add(resumo);
         }
@@ -42,8 +47,7 @@ public class UsuarioController {
     @GetMapping("/{email}")
     public UsuarioDTO buscarUsuarioPorEmail(@PathVariable String email) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
-        Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        usuarioService.buscarUsuarioPeloOEmail(email);
+        Usuario usuario = usuarioService.buscarUsuarioPeloOEmail(email);
         usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
         return usuarioDTO;
     }
@@ -54,14 +58,14 @@ public class UsuarioController {
         usuarioService.deletarUsuario(email);
     }
 
+
     @PutMapping
-    public UsuarioDTO atualizarUsuario(@RequestBody UsuarioDTO usuarioDTO, Authentication authentication) {
-        UsuarioLogado usuarioLogado = (UsuarioLogado) authentication.getPrincipal();
+    @ResponseStatus(HttpStatus.OK)
+    public void atualizarSenhaDeUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioService.atualizarSenhaDeUsuario(usuarioLogadoService.pegarEmail(),
+                modelMapper.map(usuarioDTO, Usuario.class));
 
-        Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        usuarioService.atualizarUsuario(usuario, usuarioLogado.getEmail());
-
-        return usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        modelMapper.map(usuario, UsuarioDTO.class);
     }
 
 }

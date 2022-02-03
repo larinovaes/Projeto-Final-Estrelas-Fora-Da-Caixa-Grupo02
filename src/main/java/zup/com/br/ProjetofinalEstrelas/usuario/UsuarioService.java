@@ -31,19 +31,14 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario atualizarUsuario(Usuario usuario, String email) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(email);
+    public Usuario atualizarSenhaDeUsuario(String email, Usuario usuario) {
+        Usuario usuarioParaAtualizar = buscarUsuarioPeloOEmail(email);
 
-        if (usuarioOptional.isEmpty()) {
-            throw new UsuarioNaoEncontrado("Usuario não encontrado");
-        }
+        String senhaEscondida = encoder.encode(usuarioParaAtualizar.getSenha());
+        usuarioParaAtualizar.setSenha(senhaEscondida);
 
-        Usuario usuarioDoBanco = usuarioOptional.get();
-
-        if (!usuarioDoBanco.getEmail().equals(usuario.getEmail())) {
-            usuarioDoBanco.setEmail(usuario.getEmail());
-        }
-        return usuarioDoBanco;
+        usuarioRepository.save(usuarioParaAtualizar);
+        return usuarioParaAtualizar;
     }
 
     public void deletarUsuario(String email) {

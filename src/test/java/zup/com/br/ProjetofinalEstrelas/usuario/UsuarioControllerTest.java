@@ -22,6 +22,7 @@ import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
+import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,8 @@ public class UsuarioControllerTest {
     private UsuarioLoginService usuarioLoginService;
     @MockBean
     private JWTComponent jwtComponent;
+    @MockBean
+    private UsuarioLogadoService usuarioLogadoService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -165,9 +168,9 @@ public class UsuarioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarAtualizarUsuario() throws Exception {
-        Mockito.when(usuarioService.atualizarUsuario(Mockito.any(Usuario.class), Mockito.anyString()))
-                .thenReturn(usuario);
+    public void testarAtualizarSenhaDeUsuario() throws Exception {
+        Mockito.when(usuarioLogadoService.pegarEmail()).thenReturn("usuario@zup.com.br");
+        Mockito.when(usuarioService.atualizarSenhaDeUsuario(Mockito.anyString(), Mockito.any(Usuario.class))).thenReturn(usuario);
         String json = objectMapper.writeValueAsString(usuarioDTO);
 
         ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.put("/usuario")
@@ -175,6 +178,5 @@ public class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
-        UsuarioDTO usuarioDTO = objectMapper.readValue(jsonResposta, UsuarioDTO.class);
     }
 }
