@@ -18,6 +18,7 @@ import java.time.LocalDate;
 
 @WebMvcTest({UsuarioController.class, ConversorModelMapper.class, UsuarioLoginService.class, JWTComponent.class})
 public class FuncionarioControllerTest {
+
     @MockBean
     private FuncionarioService funcionarioService;
     @MockBean
