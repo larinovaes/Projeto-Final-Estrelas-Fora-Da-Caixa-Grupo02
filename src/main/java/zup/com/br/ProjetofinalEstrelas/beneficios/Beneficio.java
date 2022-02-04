@@ -28,6 +28,8 @@ public class Beneficio {
 
     @NotBlank
     private String descricao;
+    @NotBlank
+    private String link;
     @NotNull
     private NivelZupper nivelZupper;
 

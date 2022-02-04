@@ -34,6 +34,7 @@ import java.util.List;
 
 @WebMvcTest({FuncionarioController.class, ConversorModelMapper.class, UsuarioLoginService.class, JWTComponent.class})
 public class FuncionarioControllerTest {
+
     @MockBean
     private FuncionarioService funcionarioService;
     @MockBean
