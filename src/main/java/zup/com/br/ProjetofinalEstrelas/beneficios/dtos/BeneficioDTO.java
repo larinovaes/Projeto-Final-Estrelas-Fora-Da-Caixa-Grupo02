@@ -14,6 +14,8 @@ public class BeneficioDTO {
     private String nome;
     @NotBlank(message = "{validacao.not-blank}")
     private String descricao;
+    @NotBlank(message = "{validacao.not-blank}")
+    private String link;
     @NotNull(message = "{validacao.not-blank}")
     private NivelZupper nivelZupper;
 
