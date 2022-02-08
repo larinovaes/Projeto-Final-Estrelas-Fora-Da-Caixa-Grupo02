@@ -25,7 +25,7 @@ public class UsuarioService {
         if (usuarioRepository.existsById(usuario.getEmail())) {
             throw new UsuarioJaCadastrado("Esse usuário já esta cadastrado");
         }
-        usuario.setRole("ROLE_ADMIN");
+        usuario.setRole("ROLE_USER");
         String senhaEscondida = encoder.encode(usuario.getSenha());
         usuario.setSenha(senhaEscondida);
         return usuarioRepository.save(usuario);
