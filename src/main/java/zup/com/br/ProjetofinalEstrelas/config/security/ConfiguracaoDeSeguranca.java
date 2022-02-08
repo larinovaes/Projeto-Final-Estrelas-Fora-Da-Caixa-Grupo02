@@ -40,7 +40,7 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(configurarCORS());
 
 
-        http.authorizeHttpRequests()
+        http.authorizeRequests()
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
                         "/swagger-resources/configuration/security", "/swagger-ui/**", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
