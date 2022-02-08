@@ -48,7 +48,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Ajuda Zupper",
-                "API para auxiliar os zuppers a consultar os beneficios disponiveis",
+                "API para auxiliar os zuppers a consultar os benefícios disponíveis",
                 "1.0",
                 "Terms of service",
                 new Contact("Larissa, Barbara Ann, Maicon",
