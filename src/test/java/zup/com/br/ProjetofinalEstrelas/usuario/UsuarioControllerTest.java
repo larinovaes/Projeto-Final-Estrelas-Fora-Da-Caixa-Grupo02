@@ -21,6 +21,7 @@ import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
+import zup.com.br.ProjetofinalEstrelas.usuario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
 
@@ -44,6 +45,7 @@ public class UsuarioControllerTest {
     private Usuario usuario;
     private UsuarioDTO usuarioDTO;
     private ObjectMapper objectMapper;
+    private AtualizarDTO atualizarDTO;
 
     @BeforeEach
     public void setup() {
@@ -54,6 +56,9 @@ public class UsuarioControllerTest {
         usuarioDTO = new UsuarioDTO();
         usuarioDTO.setEmail("usuario@zup.com.br");
         usuarioDTO.setSenha("Senha@123");
+
+        atualizarDTO = new AtualizarDTO();
+        atualizarDTO.setSenha("@746MA51fg");
 
         objectMapper = new ObjectMapper();
     }
@@ -171,9 +176,9 @@ public class UsuarioControllerTest {
     public void testarAtualizarSenhaDeUsuario() throws Exception {
         Mockito.when(usuarioLogadoService.pegarEmail()).thenReturn("usuario@zup.com.br");
         Mockito.when(usuarioService.atualizarSenhaDeUsuario(Mockito.anyString(), Mockito.any(Usuario.class))).thenReturn(usuario);
-        String json = objectMapper.writeValueAsString(usuarioDTO);
+        String json = objectMapper.writeValueAsString(atualizarDTO);
 
-        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.put("/usuario")
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.put("/usuario/usuario@zup.com.br")
                         .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
