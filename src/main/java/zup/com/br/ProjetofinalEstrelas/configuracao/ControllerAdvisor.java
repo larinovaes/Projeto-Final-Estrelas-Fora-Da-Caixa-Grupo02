@@ -94,4 +94,10 @@ public class ControllerAdvisor {
     public MensagemErro manipularExcessaoDeEmailOuSenhaNaoCadastrado(UsernameNotFoundException exception) {
         return new MensagemErro(exception.getMessage());
     }
+
+    @ExceptionHandler(UsuarioSemPermissao.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public MensagemErro manipularExcessaoDeUsuarioSemPermissao(UsuarioSemPermissao exception) {
+        return new MensagemErro(exception.getMessage());
+    }
 }
