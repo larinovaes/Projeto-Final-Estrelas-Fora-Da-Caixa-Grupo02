@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 public class FuncionarioEntradaDTO {
     @NotBlank(message = "{validacao.not-blank}")
-    @Size(min = 3, max = 100, message = "O nome de funcionario deve ter no minimo 3 caractere e no máixmo 100")
+    @Size(min = 3, max = 100, message = "{validacao.size.nome}")
     private String nomeDeFuncionario;
     @Email
     @NotBlank(message = "{validacao.not-blank}")

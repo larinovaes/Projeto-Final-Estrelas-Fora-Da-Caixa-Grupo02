@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.ExibirDetalheBeneficioDTO;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.SaidaBeneficioDTO;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -33,10 +33,10 @@ public class BeneficioController {
 
     @GetMapping//R
     @ApiOperation(value = "Método responsável por exibir benefícios")
-    public Iterable<ExibirDetalheBeneficioDTO> exibirTodosBeneficios() {
-        List<ExibirDetalheBeneficioDTO> todosBeneficios = new ArrayList<>();
+    public Iterable<SaidaBeneficioDTO> exibirTodosBeneficios() {
+        List<SaidaBeneficioDTO> todosBeneficios = new ArrayList<>();
         beneficioService.exibirBeneficios().forEach(beneficio -> {
-            todosBeneficios.add(modelMapper.map(beneficio, ExibirDetalheBeneficioDTO.class));
+            todosBeneficios.add(modelMapper.map(beneficio, SaidaBeneficioDTO.class));
         });
         return todosBeneficios;
     }
@@ -49,8 +49,8 @@ public class BeneficioController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Método responsável por exibir benefício pelo seu ID")
-    public ExibirDetalheBeneficioDTO exibirBeneficioPorId(@PathVariable int id) {
-        return modelMapper.map(beneficioService.pesquisarBeneficioPorID(id), ExibirDetalheBeneficioDTO.class);
+    public SaidaBeneficioDTO exibirBeneficioPorId(@PathVariable int id) {
+        return modelMapper.map(beneficioService.pesquisarBeneficioPorID(id), SaidaBeneficioDTO.class);
     }
 
     @DeleteMapping("/{id}")//D
