@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,7 +25,6 @@ import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 import zup.com.br.ProjetofinalEstrelas.exception.BeneficioNaoEncontradoException;
-import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,8 +40,6 @@ public class BeneficioControllerTest {
     private UsuarioLoginService usuarioLoginService;
     @MockBean
     private JWTComponent jwtComponent;
-    @MockBean
-    ModelMapper modelMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -72,7 +68,7 @@ public class BeneficioControllerTest {
 
         saidaBeneficioDTO = new SaidaBeneficioDTO();
         saidaBeneficioDTO.setId(2);
-        saidaBeneficioDTO.setNome("Plano de sáude");
+        saidaBeneficioDTO.setNome("Plano de saúde");
         saidaBeneficioDTO.setDescricao("Sulámerica");
         saidaBeneficioDTO.setNivelZupper(NivelZupper.ZUPPER3);
         saidaBeneficioDTO.setLink("www.sulamerica.com.br");
@@ -91,6 +87,7 @@ public class BeneficioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
+        SaidaBeneficioDTO beneficioResposta = objectMapper.readValue(jsonResposta, SaidaBeneficioDTO.class);
     }
 
     @Test
@@ -104,7 +101,7 @@ public class BeneficioControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 
         String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
-        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResposta, new TypeReference<List<BeneficioDTO>>() {
+        List<SaidaBeneficioDTO> beneficios = objectMapper.readValue(jsonResposta, new TypeReference<List<SaidaBeneficioDTO>>() {
         });
     }
 
@@ -114,14 +111,12 @@ public class BeneficioControllerTest {
     public void testarRotaParaBuscarBeneficiosEspecifico() throws Exception {
         Mockito.when(beneficioService.pesquisarBeneficioPorID(Mockito.anyInt())).thenReturn(beneficio);
 
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio")
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/beneficio/1")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+                .andExpect(MockMvcResultMatchers.status().is(200));
 
         String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        List<BeneficioDTO> beneficios = objectMapper.readValue(jsonResponse, new TypeReference<List<BeneficioDTO>>() {
-        });
+        SaidaBeneficioDTO beneficioResposta = objectMapper.readValue(jsonResponse, SaidaBeneficioDTO.class);
     }
 
     @Test
