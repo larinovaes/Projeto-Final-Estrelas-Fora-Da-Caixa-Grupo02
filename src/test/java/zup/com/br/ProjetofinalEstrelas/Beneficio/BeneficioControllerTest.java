@@ -196,6 +196,18 @@ public class BeneficioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastroDeBeneficioValidarNivelZupperNotNull() throws Exception {
+        beneficioDTO.setNivelZupper(null);
+        Mockito.when((beneficioService.salvarBeneficio(Mockito.any(Beneficio.class)))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarDeletarBeneficioNaoEncontrado() throws Exception {
         Mockito.doThrow(BeneficioNaoEncontradoException.class).when(beneficioService).deletarBeneficio(Mockito.anyInt());
 
