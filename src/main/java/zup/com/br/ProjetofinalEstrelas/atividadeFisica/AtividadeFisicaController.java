@@ -7,9 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
-import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 
 
 import javax.validation.Valid;
@@ -32,8 +31,12 @@ public class AtividadeFisicaController {
     @PostMapping()//C
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Método responsável por cadastrar uma atividade física")
-    public AtividadeFisica cadastrarAtividadeFisica(@RequestBody @Valid AtividadeFisica atividadeFisica) {
-        return atividadeFisicaService.salvarAtividadeFisica(atividadeFisica);
+    public ExibirDetalheAtividadeFisicaDTO cadastrarAtividadeFisica(@RequestBody @Valid
+                                                                                AtividadeFisicaDTO atividadeFisicaDTO) {
+       AtividadeFisica atividadeFisica = atividadeFisicaService.salvarAtividadeFisica(modelMapper
+               .map(atividadeFisicaDTO, AtividadeFisica.class));
+
+       return modelMapper.map(atividadeFisica, ExibirDetalheAtividadeFisicaDTO.class);
     }
 
 
