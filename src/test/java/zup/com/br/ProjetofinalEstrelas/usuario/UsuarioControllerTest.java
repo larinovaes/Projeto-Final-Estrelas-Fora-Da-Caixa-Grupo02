@@ -17,10 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
-import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
-import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
-import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
@@ -147,7 +144,7 @@ public class UsuarioControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarBuscarUsuarioEspecificoCaminhoNegativo() throws Exception {
-        Mockito.doThrow(UsuarioNaoEncontrado.class).when(usuarioService).buscarUsuarioPeloOEmail(Mockito.anyString());
+        Mockito.doThrow(UsuarioNaoEncontradoException.class).when(usuarioService).buscarUsuarioPeloOEmail(Mockito.anyString());
 
         String json = objectMapper.writeValueAsString(usuarioDTO);
 

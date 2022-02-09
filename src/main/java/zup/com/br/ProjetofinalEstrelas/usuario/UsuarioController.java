@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioSemPermissao;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioSemPermissaoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
 import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
@@ -70,7 +70,7 @@ public class UsuarioController {
     @ApiOperation(value = "Método responsável por atualizar a senha do usuário pelo seu email")
     public void atualizarSenhaDeUsuario(@PathVariable String email, @RequestBody AtualizarDTO atualizarDTO) {
         if(!usuarioLogadoService.pegarEmail().equals(email)){
-            throw new UsuarioSemPermissao("Você não tem permissão para atualizar esse usuário");
+            throw new UsuarioSemPermissaoException("Você não tem permissão para atualizar esse usuário");
         }
 
         Usuario usuario = usuarioService.atualizarSenhaDeUsuario(email,

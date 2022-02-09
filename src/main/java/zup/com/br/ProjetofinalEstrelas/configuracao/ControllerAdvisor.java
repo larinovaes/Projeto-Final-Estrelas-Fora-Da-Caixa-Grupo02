@@ -53,15 +53,15 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioJaCadastrado.class)
+    @ExceptionHandler(UsuarioJaCadastradoException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastrado exception) {
+    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastradoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioNaoEncontrado.class)
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontrado exception) {
+    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontradoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
@@ -71,9 +71,9 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioNaoZupper.class)
+    @ExceptionHandler(UsuarioNaoZupperException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public MensagemErro tratarExcessaoDeUsuarioNaoZupper(UsuarioNaoZupper exception) {
+    public MensagemErro tratarExcessaoDeUsuarioNaoZupper(UsuarioNaoZupperException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
@@ -95,9 +95,9 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioSemPermissao.class)
+    @ExceptionHandler(UsuarioSemPermissaoException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public MensagemErro manipularExcessaoDeUsuarioSemPermissao(UsuarioSemPermissao exception) {
+    public MensagemErro manipularExcessaoDeUsuarioSemPermissao(UsuarioSemPermissaoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 }
