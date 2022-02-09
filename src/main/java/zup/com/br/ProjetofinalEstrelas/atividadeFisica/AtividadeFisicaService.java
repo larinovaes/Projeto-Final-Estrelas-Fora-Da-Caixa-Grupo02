@@ -37,6 +37,7 @@ public class AtividadeFisicaService {
         atividadeFisicaInDB.setCidade(atividadeFisica.getCidade());
         atividadeFisicaInDB.setBairro(atividadeFisica.getBairro());
         atividadeFisicaInDB.setEndereco(atividadeFisica.getEndereco());
+        atividadeFisicaInDB.setData(atividadeFisica.getData());
         atividadeFisicaInDB.setContato(atividadeFisica.getContato());
         atividadeFisicaInDB.setHorario(atividadeFisica.getHorario());
         atividadeFisicaInDB.setResponsavel(atividadeFisica.getResponsavel());
