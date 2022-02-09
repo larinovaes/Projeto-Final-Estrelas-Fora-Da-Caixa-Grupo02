@@ -3,9 +3,9 @@ package zup.com.br.ProjetofinalEstrelas.usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastrado;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastradoException;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupperException;
 
 import java.util.Optional;
 
@@ -20,10 +20,10 @@ public class UsuarioService {
 
     public Usuario salvarUsuario(Usuario usuario) {
         if (!usuario.getEmail().endsWith("zup.com.br")) {
-            throw new UsuarioNaoZupper("Esse email não corresponde aos funcionarios da ZUP");
+            throw new UsuarioNaoZupperException("Esse email não corresponde aos funcionarios da ZUP");
         }
         if (usuarioRepository.existsById(usuario.getEmail())) {
-            throw new UsuarioJaCadastrado("Esse usuário já esta cadastrado");
+            throw new UsuarioJaCadastradoException("Esse usuário já esta cadastrado");
         }
         usuario.setRole("ROLE_USER");
         String senhaEscondida = encoder.encode(usuario.getSenha());
@@ -34,7 +34,7 @@ public class UsuarioService {
     public Usuario atualizarSenhaDeUsuario(String email, Usuario usuario) {
         Usuario usuarioParaAtualizar = buscarUsuarioPeloOEmail(email);
 
-        String senhaEscondida = encoder.encode(usuarioParaAtualizar.getSenha());
+        String senhaEscondida = encoder.encode(usuario.getSenha());
         usuarioParaAtualizar.setSenha(senhaEscondida);
 
         usuarioRepository.save(usuarioParaAtualizar);
@@ -42,13 +42,8 @@ public class UsuarioService {
     }
 
     public void deletarUsuario(String email) {
-        try {
-            usuarioRepository.deleteById(email);
-        } catch (Exception exception) {
-            if (!usuarioRepository.existsById(email)) {
-                throw new UsuarioNaoEncontrado("Usuario não encontrado");
-            }
-        }
+        buscarUsuarioPeloOEmail(email);
+        usuarioRepository.deleteById(email);
     }
 
     public Iterable<Usuario> exibirUsuarios() {
@@ -60,7 +55,7 @@ public class UsuarioService {
         if (usuarioOptional.isPresent()) {
             return usuarioOptional.get();
         }
-        throw new UsuarioNaoEncontrado("Usuario não encontrado");
+        throw new UsuarioNaoEncontradoException("Usuario não encontrado");
     }
 
 }

@@ -23,7 +23,7 @@ public class Beneficio {
     private int id;
 
     @Column(nullable = false)
-    @Size(min = 3,message = "O nome deve ter no mínimo 3 caracteres")
+    @Size(min = 3, message = "{validacao.size.nome}")
     private String nome;
 
     @NotBlank

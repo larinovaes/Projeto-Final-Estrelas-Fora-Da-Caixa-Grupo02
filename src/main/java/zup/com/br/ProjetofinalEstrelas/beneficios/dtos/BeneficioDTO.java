@@ -4,13 +4,13 @@ import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 public class BeneficioDTO {
 
     @NotBlank(message = "{validacao.not-blank}")
-    private int id;
-    @NotBlank(message = "{validacao.not-blank}")
+    @Size(min = 3, max = 100, message = "{validacao.size.nome}")
     private String nome;
     @NotBlank(message = "{validacao.not-blank}")
     private String descricao;

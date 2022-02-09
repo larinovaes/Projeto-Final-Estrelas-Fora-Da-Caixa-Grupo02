@@ -10,6 +10,6 @@ import javax.validation.constraints.Email;
 @Getter
 @Setter
 public class UsuarioSaidaDTO {
-    @Email(message = "{validacao.email.email}")
+    @Email
     private String email;
 }

@@ -6,9 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioSemPermissaoException;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.AtualizarDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioDTO;
 import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.FuncionarioEntradaDTO;
+import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private UsuarioLogadoService usuarioLogadoService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -50,6 +54,9 @@ public class FuncionarioController {
     @GetMapping("/{email}")
     @ApiOperation(value = "Método responsável por exibir funcionário pelo seu email")
     public FuncionarioDTO buscarFuncionarioExpecifico(@PathVariable String email) {
+        if(!usuarioLogadoService.pegarEmail().equals(email)){
+            throw new UsuarioSemPermissaoException("Você não tem permissão para visualizar esse Funcionário");
+        }
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
         Funcionario funcionario = funcionarioService.buscarFuncionarioPorEmail(email);
         funcionarioDTO = modelMapper.map(funcionario, FuncionarioDTO.class);

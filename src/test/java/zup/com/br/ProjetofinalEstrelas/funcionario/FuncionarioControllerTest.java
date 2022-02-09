@@ -25,6 +25,7 @@ import zup.com.br.ProjetofinalEstrelas.funcionario.dtos.UsuarioSaidaDTO;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioController;
 import zup.com.br.ProjetofinalEstrelas.usuario.dtos.UsuarioDTO;
+import zup.com.br.ProjetofinalEstrelas.usuarioLogado.UsuarioLogadoService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,6 +42,8 @@ public class FuncionarioControllerTest {
     private UsuarioLoginService usuarioLoginService;
     @MockBean
     private JWTComponent jwtComponent;
+    @MockBean
+    private UsuarioLogadoService usuarioLogadoService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -130,17 +133,16 @@ public class FuncionarioControllerTest {
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarBuscarFuncionarioEspecifico() throws Exception {
         funcionario.getUsuario().setEmail("usuario@zup.com.br");
+        Mockito.when(usuarioLogadoService.pegarEmail()).thenReturn("usuario@zup.com.br");
 
         Mockito.when(funcionarioService.buscarFuncionarioPorEmail(Mockito.anyString())).thenReturn(funcionario);
 
-        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/funcionario")
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.get("/funcionario/usuario@zup.com.br")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+                .andExpect(MockMvcResultMatchers.status().is(200));
 
         String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
-        List<FuncionarioDTO> usuarios = objectMapper.readValue(jsonResposta, new TypeReference<List<FuncionarioDTO>>() {
-        });
+        FuncionarioDTO usuarios = objectMapper.readValue(jsonResposta, FuncionarioDTO.class);
     }
 
     @Test

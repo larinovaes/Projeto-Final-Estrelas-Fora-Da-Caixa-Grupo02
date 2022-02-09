@@ -19,6 +19,7 @@ import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisica;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaController;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.AtividadeFisicaService;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
+import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
@@ -36,8 +37,6 @@ public class AtividadeControllerTest {
     private UsuarioLoginService usuarioLoginService;
     @MockBean
     private JWTComponent jwtComponent;
-    @MockBean
-    ModelMapper modelMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,33 +44,50 @@ public class AtividadeControllerTest {
     private ObjectMapper objectMapper;
     private AtividadeFisica atividadeFisica;
     private AtividadeFisicaDTO atividadeFisicaDTO;
+    private ExibirDetalheAtividadeFisicaDTO exibirDetalheAtividadeFisicaDTO;
 
     @BeforeEach
     public void setup() {
         objectMapper = new ObjectMapper();
         atividadeFisica = new AtividadeFisica();
+        atividadeFisica.setId(2);
         atividadeFisica.setNome("Yoga");
         atividadeFisica.setCidade("Rio de Janeiro");
         atividadeFisica.setBairro("Ipanema");
         atividadeFisica.setHorario("8:00");
+        atividadeFisica.setData("09/02/2022");
         atividadeFisica.setEndereco("Posto 9");
         atividadeFisica.setResponsavel("Babi Ann");
-        atividadeFisica.setContato("(21)99150-2997");
+        atividadeFisica.setContato("(21) 99150-2997");
 
         atividadeFisicaDTO = new AtividadeFisicaDTO();
         atividadeFisicaDTO.setNome("Yoga");
         atividadeFisicaDTO.setCidade("Rio de Janeiro");
         atividadeFisicaDTO.setBairro("Ipanema");
         atividadeFisicaDTO.setHorario("8:00");
+        atividadeFisicaDTO.setData("09/02/2022");
         atividadeFisicaDTO.setEndereco("Posto 9");
         atividadeFisicaDTO.setResponsavel("Babi Ann");
-        atividadeFisicaDTO.setContato("(21)99150-2997");
+        atividadeFisicaDTO.setContato("(21) 99150-2997");
+
+        exibirDetalheAtividadeFisicaDTO = new ExibirDetalheAtividadeFisicaDTO();
+        exibirDetalheAtividadeFisicaDTO.setId(2);
+        exibirDetalheAtividadeFisicaDTO.setNome("Yoga");
+        exibirDetalheAtividadeFisicaDTO.setCidade("Rio de Janeiro");
+        exibirDetalheAtividadeFisicaDTO.setBairro("Ipanema");
+        exibirDetalheAtividadeFisicaDTO.setHorario("8:00");
+        exibirDetalheAtividadeFisicaDTO.setData("09/02/2022");
+        exibirDetalheAtividadeFisicaDTO.setEndereco("Posto 9");
+        exibirDetalheAtividadeFisicaDTO.setResponsavel("Babi Ann");
+        exibirDetalheAtividadeFisicaDTO.setContato("(21) 99150-2997");
+
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarRotaParaCadastrarAtividadeFisica() throws Exception {
-        Mockito.when(atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
+        Mockito.when(atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))
+                .thenReturn(atividadeFisica);
         String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
 
 
@@ -80,28 +96,33 @@ public class AtividadeControllerTest {
                 .andExpect((MockMvcResultMatchers.status().is(201)));
 
         String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        AtividadeFisicaDTO AtividadeFisicaResposta = objectMapper.readValue(jsonResponse, AtividadeFisicaDTO.class);
+        ExibirDetalheAtividadeFisicaDTO AtividadeFisicaResposta = objectMapper.readValue(jsonResponse,
+                ExibirDetalheAtividadeFisicaDTO.class);
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarExibirDeAtividadeFisica() throws Exception {
-        Mockito.when(atividadeFisicaService.exibirAtividadesFisicas(atividadeFisica.getCidade(), atividadeFisica.getBairro())).thenReturn(Arrays.asList(atividadeFisica));
+        Mockito.when(atividadeFisicaService.exibirAtividadesFisicas(atividadeFisica.getCidade(),
+                atividadeFisica.getBairro())).thenReturn(Arrays.asList(atividadeFisica));
 
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.get("/atividadefisica")
+                        .param("Cidade", "Rio de Janeiro")
+                        .param("Bairro", "Ipanema")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 
         String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
-        List<AtividadeFisicaDTO> atividadeFisica = objectMapper.readValue(jsonResposta, new TypeReference<List<AtividadeFisicaDTO>>() {
-        });
+        List<ExibirDetalheAtividadeFisicaDTO> atividadeFisica = objectMapper.readValue(jsonResposta,
+                new TypeReference<List<ExibirDetalheAtividadeFisicaDTO>>() {});
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarAtualizarAtividadeFisica() throws Exception {
-        Mockito.when(atividadeFisicaService.atualizarAtividadeFisica(Mockito.anyInt(), Mockito.any(AtividadeFisica.class))).thenReturn(atividadeFisica);
+        Mockito.when(atividadeFisicaService.atualizarAtividadeFisica(Mockito.anyInt(), Mockito.any(
+                AtividadeFisica.class))).thenReturn(atividadeFisica);
         String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
 
         ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.put("/atividadefisica/2")
@@ -109,7 +130,8 @@ public class AtividadeControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
         String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
-        AtividadeFisicaDTO atividadeResposta = objectMapper.readValue(jsonResposta, AtividadeFisicaDTO.class);
+        ExibirDetalheAtividadeFisicaDTO atividadeResposta = objectMapper.readValue(jsonResposta,
+                ExibirDetalheAtividadeFisicaDTO.class);
 
     }
 
@@ -118,14 +140,13 @@ public class AtividadeControllerTest {
     public void testarRotaParaBuscarAtividadeEspecifica() throws Exception {
         Mockito.when(atividadeFisicaService.pesquisarAtividadeFisicaPorId(Mockito.anyInt())).thenReturn(atividadeFisica);
 
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/atividadefisica")
+        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.get("/atividadefisica/2")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+                .andExpect(MockMvcResultMatchers.status().is(200));
 
         String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        List<AtividadeFisicaDTO> atividades = objectMapper.readValue(jsonResponse, new TypeReference<List<AtividadeFisicaDTO>>() {
-        });
+        ExibirDetalheAtividadeFisicaDTO atividadeResposta = objectMapper.readValue(jsonResponse,
+                ExibirDetalheAtividadeFisicaDTO.class);
     }
 
     @Test
@@ -143,8 +164,203 @@ public class AtividadeControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarCadastrarAtividadeFisicaValidarNome() throws Exception {
+    public void testarCadastrarAtividadeFisicaValidarNomeNotBlank() throws Exception {
         atividadeFisicaDTO.setNome("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarCidadeNotBlank() throws Exception {
+        atividadeFisicaDTO.setCidade("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarBairroNotBlank() throws Exception {
+        atividadeFisicaDTO.setBairro("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarHorarioNotBlank() throws Exception {
+        atividadeFisicaDTO.setHorario("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarDataNotBlank() throws Exception {
+        atividadeFisicaDTO.setData("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarEnderecoNotBlank() throws Exception {
+        atividadeFisicaDTO.setEndereco("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarResponsavelNotBlank() throws Exception {
+        atividadeFisicaDTO.setResponsavel("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarContatoNotBlank() throws Exception {
+        atividadeFisicaDTO.setContato("");
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarNomeNotNull() throws Exception {
+        atividadeFisicaDTO.setNome(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarCidadeNotNull() throws Exception {
+        atividadeFisicaDTO.setCidade(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarBairroNotNull() throws Exception {
+        atividadeFisicaDTO.setBairro(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarHorarioNotNull() throws Exception {
+        atividadeFisicaDTO.setHorario(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarDataNotNull() throws Exception {
+        atividadeFisicaDTO.setData(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarEnderecoNotNull() throws Exception {
+        atividadeFisicaDTO.setEndereco(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarResponsavelNotNull() throws Exception {
+        atividadeFisicaDTO.setResponsavel(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarContatoNotNull() throws Exception {
+        atividadeFisicaDTO.setContato(null);
 
         Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
         String json = objectMapper.writeValueAsString(atividadeFisicaDTO);

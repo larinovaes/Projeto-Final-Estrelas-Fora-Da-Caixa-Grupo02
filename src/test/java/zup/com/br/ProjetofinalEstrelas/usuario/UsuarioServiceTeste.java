@@ -7,14 +7,11 @@ import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
-import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastrado;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
-import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastradoException;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontradoException;
+import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupperException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -50,7 +47,7 @@ public class UsuarioServiceTeste {
 
         Mockito.when(usuarioRepository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
 
-        UsuarioNaoZupper exception = Assertions.assertThrows(UsuarioNaoZupper.class, () -> {
+        UsuarioNaoZupperException exception = Assertions.assertThrows(UsuarioNaoZupperException.class, () -> {
             usuarioService.salvarUsuario(usuario);
         });
 
@@ -60,9 +57,9 @@ public class UsuarioServiceTeste {
     @Test
     public void testarExcessaoDeUsuarioRepetido() {
         Mockito.when(usuarioRepository.save(usuario))
-                .thenThrow(new UsuarioJaCadastrado("Esse usuário já esta cadastrado"));
+                .thenThrow(new UsuarioJaCadastradoException("Esse usuário já esta cadastrado"));
 
-        UsuarioJaCadastrado exception = Assertions.assertThrows(UsuarioJaCadastrado.class, () -> {
+        UsuarioJaCadastradoException exception = Assertions.assertThrows(UsuarioJaCadastradoException.class, () -> {
             usuarioService.salvarUsuario(usuario);
         });
     }
@@ -75,18 +72,17 @@ public class UsuarioServiceTeste {
         usuarioService.deletarUsuario(usuario.getEmail());
 
         Mockito.verify(usuarioRepository, Mockito.times(1)).deleteById(Mockito.anyString());
+
     }
 
     @Test
     public void testarDeletarUsuarioSemSucesso() {
-        Mockito.when(usuarioRepository.findById(Mockito.anyString()))
-                .thenThrow(new UsuarioNaoEncontrado("Usuario não encontrado"));
-        try {
-            usuarioService.deletarUsuario(usuario.getEmail());
-        } catch (Exception exception) {
-            Assertions.assertEquals(UsuarioNaoEncontrado.class, exception.getClass());
-            Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
-        }
+        Mockito.doNothing().when(usuarioRepository).deleteById(Mockito.anyString());
+
+        UsuarioNaoEncontradoException exception = Assertions.assertThrows(UsuarioNaoEncontradoException.class,
+                () -> {
+                    usuarioService.deletarUsuario("usuarioNaoExiste@zup.com.br");
+                });
     }
 
     @Test
@@ -115,7 +111,7 @@ public class UsuarioServiceTeste {
         Mockito.when(usuarioRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        UsuarioNaoEncontrado exception = Assertions.assertThrows(UsuarioNaoEncontrado.class, () -> {
+        UsuarioNaoEncontradoException exception = Assertions.assertThrows(UsuarioNaoEncontradoException.class, () -> {
             usuarioService.buscarUsuarioPeloOEmail("usuario@zup.com.br");
         });
         Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
@@ -142,7 +138,7 @@ public class UsuarioServiceTeste {
         Mockito.when(usuarioRepository.findById(Mockito.anyString()))
                 .thenReturn(Optional.empty());
 
-        UsuarioNaoEncontrado exception = Assertions.assertThrows(UsuarioNaoEncontrado.class, () -> {
+        UsuarioNaoEncontradoException exception = Assertions.assertThrows(UsuarioNaoEncontradoException.class, () -> {
             usuarioService.atualizarSenhaDeUsuario("lari@Zup.com.br", usuario);
         });
 

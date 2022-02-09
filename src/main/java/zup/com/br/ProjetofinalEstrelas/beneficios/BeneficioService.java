@@ -29,6 +29,7 @@ public class BeneficioService {
         Beneficio beneficioInDB = pesquisarBeneficioPorID(id);
         beneficioInDB.setNome(beneficio.getNome());
         beneficioInDB.setDescricao(beneficio.getDescricao());
+        beneficioInDB.setLink(beneficio.getLink());
         return beneficioRepository.save(beneficioInDB);
     }
 

@@ -7,9 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.AtividadeFisicaDTO;
 import zup.com.br.ProjetofinalEstrelas.atividadeFisica.dtos.ExibirDetalheAtividadeFisicaDTO;
-import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
-import zup.com.br.ProjetofinalEstrelas.funcionario.Funcionario;
 
 
 import javax.validation.Valid;
@@ -26,21 +25,27 @@ public class AtividadeFisicaController {
     @Autowired
     private AtividadeFisicaService atividadeFisicaService;
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
 
     @PostMapping()//C
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Método responsável por cadastrar uma atividade física")
-    public AtividadeFisica cadastrarAtividadeFisica(@RequestBody @Valid AtividadeFisica atividadeFisica) {
-        return atividadeFisicaService.salvarAtividadeFisica(atividadeFisica);
+    public ExibirDetalheAtividadeFisicaDTO cadastrarAtividadeFisica(@RequestBody @Valid
+                                                                                AtividadeFisicaDTO atividadeFisicaDTO) {
+       AtividadeFisica atividadeFisica = atividadeFisicaService.salvarAtividadeFisica(modelMapper
+               .map(atividadeFisicaDTO, AtividadeFisica.class));
+
+       return modelMapper.map(atividadeFisica, ExibirDetalheAtividadeFisicaDTO.class);
     }
 
 
     @GetMapping//R
     @ApiOperation(value = "Método responsável por exibir atividade física")
-    public Iterable<ExibirDetalheAtividadeFisicaDTO> exibirTodasAtividadesFisicas(@RequestParam (required = false) String cidade,
-                                                                                  @RequestParam (required = false) String bairro ) {
+    public Iterable<ExibirDetalheAtividadeFisicaDTO> exibirTodasAtividadesFisicas(@RequestParam (required = false)
+                                                                                              String cidade,
+                                                                                  @RequestParam (required = false)
+                                                                                          String bairro ) {
         List<ExibirDetalheAtividadeFisicaDTO> todasAtividadesFisicas = new ArrayList<>();
         atividadeFisicaService.exibirAtividadesFisicas(cidade,bairro).forEach(AtividadeFisica -> {
             todasAtividadesFisicas.add(modelMapper.map(AtividadeFisica, ExibirDetalheAtividadeFisicaDTO.class));
@@ -50,8 +55,12 @@ public class AtividadeFisicaController {
 
     @PutMapping("/{id}")//U
     @ApiOperation(value = "Método responsável por atualizar as informações de atividade física pelo seu ID")
-    public AtividadeFisica atualizarAtividadeFisica(@PathVariable int id, @RequestBody @Valid AtividadeFisica atividadeFisica) {
-        return atividadeFisicaService.atualizarAtividadeFisica(id, atividadeFisica);
+    public ExibirDetalheAtividadeFisicaDTO atualizarAtividadeFisica(@PathVariable int id, @RequestBody @Valid
+            AtividadeFisicaDTO atividadeFisicaDTO) {
+
+        AtividadeFisica atividadeFisica = modelMapper.map(atividadeFisicaService.atualizarAtividadeFisica(id,
+                modelMapper.map(atividadeFisicaDTO, AtividadeFisica.class)), AtividadeFisica.class);
+        return modelMapper.map(atividadeFisica, ExibirDetalheAtividadeFisicaDTO.class);
     }
 
     @DeleteMapping("/{id}")//D
@@ -65,8 +74,9 @@ public class AtividadeFisicaController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Método responsável por exibir atividade física pelo seu ID")
-    public AtividadeFisica buscarAtividadeFisicaEspecifica(@PathVariable Integer id,String cidade,String bairro) {
-        return atividadeFisicaService.pesquisarAtividadeFisicaPorId(id);
+    public ExibirDetalheAtividadeFisicaDTO buscarAtividadeFisicaEspecifica(@PathVariable Integer id) {
+        return modelMapper.map(atividadeFisicaService.pesquisarAtividadeFisicaPorId(id),
+                ExibirDetalheAtividadeFisicaDTO.class);
     }
 
 }

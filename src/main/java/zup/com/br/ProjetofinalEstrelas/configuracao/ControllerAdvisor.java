@@ -23,7 +23,7 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public MensagemErro manipularErroDeJsonInvalido(HttpMessageNotReadableException exception) {
 
-        MensagemErro mensagemErro = new MensagemErro("Campo obrigatorio inválido");
+        MensagemErro mensagemErro = new MensagemErro("Sintaxe Inválida");
 
         return mensagemErro;
     }
@@ -53,15 +53,15 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioJaCadastrado.class)
+    @ExceptionHandler(UsuarioJaCadastradoException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastrado exception) {
+    public MensagemErro manipularExcessaoDeUsuarioJaCadastrado(UsuarioJaCadastradoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioNaoEncontrado.class)
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontrado exception) {
+    public MensagemErro tratarExcessaoDeBeneficioJaCadastrado(UsuarioNaoEncontradoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
@@ -71,9 +71,9 @@ public class ControllerAdvisor {
         return new MensagemErro(exception.getMessage());
     }
 
-    @ExceptionHandler(UsuarioNaoZupper.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public MensagemErro tratarExcessaoDeUsuarioNaoZupper(UsuarioNaoZupper exception) {
+    @ExceptionHandler(UsuarioNaoZupperException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public MensagemErro tratarExcessaoDeUsuarioNaoZupper(UsuarioNaoZupperException exception) {
         return new MensagemErro(exception.getMessage());
     }
 
@@ -92,6 +92,12 @@ public class ControllerAdvisor {
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public MensagemErro manipularExcessaoDeEmailOuSenhaNaoCadastrado(UsernameNotFoundException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
+
+    @ExceptionHandler(UsuarioSemPermissaoException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public MensagemErro manipularExcessaoDeUsuarioSemPermissao(UsuarioSemPermissaoException exception) {
         return new MensagemErro(exception.getMessage());
     }
 }
