@@ -45,8 +45,12 @@ public class BeneficioController {
 
     @PutMapping("/{id}")//U
     @ApiOperation(value = "Método responsável por atualizar as informações do benefício pelo seu ID")
-    public Beneficio atualizarBeneficio(@PathVariable int id, @RequestBody @Valid Beneficio beneficio) {
-        return beneficioService.atualizarBeneficio(id, beneficio);
+    public SaidaBeneficioDTO atualizarBeneficio(@PathVariable int id, @RequestBody @Valid BeneficioDTO beneficioDTO){
+
+        Beneficio beneficio = modelMapper.map(beneficioService.atualizarBeneficio(id, modelMapper.map(beneficioDTO,
+                Beneficio.class)), Beneficio.class);
+
+        return modelMapper.map(beneficio, SaidaBeneficioDTO.class);
     }
 
     @GetMapping("/{id}")
