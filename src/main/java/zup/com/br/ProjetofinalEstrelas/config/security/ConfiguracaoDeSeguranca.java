@@ -29,8 +29,7 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
 
     private static final String[] ENDPOINT = {
             "/beneficio/**",
-            "/usuario/**",
-            "/funcionario/**"
+            "/usuario/**"
     };
 
     @Override
@@ -45,9 +44,19 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/configuration/security", "/swagger-ui/**", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
                 .antMatchers(HttpMethod.GET, ENDPOINT).hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/usuario/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/beneficio/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/beneficio/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/funcionario").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/funcionario/{\\d}").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/atividadefisica").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/atividadefisica/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.POST, "/beneficio").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/funcionario").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/atividadefisica").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.PUT, "/usuario/{\\d}").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.PUT, "/beneficio/{\\d}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/funcionario/{\\d}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/atividadefisica/{\\d}").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.DELETE, "/funcionario").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/atividadefisica/{\\d}").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.DELETE, ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated();
 
