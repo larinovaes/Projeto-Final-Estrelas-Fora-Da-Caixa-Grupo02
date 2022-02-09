@@ -149,8 +149,20 @@ public class BeneficioControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void testarCadastroDeBeneficioValidarNome() throws Exception {
+    public void testarCadastroDeBeneficioValidarNomeNotBlank() throws Exception {
         beneficioDTO.setNome("");
+        Mockito.when((beneficioService.salvarBeneficio(Mockito.any(Beneficio.class)))).thenReturn(beneficio);
+        String json = objectMapper.writeValueAsString(beneficioDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastroDeBeneficioValidarDescricaoNotBlank() throws Exception {
+        beneficioDTO.setDescricao("");
         Mockito.when((beneficioService.salvarBeneficio(Mockito.any(Beneficio.class)))).thenReturn(beneficio);
         String json = objectMapper.writeValueAsString(beneficioDTO);
 
