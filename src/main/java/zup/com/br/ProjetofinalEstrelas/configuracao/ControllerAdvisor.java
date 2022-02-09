@@ -72,7 +72,7 @@ public class ControllerAdvisor {
     }
 
     @ExceptionHandler(UsuarioNaoZupper.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public MensagemErro tratarExcessaoDeUsuarioNaoZupper(UsuarioNaoZupper exception) {
         return new MensagemErro(exception.getMessage());
     }
