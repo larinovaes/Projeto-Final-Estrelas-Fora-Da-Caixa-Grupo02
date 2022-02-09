@@ -20,6 +20,7 @@ import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioController;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
 import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.SaidaBeneficioDTO;
 import zup.com.br.ProjetofinalEstrelas.componente.ConversorModelMapper;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
@@ -50,6 +51,7 @@ public class BeneficioControllerTest {
     private ObjectMapper objectMapper;
     private Beneficio beneficio;
     private BeneficioDTO beneficioDTO;
+    private SaidaBeneficioDTO saidaBeneficioDTO;
 
 
     @BeforeEach
@@ -59,13 +61,22 @@ public class BeneficioControllerTest {
         beneficio.setNome("Plano de saúde");
         beneficio.setDescricao("Sulámerica");
         beneficio.setNivelZupper(NivelZupper.ZUPPER3);
+        beneficio.setLink("www.sulamerica.com.br");
         beneficio.setId(2);
 
         beneficioDTO = new BeneficioDTO();
         beneficioDTO.setNome("Plano de saúde");
         beneficioDTO.setDescricao("Sulamérica");
         beneficioDTO.setNivelZupper(NivelZupper.ZUPPER3);
-        beneficioDTO.setId(2);
+        beneficioDTO.setLink("www.sulamerica.com.br");
+
+        saidaBeneficioDTO = new SaidaBeneficioDTO();
+        saidaBeneficioDTO.setId(2);
+        saidaBeneficioDTO.setNome("Plano de sáude");
+        saidaBeneficioDTO.setDescricao("Sulámerica");
+        saidaBeneficioDTO.setNivelZupper(NivelZupper.ZUPPER3);
+        saidaBeneficioDTO.setLink("www.sulamerica.com.br");
+
 
     }
 
@@ -75,13 +86,11 @@ public class BeneficioControllerTest {
         Mockito.when(beneficioService.salvarBeneficio(Mockito.any(Beneficio.class))).thenReturn(beneficio);
         String json = objectMapper.writeValueAsString(beneficioDTO);
 
+        ResultActions resultado = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(201));
 
-        ResultActions respostaDaRequisicao = mockMvc.perform(MockMvcRequestBuilders.post("/beneficio")
-                        .content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect((MockMvcResultMatchers.status().is(201)));
-
-        String jsonResponse = respostaDaRequisicao.andReturn().getResponse().getContentAsString();
-        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResponse, BeneficioDTO.class);
+        String jsonResposta = resultado.andReturn().getResponse().getContentAsString();
     }
 
     @Test
