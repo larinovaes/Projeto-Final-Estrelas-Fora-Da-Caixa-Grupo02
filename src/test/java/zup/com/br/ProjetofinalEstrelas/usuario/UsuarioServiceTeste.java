@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zup.com.br.ProjetofinalEstrelas.config.security.UsuarioLoginService;
 import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
+import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioJaCadastrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoEncontrado;
 import zup.com.br.ProjetofinalEstrelas.exception.UsuarioNaoZupper;
@@ -75,18 +76,17 @@ public class UsuarioServiceTeste {
         usuarioService.deletarUsuario(usuario.getEmail());
 
         Mockito.verify(usuarioRepository, Mockito.times(1)).deleteById(Mockito.anyString());
+
     }
 
     @Test
     public void testarDeletarUsuarioSemSucesso() {
-        Mockito.when(usuarioRepository.findById(Mockito.anyString()))
-                .thenThrow(new UsuarioNaoEncontrado("Usuario não encontrado"));
-        try {
-            usuarioService.deletarUsuario(usuario.getEmail());
-        } catch (Exception exception) {
-            Assertions.assertEquals(UsuarioNaoEncontrado.class, exception.getClass());
-            Assertions.assertEquals("Usuario não encontrado", exception.getMessage());
-        }
+        Mockito.doNothing().when(usuarioRepository).deleteById(Mockito.anyString());
+
+        UsuarioNaoEncontrado exception = Assertions.assertThrows(UsuarioNaoEncontrado.class,
+                () -> {
+                    usuarioService.deletarUsuario("usuarioNaoExiste@zup.com.br");
+                });
     }
 
     @Test
