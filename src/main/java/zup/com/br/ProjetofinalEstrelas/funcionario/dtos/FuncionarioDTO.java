@@ -14,17 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 public class FuncionarioDTO {
-
-    @NotBlank
-    @Size(min = 3, max = 100, message = "{validacao.size.nomeDeFuncionario}")
     private String nomeDeFuncionario;
-    @NotBlank
     private UsuarioSaidaDTO usuario;
-    @NotNull
     private NivelZupper nivelZupper;
-    @NotBlank
     private String dataDeContratacao;
-    @NotNull
     private List<BeneficioDtoParaFuncionario> beneficios;
 
 }
