@@ -331,6 +331,19 @@ public class AtividadeControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(422));
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    public void testarCadastrarAtividadeFisicaValidarEnderecoNotNull() throws Exception {
+        atividadeFisicaDTO.setEndereco(null);
+
+        Mockito.when((atividadeFisicaService.salvarAtividadeFisica(Mockito.any(AtividadeFisica.class)))).thenReturn(atividadeFisica);
+        String json = objectMapper.writeValueAsString(atividadeFisicaDTO);
+
+        ResultActions resposta = mockMvc.perform(MockMvcRequestBuilders.post("/atividadefisica")
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
   @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void testarDeletarAtividadeFisicaNaoEncontrada() throws Exception {
