@@ -23,7 +23,7 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public MensagemErro manipularErroDeJsonInvalido(HttpMessageNotReadableException exception) {
 
-        MensagemErro mensagemErro = new MensagemErro("Campo obrigatorio inválido");
+        MensagemErro mensagemErro = new MensagemErro("Sintaxe Inválida");
 
         return mensagemErro;
     }
