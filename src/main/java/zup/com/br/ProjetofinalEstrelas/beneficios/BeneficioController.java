@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.BeneficioDTO;
 import zup.com.br.ProjetofinalEstrelas.beneficios.dtos.SaidaBeneficioDTO;
 
 import javax.validation.Valid;
@@ -27,8 +28,9 @@ public class BeneficioController {
     @PostMapping()//C
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Método responsável por cadastrar um benefício")
-    public Beneficio cadastrarBeneficio(@RequestBody Beneficio beneficio) {
-        return beneficioService.salvarBeneficio(beneficio);
+    public SaidaBeneficioDTO cadastrarBeneficio(@RequestBody @Valid BeneficioDTO beneficioDTO) {
+         Beneficio beneficio = beneficioService.salvarBeneficio(modelMapper.map(beneficioDTO, Beneficio.class));
+         return modelMapper.map(beneficio, SaidaBeneficioDTO.class);
     }
 
     @GetMapping//R

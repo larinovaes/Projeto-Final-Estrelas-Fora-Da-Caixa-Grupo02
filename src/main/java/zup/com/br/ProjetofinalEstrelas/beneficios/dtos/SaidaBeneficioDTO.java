@@ -5,7 +5,7 @@ import zup.com.br.ProjetofinalEstrelas.enums.NivelZupper;
 
 @Data
 public class SaidaBeneficioDTO {
-    private String id;
+    private int id;
     private String nome;
     private String descricao;
     private String link;
