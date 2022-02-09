@@ -130,7 +130,7 @@ public class BeneficioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
         String jsonResposta = resposta.andReturn().getResponse().getContentAsString();
-        BeneficioDTO beneficioResposta = objectMapper.readValue(jsonResposta, BeneficioDTO.class);
+        SaidaBeneficioDTO beneficioResposta = objectMapper.readValue(jsonResposta, SaidaBeneficioDTO.class);
 
     }
 
