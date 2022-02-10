@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/funcionario")
 @Api(value = "API para Ajudar zuppers a consultar seus benefícios")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
