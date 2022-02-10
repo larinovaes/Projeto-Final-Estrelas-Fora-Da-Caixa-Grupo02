@@ -11,13 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.FiltroDeAutenticacaoJWT;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.FiltroDeAutorizacaoJWT;
 import zup.com.br.ProjetofinalEstrelas.config.security.JWT.JWTComponent;
-
 @Configuration
 @EnableWebSecurity
 public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
@@ -74,7 +74,11 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource configurarCORS() {
         UrlBasedCorsConfigurationSource cors = new UrlBasedCorsConfigurationSource();
-        cors.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedMethod("*");
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        cors.registerCorsConfiguration("/**", config);
         return cors;
     }
 
