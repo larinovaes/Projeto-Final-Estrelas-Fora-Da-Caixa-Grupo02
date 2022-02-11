@@ -100,4 +100,10 @@ public class ControllerAdvisor {
     public MensagemErro manipularExcessaoDeUsuarioSemPermissao(UsuarioSemPermissaoException exception) {
         return new MensagemErro(exception.getMessage());
     }
+
+    @ExceptionHandler(FuncionarioJaCadastradoException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public MensagemErro manipularExcessaoDeFuncionarioJaCadastrado(FuncionarioJaCadastradoException exception) {
+        return new MensagemErro(exception.getMessage());
+    }
 }

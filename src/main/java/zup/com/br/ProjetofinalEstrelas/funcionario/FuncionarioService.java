@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zup.com.br.ProjetofinalEstrelas.beneficios.Beneficio;
 import zup.com.br.ProjetofinalEstrelas.beneficios.BeneficioService;
+import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioJaCadastradoException;
 import zup.com.br.ProjetofinalEstrelas.exception.FuncionarioNaoEncontradoException;
 import zup.com.br.ProjetofinalEstrelas.usuario.Usuario;
 import zup.com.br.ProjetofinalEstrelas.usuario.UsuarioService;
@@ -21,9 +22,15 @@ public class FuncionarioService {
     @Autowired
     private BeneficioService beneficioService;
 
+
     public Funcionario salvarFuncionario(Funcionario funcionario, String email) {
         Usuario usuario = usuarioService.buscarUsuarioPeloOEmail(email);
         List<Beneficio> beneficios = beneficioService.exibirBeneficiosPorNivel(funcionario.getNivelZupper());
+
+        Optional<Funcionario> funcionario1 = funcionarioRepository.findByUsuarioEmail(email);
+        if(funcionario1.isPresent()){
+            throw new FuncionarioJaCadastradoException("Funcionario já cadastrado");
+        }
 
         funcionario.setUsuario(usuario);
         funcionario.setBeneficios(beneficios);
